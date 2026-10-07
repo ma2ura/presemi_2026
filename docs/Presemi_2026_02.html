@@ -1,0 +1,3686 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="Presemi_2026_02_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Presemi_2026_02_files/libs/quarto-html/tabby.min.js"></script>
+<script src="Presemi_2026_02_files/libs/quarto-html/popper.min.js"></script>
+<script src="Presemi_2026_02_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="Presemi_2026_02_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Presemi_2026_02_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="Presemi_2026_02_files/libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Soichi Matsuura">
+  <title>プレゼミ   Day2 : リプリケーションと文献レビューによる仮説構築サイクル／Rの基礎とROE計算</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="Presemi_2026_02_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="Presemi_2026_02_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="Presemi_2026_02_files/libs/revealjs/dist/theme/quarto-50f7abaff187893784be4eb6a7ac547f.css">
+  <link rel="stylesheet" href="mystyle.css">
+  <link rel="stylesheet" href="slide-fit.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="Presemi_2026_02_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="Presemi_2026_02_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="Presemi_2026_02_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="Presemi_2026_02_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="Presemi_2026_02_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="Presemi_2026_02_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="Presemi_2026_02_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+  <style type="text/css">
+  .monaco-editor pre {
+    background-color: unset !important;
+  }
+
+  .qwebr-editor-toolbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .qwebr-editor-toolbar-left-buttons, .qwebr-editor-toolbar-right-buttons {
+    display: flex;
+  }
+
+  .qwebr-non-interactive-loading-container.qwebr-cell-needs-evaluation, .qwebr-non-interactive-loading-container.qwebr-cell-evaluated {
+    justify-content: center;
+    display: flex;
+    background-color: rgba(250, 250, 250, 0.65);
+    border: 1px solid rgba(233, 236, 239, 0.65);
+    border-radius: 0.5rem;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .qwebr-r-project-logo {
+    color: #2767B0; /* R Project's blue color */
+  }
+
+  .qwebr-icon-status-spinner {
+    color: #7894c4;
+  }
+
+  .qwebr-icon-run-code {
+    color: #0d9c29
+  }
+
+  body.quarto-light .qwebr-output-code-stdout {
+    color: #111;
+  }
+
+  body.quarto-dark .qwebr-output-code-stdout {
+    color: #EEE;
+  }
+
+  .qwebr-output-code-stderr {
+    color: #db4133;
+  }
+
+  body.quarto-light .qwebr-editor {
+    border: 1px solid #EEEEEE;
+  }
+
+  body.quarto-light .qwebr-editor-toolbar {
+    background-color: #EEEEEE;
+    padding: 0.2rem 0.5rem;
+  }
+
+  body.quarto-dark .qwebr-editor {
+    border: 1px solid #111;
+  }
+
+  body.quarto-dark .qwebr-editor-toolbar {
+    background-color: #111;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .qwebr-button {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.375rem 0.75rem;
+    font-size: .9rem;
+    border-radius: 0.25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+  body.quarto-light .qwebr-button {
+    background-color: #EEEEEE;
+    color: #000;
+    border-color: #dee2e6;
+    border: 1px solid rgba(0,0,0,0);
+  }
+
+  body.quarto-dark .qwebr-button {
+    background-color: #111;
+    color: #EEE;
+    border-color: #dee2e6;
+    border: 1px solid rgba(0,0,0,0);
+  }
+
+  body.quarto-light .qwebr-button:hover {
+    color: #000;
+    background-color: #d9dce0;
+    border-color: #c8ccd0;
+  }
+
+  body.quarto-dark .qwebr-button:hover {
+    color: #d9dce0;
+    background-color: #323232;
+    border-color: #d9dce0;
+  }
+
+  .qwebr-button:disabled,.qwebr-button.disabled,fieldset:disabled .qwebr-button {
+    pointer-events: none;
+    opacity: .65
+  }
+
+  .qwebr-button-reset {
+    color: #696969; /*#4682b4;*/
+  }
+
+  .qwebr-button-copy {
+    color: #696969;
+  }
+
+  /* Style the code highlight lines */
+  body.quarto-light .qwebr-editor-highlight-line {
+    background-color: lightblue;
+  }
+
+  body.quarto-dark .qwebr-editor-highlight-line {
+    background-color: darkblue;
+  }
+
+  /* Style the modal pop-up */
+
+  /* The Modal (background) */
+  .qwebr-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+  }
+
+  /* Modal Content */
+  .qwebr-modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  .qwebr-modal-content-code {
+    max-height: 50vh;
+    min-height: 5vh;
+    overflow: scroll;
+    border: 1px solid #888;
+  }
+
+  /* The Close Button */
+  .qwebr-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .qwebr-modal-close:hover,
+  .qwebr-modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .qwebr-download-btn {
+    margin-top: 10px;
+    text-decoration: none !important;
+  }
+
+  /* Styling to download image that is created */
+
+  .qwebr-canvas-image {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+  }
+
+  .qwebr-canvas-image-download-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: none;
+  }
+
+  figure:hover .qwebr-canvas-image-download-btn {
+    display: block;
+  }
+
+  /* Custom styling for RevealJS Presentations*/
+
+  /* Reset the style of the interactive area */
+  .reveal div.qwebr-interactive-area {
+    display: block;
+    box-shadow: none;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Provide space to entries */
+  .reveal div.qwebr-output-code-area pre div {
+    margin: 1px 2px 1px 10px;
+  }
+
+  /* Collapse the inside code tags to avoid extra space between line outputs */
+  .reveal pre div code.qwebr-output-code-stdout, .reveal pre div code.qwebr-output-code-stderr {
+    padding: 0;
+    display: contents;
+  }
+
+  body.reveal.quarto-light pre div code.qwebr-output-code-stdout {
+    color: #111;
+  }
+
+  body.reveal.quarto-dark pre div code.qwebr-output-code-stdout {
+    color: #EEEEEE;
+  }
+
+  .reveal pre div code.qwebr-output-code-stderr {
+    color: #db4133;
+  }
+
+
+  /* Create a border around console and output (does not effect graphs) */
+  body.reveal.quarto-light div.qwebr-console-area {
+    border: 1px solid #EEEEEE;
+    box-shadow: 2px 2px 10px #EEEEEE;
+  }
+
+  body.reveal.quarto-dark div.qwebr-console-area {
+    border: 1px solid #111;
+    box-shadow: 2px 2px 10px #111;
+  }
+
+
+  /* Cap output height and allow text to scroll */
+  /* TODO: Is there a better way to fit contents/max it parallel to the monaco editor size? */
+  .reveal div.qwebr-output-code-area pre {
+    max-height: 400px;
+    overflow: scroll;
+  }
+
+  iframe.qwebr-output-code-browse {
+    width: 100%;
+
+    /*
+      TODO: How to make the height automatic according to the widget size,
+      or respect the quarto code block options?
+    */
+    min-height: 500px;
+  }
+
+  </style>
+  <script type="module">
+  // Document level settings ----
+
+  // Determine if we need to install R packages
+  globalThis.qwebrInstallRPackagesList = ['dplyr', 'ggplot2', 'readr'];
+
+  // Specify possible locations to search for the repository
+  globalThis.qwebrPackageRepoURLS = ['https://repo.r-wasm.org/'];
+
+  // Check to see if we have an empty array, if we do set to skip the installation.
+  globalThis.qwebrSetupRPackages = !(qwebrInstallRPackagesList.indexOf("") !== -1);
+  globalThis.qwebrAutoloadRPackages = true;
+
+  // Display a startup message?
+  globalThis.qwebrShowStartupMessage = true;
+  globalThis.qwebrShowHeaderMessage = false;
+
+  // Describe the webR settings that should be used
+  globalThis.qwebrCustomizedWebROptions = {
+    "baseURL": "https://webr.r-wasm.org/v0.5.2/",
+    "serviceWorkerUrl": "",
+    "homedir": "/home/web_user", 
+    "channelType": "ChannelType.Automatic"
+  };
+
+  // Store cell data
+  globalThis.qwebrCellDetails = [{"code":"# プレゼミ Day 2: 初めてのRコード\nmessage(\"Rのエンジンが正常に起動しました！\")\n2026 - 1968 # Ball and Brown (1968) から何年経った？","id":1,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-1","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# 売上高と費用から利益を計算する\nsales <- 10000 # 売上高（百万円）\ncost <- 8500 # 売上原価・販管費（百万円）\n\noperating_income <- sales - cost # 営業利益\noperating_income","id":2,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-2","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# A社のデータ\nsales <- 8558000\nearnings <- 34435\nequity <- 526962\n\n# ROEの計算（%表示にするため100倍）\nroe <- (earnings / equity) * 100\n\n# 結果の表示（小数点以下2桁に丸める）\nround(roe, 2)","id":3,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-3","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# 自動車メーカー5社のデータ（架空のサンプル値：百万円）\nfirm_names <- c(\"A自動車\", \"B自動車\", \"C自動車\", \"D自動車\", \"E自動車\")\nearnings <- c(34435, 28200, 26019, 24752, 42997)\nequity <- c(526962, 339960, 358425, 336024, 620792)\n\n# 5社分のROEを一括計算！\nroe_vec <- (earnings / equity) * 100\n\n# 結果を並べて表示\nnames(roe_vec) <- firm_names\nround(roe_vec, 2)","id":4,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-4","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# 自動車5社のデータフレームを作成する\ndf <- data.frame(\n    企業名 = firm_names,\n    売上高 = c(8558000, 3206000, 1813000, 455000, 2218000),\n    当期利益 = earnings,\n    自己資本 = equity,\n    総資産 = c(9132565, 4330121, 2931162, 594721, 1927577)\n)\n\n# 新しい列として「ROE」を追加する（$マークを使う）\ndf$ROE <- round((df$当期利益 / df$自己資本) * 100, 2)\n\n# 表の中身を確認\ndf","id":5,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-5","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# デュポン分解の3要素を計算\ndf$利益率 <- round((df$当期利益 / df$売上高) * 100, 2) # ① %\ndf$総資産回転率 <- round(df$売上高 / df$総資産, 2) # ② 回\ndf$レバレッジ <- round(df$総資産 / df$自己資本, 2) # ③ 倍\n\n# 必要な列だけを抽出して見やすく表示\ndf[, c(\"企業名\", \"ROE\", \"利益率\", \"総資産回転率\", \"レバレッジ\")]","id":6,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-6","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# 最もROEが高い企業を特定するコード\ndf[which.max(df$ROE), c(\"企業名\", \"ROE\", \"利益率\", \"総資産回転率\", \"レバレッジ\")]\n\n# 最もROEが低い企業を特定するコード\ndf[which.min(df$ROE), c(\"企業名\", \"ROE\", \"利益率\", \"総資産回転率\", \"レバレッジ\")]","id":7,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-7","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+
+  </script>
+  <script type="module">
+  // Declare startupMessageQWebR globally
+  globalThis.qwebrStartupMessage = document.createElement("p");
+
+  // Verify if OffScreenCanvas is supported
+  globalThis.qwebrOffScreenCanvasSupport = function() {
+    return typeof OffscreenCanvas !== 'undefined'
+  }
+
+  // Function to set the button text
+  globalThis.qwebrSetInteractiveButtonState = function(buttonText, enableCodeButton = true) {
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.innerHTML = buttonText;
+      btn.disabled = !enableCodeButton;
+    });
+  }
+
+  // Function to update the status message in non-interactive cells
+  globalThis.qwebrUpdateStatusMessage = function(message) {
+    document.querySelectorAll(".qwebr-status-text.qwebr-cell-needs-evaluation").forEach((elem) => {
+      elem.innerText = message;
+    });
+  }
+
+  // Function to update the status message
+  globalThis.qwebrUpdateStatusHeader = function(message) {
+    qwebrStartupMessage.innerHTML = `
+      <i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i>
+      <span>${message}</span>`;
+  }
+
+  // Function to return true if element is found, false if not
+  globalThis.qwebrCheckHTMLElementExists = function(selector) {
+    const element = document.querySelector(selector);
+    return !!element;
+  }
+
+  // Function that detects whether reveal.js slides are present
+  globalThis.qwebrIsRevealJS = function() {
+    // If the '.reveal .slides' selector exists, RevealJS is likely present
+    return qwebrCheckHTMLElementExists('.reveal .slides');
+  }
+
+  // Initialize the Quarto sidebar element
+  function qwebrSetupQuartoSidebar() {
+    var newSideBarDiv = document.createElement('div');
+    newSideBarDiv.id = 'quarto-margin-sidebar';
+    newSideBarDiv.className = 'sidebar margin-sidebar';
+    newSideBarDiv.style.top = '0px';
+    newSideBarDiv.style.maxHeight = 'calc(0px + 100vh)';
+
+    return newSideBarDiv;
+  }
+
+  // Position the sidebar in the document
+  function qwebrPlaceQuartoSidebar() {
+    // Get the reference to the element with id 'quarto-document-content'
+    var referenceNode = document.getElementById('quarto-document-content');
+
+    // Create the new div element
+    var newSideBarDiv = qwebrSetupQuartoSidebar();
+
+    // Insert the new div before the 'quarto-document-content' element
+    referenceNode.parentNode.insertBefore(newSideBarDiv, referenceNode);
+  }
+
+  function qwebrPlaceMessageContents(content, html_location = "title-block-header", revealjs_location = "title-slide") {
+
+    // Get references to header elements
+    const headerHTML = document.getElementById(html_location);
+    const headerRevealJS = document.getElementById(revealjs_location);
+
+    // Determine where to insert the quartoTitleMeta element
+    if (headerHTML || headerRevealJS) {
+      // Append to the existing "title-block-header" element or "title-slide" div
+      (headerHTML || headerRevealJS).appendChild(content);
+    } else {
+      // If neither headerHTML nor headerRevealJS is found, insert after "webr-monaco-editor-init" script
+      const monacoScript = document.getElementById("qwebr-monaco-editor-init");
+      const header = document.createElement("header");
+      header.setAttribute("id", "title-block-header");
+      header.appendChild(content);
+      monacoScript.after(header);
+    }
+  }
+
+
+
+  function qwebrOffScreenCanvasSupportWarningMessage() {
+    
+    // Verify canvas is supported.
+    if(qwebrOffScreenCanvasSupport()) return;
+
+    // Create the main container div
+    var calloutContainer = document.createElement('div');
+    calloutContainer.classList.add('callout', 'callout-style-default', 'callout-warning', 'callout-titled');
+
+    // Create the header div
+    var headerDiv = document.createElement('div');
+    headerDiv.classList.add('callout-header', 'd-flex', 'align-content-center');
+
+    // Create the icon container div
+    var iconContainer = document.createElement('div');
+    iconContainer.classList.add('callout-icon-container');
+
+    // Create the icon element
+    var iconElement = document.createElement('i');
+    iconElement.classList.add('callout-icon');
+
+    // Append the icon element to the icon container
+    iconContainer.appendChild(iconElement);
+
+    // Create the title container div
+    var titleContainer = document.createElement('div');
+    titleContainer.classList.add('callout-title-container', 'flex-fill');
+    titleContainer.innerText = 'Warning: Web Browser Does Not Support Graphing!';
+
+    // Append the icon container and title container to the header div
+    headerDiv.appendChild(iconContainer);
+    headerDiv.appendChild(titleContainer);
+
+    // Create the body container div
+    var bodyContainer = document.createElement('div');
+    bodyContainer.classList.add('callout-body-container', 'callout-body');
+
+    // Create the paragraph element for the body content
+    var paragraphElement = document.createElement('p');
+    paragraphElement.innerHTML = 'This web browser does not have support for displaying graphs through the <code>quarto-webr</code> extension since it lacks an <code>OffScreenCanvas</code>. Please upgrade your web browser to one that supports <code>OffScreenCanvas</code>.';
+
+    // Append the paragraph element to the body container
+    bodyContainer.appendChild(paragraphElement);
+
+    // Append the header div and body container to the main container div
+    calloutContainer.appendChild(headerDiv);
+    calloutContainer.appendChild(bodyContainer);
+
+    // Append the main container div to the document depending on format
+    qwebrPlaceMessageContents(calloutContainer, "title-block-header"); 
+
+  }
+
+
+  // Function that attaches the document status message and diagnostics
+  function displayStartupMessage(showStartupMessage, showHeaderMessage) {
+    if (!showStartupMessage) {
+      return;
+    }
+
+    // Create the outermost div element for metadata
+    const quartoTitleMeta = document.createElement("div");
+    quartoTitleMeta.classList.add("quarto-title-meta");
+
+    // Create the first inner div element
+    const firstInnerDiv = document.createElement("div");
+    firstInnerDiv.setAttribute("id", "qwebr-status-message-area");
+
+    // Create the second inner div element for "WebR Status" heading and contents
+    const secondInnerDiv = document.createElement("div");
+    secondInnerDiv.setAttribute("id", "qwebr-status-message-title");
+    secondInnerDiv.classList.add("quarto-title-meta-heading");
+    secondInnerDiv.innerText = "WebR Status";
+
+    // Create another inner div for contents
+    const secondInnerDivContents = document.createElement("div");
+    secondInnerDivContents.setAttribute("id", "qwebr-status-message-body");
+    secondInnerDivContents.classList.add("quarto-title-meta-contents");
+
+    // Describe the WebR state
+    qwebrStartupMessage.innerText = "🟡 Loading...";
+    qwebrStartupMessage.setAttribute("id", "qwebr-status-message-text");
+    // Add `aria-live` to auto-announce the startup status to screen readers
+    qwebrStartupMessage.setAttribute("aria-live", "assertive");
+
+    // Append the startup message to the contents
+    secondInnerDivContents.appendChild(qwebrStartupMessage);
+
+    // Add a status indicator for COOP and COEP Headers if needed
+    if (showHeaderMessage) {
+      const crossOriginMessage = document.createElement("p");
+      crossOriginMessage.innerText = `${crossOriginIsolated ? '🟢' : '🟡'} COOP & COEP Headers`;
+      crossOriginMessage.setAttribute("id", "qwebr-coop-coep-header");
+      secondInnerDivContents.appendChild(crossOriginMessage);
+    }
+
+    // Combine the inner divs and contents
+    firstInnerDiv.appendChild(secondInnerDiv);
+    firstInnerDiv.appendChild(secondInnerDivContents);
+    quartoTitleMeta.appendChild(firstInnerDiv);
+
+    // Place message on webpage
+    qwebrPlaceMessageContents(quartoTitleMeta); 
+  }
+
+  function qwebrAddCommandHistoryModal() {
+    // Create the modal div
+    var modalDiv = document.createElement('div');
+    modalDiv.id = 'qwebr-history-modal';
+    modalDiv.className = 'qwebr-modal';
+
+    // Create the modal content div
+    var modalContentDiv = document.createElement('div');
+    modalContentDiv.className = 'qwebr-modal-content';
+
+    // Create the span for closing the modal
+    var closeSpan = document.createElement('span');
+    closeSpan.id = 'qwebr-command-history-close-btn';
+    closeSpan.className = 'qwebr-modal-close';
+    closeSpan.innerHTML = '&times;';
+
+    // Create the h1 element for the modal
+    var modalH1 = document.createElement('h1');
+    modalH1.textContent = 'R History Command Contents';
+
+    // Create an anchor element for downloading the Rhistory file 
+    var downloadLink = document.createElement('a');
+    downloadLink.href = '#';
+    downloadLink.id = 'qwebr-download-history-btn';
+    downloadLink.className = 'qwebr-download-btn';
+
+    // Create an 'i' element for the icon
+    var icon = document.createElement('i');
+    icon.className = 'bi bi-file-code';
+
+    // Append the icon to the anchor element
+    downloadLink.appendChild(icon);
+
+    // Add the text 'Download R History' to the anchor element
+    downloadLink.appendChild(document.createTextNode(' Download R History File'));
+
+    // Create the pre for command history contents
+    var commandContentsPre = document.createElement('pre');
+    commandContentsPre.id = 'qwebr-command-history-contents';
+    commandContentsPre.className = 'qwebr-modal-content-code';
+
+    // Append the close span, h1, and history contents pre to the modal content div
+    modalContentDiv.appendChild(closeSpan);
+    modalContentDiv.appendChild(modalH1);
+    modalContentDiv.appendChild(downloadLink);
+    modalContentDiv.appendChild(commandContentsPre);
+
+    // Append the modal content div to the modal div
+    modalDiv.appendChild(modalContentDiv);
+
+    // Append the modal div to the body
+    document.body.appendChild(modalDiv);
+  }
+
+  function qwebrRegisterRevealJSCommandHistoryModal() {
+    // Select the <ul> element inside the <div> with data-panel="Custom0"
+    let ulElement = document.querySelector('div[data-panel="Custom0"] > ul.slide-menu-items');
+
+    // Find the last <li> element with class slide-tool-item
+    let lastItem = ulElement.querySelector('li.slide-tool-item:last-child');
+
+    // Calculate the next data-item value
+    let nextItemValue = 0;
+    if (lastItem) {
+        nextItemValue = parseInt(lastItem.dataset.item) + 1;
+    }
+
+    // Create a new <li> element
+    let newListItem = document.createElement('li');
+    newListItem.className = 'slide-tool-item';
+    newListItem.dataset.item = nextItemValue.toString(); // Set the next available data-item value
+
+    // Create the <a> element inside the <li>
+    let newLink = document.createElement('a');
+    newLink.href = '#';
+    newLink.id = 'qwebrRHistoryButton'; // Set the ID for the new link
+    
+    // Create the <kbd> element inside the <a>
+    let newKbd = document.createElement('kbd');
+    newKbd.textContent = ' '; // Set to empty as we are not registering a keyboard shortcut
+
+    // Create text node for the link text
+    let newText = document.createTextNode(' View R History');
+
+    // Append <kbd> and text node to <a>
+    newLink.appendChild(newKbd);
+    newLink.appendChild(newText);
+
+    // Append <a> to <li>
+    newListItem.appendChild(newLink);
+
+    // Append <li> to <ul>
+    ulElement.appendChild(newListItem);
+  }
+
+  // Handle setting up the R history modal
+  function qwebrCodeLinks() {
+
+    if (qwebrIsRevealJS()) {
+      qwebrRegisterRevealJSCommandHistoryModal();
+      return;
+    }
+
+    // Create the container div
+    var containerDiv = document.createElement('div');
+    containerDiv.className = 'quarto-code-links';
+
+    // Create the h2 element
+    var h2 = document.createElement('h2');
+    h2.textContent = 'webR Code Links';
+
+    // Create the ul element
+    var ul = document.createElement('ul');
+
+    // Create the li element
+    var li = document.createElement('li');
+
+    // Create the a_history_btn element
+    var a_history_btn = document.createElement('a');
+    a_history_btn.href = 'javascript:void(0)';
+    a_history_btn.setAttribute('id', 'qwebrRHistoryButton');
+
+    // Create the i_history_btn element
+    var i_history_btn = document.createElement('i');
+    i_history_btn.className = 'bi bi-file-code';
+
+    // Create the text node for the link text
+    var text_history_btn = document.createTextNode('View R History');
+
+    // Append the icon element and link text to the a element
+    a_history_btn.appendChild(i_history_btn);
+    a_history_btn.appendChild(text_history_btn);
+
+    // Append the a element to the li element
+    li.appendChild(a_history_btn);
+
+    // Append the li element to the ul element
+    ul.appendChild(li);
+
+    // Append the h2 and ul elements to the container div
+    containerDiv.appendChild(h2);
+    containerDiv.appendChild(ul);
+
+    // Append the container div to the element with the ID 'quarto-margin-sidebar'
+    var sidebar = document.getElementById('quarto-margin-sidebar');
+      
+    // If the sidebar element is not found, create it
+    if(!sidebar) {
+      qwebrPlaceQuartoSidebar();
+    }
+    
+    // Re-select the sidebar element (if it was just created)
+    sidebar = document.getElementById('quarto-margin-sidebar');   
+
+
+    // If the sidebar element exists, append the container div to it
+    if(sidebar) {
+      // Append the container div to the sidebar
+      sidebar.appendChild(containerDiv);
+      // Force the sidebar to be clickable by removing the 'zindex-bottom' class
+      // added in pre-release: https://github.com/quarto-dev/quarto-cli/commit/f0c53a1ffcaa1de4eccbf07803b096898248adcc
+      sidebar.className = 'sidebar margin-sidebar';
+    } else {
+      // Get a debugger ...
+      console.warn('Element with ID "quarto-margin-sidebar" not found.');
+    }
+  }
+
+  // Call the function to append the code links for qwebR into the right sidebar
+  qwebrCodeLinks();
+
+  // Add the command history modal
+  qwebrAddCommandHistoryModal();
+
+  displayStartupMessage(qwebrShowStartupMessage, qwebrShowHeaderMessage);
+  qwebrOffScreenCanvasSupportWarningMessage();
+  </script>
+  <script type="module">
+  // Define a global storage and retrieval solution ----
+
+  // Store commands executed in R
+  globalThis.qwebrRCommandHistory = [];
+
+  // Function to retrieve the command history
+  globalThis.qwebrFormatRHistory = function() {
+     return qwebrRCommandHistory.join("\n\n");
+  }
+
+  // Retrieve HTML Elements ----
+
+  // Get the command modal
+  const command_history_modal = document.getElementById("qwebr-history-modal");
+
+  // Get the button that opens the command modal
+  const command_history_btn = document.getElementById("qwebrRHistoryButton");
+
+  // Get the <span> element that closes the command modal
+  const command_history_close_span = document.getElementById("qwebr-command-history-close-btn");
+
+  // Get the download button for r history information
+  const command_history_download_btn = document.getElementById("qwebr-download-history-btn");
+
+  // Plug in command history into modal/download button ----
+
+  // Function to populate the modal with command history
+  function populateCommandHistoryModal() {
+      document.getElementById("qwebr-command-history-contents").innerHTML = qwebrFormatRHistory() || "No commands have been executed yet.";
+  }
+
+  // Function to format the current date and time to
+  // a string with the format YYYY-MM-DD-HH-MM-SS
+  function formatDateTime() {
+      const now = new Date();
+
+      const year = now.getFullYear();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      return `${year}-${month}-${day}-${hours}-${minutes}-${seconds}`;
+  }
+
+
+  // Function to convert document title with datetime to a safe filename
+  function safeFileName() {
+      // Get the current page title
+      let pageTitle = document.title;
+
+      // Combine the current page title with the current date and time
+      let pageNameWithDateTime = `Rhistory-${pageTitle}-${formatDateTime()}`;
+
+      // Replace unsafe characters with safe alternatives
+      let safeFilename = pageNameWithDateTime.replace(/[\\/:\*\?! "<>\|]/g, '-');
+
+      return safeFilename;
+  }
+
+
+  // Function to download list contents as text file
+  function downloadRHistory() {
+      // Get the current page title + datetime and use it as the filename
+      const filename = `${safeFileName()}.R`;
+
+      // Get the text contents of the R History list
+      const text = qwebrFormatRHistory();
+
+      // Create a new Blob object with the text contents
+      const blob = new Blob([text], { type: 'text/plain' });
+    
+      // Create a new anchor element for the download
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+
+      // Append the anchor to the body, click it, and remove it
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+  }
+
+  // Register event handlers ----
+
+  // When the user clicks the View R History button, open the command modal
+  command_history_btn.onclick = function() {
+      populateCommandHistoryModal();
+      command_history_modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the command modal
+  command_history_close_span.onclick = function() {
+      command_history_modal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the command modal, close it
+  window.onclick = function(event) {
+      if (event.target == command_history_modal) {
+          command_history_modal.style.display = "none";
+      }
+  }
+
+  // Add an onclick event listener to the download button so that
+  // the user can download the R history as a text file
+  command_history_download_btn.onclick = function() {
+      downloadRHistory();
+  };
+  </script>
+  <script type="module">
+  // Supported Evaluation Types for Context
+  globalThis.EvalTypes = Object.freeze({
+    Interactive: 'interactive',
+    Setup: 'setup',
+    Output: 'output',
+  });
+
+  // Function that obtains the font size for a given element 
+  globalThis.qwebrCurrentFontSizeOnElement = function(element, cssProperty = 'font-size') {
+
+    const currentFontSize = parseFloat(
+      window
+      .getComputedStyle(element)
+      .getPropertyValue(cssProperty)
+    );
+    
+    return currentFontSize;
+  }
+
+  // Function to determine font scaling
+  globalThis.qwebrScaledFontSize = function(div, qwebrOptions) {
+    // Determine if we should compute font-size using RevealJS's `--r-main-font-size` 
+    // or if we can directly use the document's `font-size`.
+    const cssProperty = document.body.classList.contains('reveal') ? 
+      "--r-main-font-size" : "font-size";
+    
+    // Get the current font size on the div element
+    const elementFontSize = qwebrCurrentFontSizeOnElement(div, cssProperty);
+
+    // Determine the scaled font size value
+    const scaledFontSize = ((qwebrOptions['editor-font-scale'] ?? 1) * elementFontSize) ?? 17.5;
+
+    return scaledFontSize;
+  }
+
+
+  // Function that dispatches the creation request
+  globalThis.qwebrCreateHTMLElement = function (
+    cellData
+  ) {
+
+    // Extract key components
+    const evalType = cellData.options.context;
+    const qwebrCounter = cellData.id;
+
+    // We make an assumption that insertion points are defined by the Lua filter as:
+    // qwebr-insertion-location-{qwebrCounter} 
+    const elementLocator = document.getElementById(`qwebr-insertion-location-${qwebrCounter}`);
+
+    // Figure out the routine to use to insert the element.
+    let qwebrElement;
+    switch ( evalType ) {
+      case EvalTypes.Interactive:
+        qwebrElement = qwebrCreateInteractiveElement(qwebrCounter, cellData.options);
+        break;
+      case EvalTypes.Output: 
+        qwebrElement = qwebrCreateNonInteractiveOutputElement(qwebrCounter, cellData.options);
+        break;
+      case EvalTypes.Setup: 
+        qwebrElement = qwebrCreateNonInteractiveSetupElement(qwebrCounter, cellData.options);
+        break;
+      default: 
+        qwebrElement = document.createElement('div');
+        qwebrElement.textContent = 'Error creating `quarto-webr` element';
+    }
+
+    // Insert the dynamically generated object at the document location.
+    elementLocator.appendChild(qwebrElement);
+  };
+
+  // Function that setups the interactive element creation
+  globalThis.qwebrCreateInteractiveElement = function (qwebrCounter, qwebrOptions) {
+
+    // Create main div element
+    var mainDiv = document.createElement('div');
+    mainDiv.id = 'qwebr-interactive-area-' + qwebrCounter;
+    mainDiv.className = `qwebr-interactive-area`;
+    if (qwebrOptions.classes) {
+      mainDiv.className += " " + qwebrOptions.classes
+    }
+
+    // Add a unique cell identifier that users can customize
+    if (qwebrOptions.label) {
+      mainDiv.setAttribute('data-id', qwebrOptions.label);
+    }
+
+    // Create toolbar div
+    var toolbarDiv = document.createElement('div');
+    toolbarDiv.className = 'qwebr-editor-toolbar';
+    toolbarDiv.id = 'qwebr-editor-toolbar-' + qwebrCounter;
+
+    // Create a div to hold the left buttons
+    var leftButtonsDiv = document.createElement('div');
+    leftButtonsDiv.className = 'qwebr-editor-toolbar-left-buttons';
+
+    // Create a div to hold the right buttons
+    var rightButtonsDiv = document.createElement('div');
+    rightButtonsDiv.className = 'qwebr-editor-toolbar-right-buttons';
+
+    // Create Run Code button
+    var runCodeButton = document.createElement('button');
+    runCodeButton.className = 'btn btn-default qwebr-button qwebr-button-run';
+    runCodeButton.disabled = true;
+    runCodeButton.type = 'button';
+    runCodeButton.id = 'qwebr-button-run-' + qwebrCounter;
+    runCodeButton.textContent = '🟡 Loading webR...';
+    runCodeButton.title = `Run code (Shift + Enter)`;
+
+    // Append buttons to the leftButtonsDiv
+    leftButtonsDiv.appendChild(runCodeButton);
+
+    // Create Reset button
+    var resetButton = document.createElement('button');
+    resetButton.className = 'btn btn-light btn-xs qwebr-button qwebr-button-reset';
+    resetButton.type = 'button';
+    resetButton.id = 'qwebr-button-reset-' + qwebrCounter;
+    resetButton.title = 'Start over';
+    resetButton.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
+
+    // Create Copy button
+    var copyButton = document.createElement('button');
+    copyButton.className = 'btn btn-light btn-xs qwebr-button qwebr-button-copy';
+    copyButton.type = 'button';
+    copyButton.id = 'qwebr-button-copy-' + qwebrCounter;
+    copyButton.title = 'Copy code';
+    copyButton.innerHTML = '<i class="fa-regular fa-copy"></i>';
+
+    // Append buttons to the rightButtonsDiv
+    rightButtonsDiv.appendChild(resetButton);
+    rightButtonsDiv.appendChild(copyButton);
+
+    // Create console area div
+    var consoleAreaDiv = document.createElement('div');
+    consoleAreaDiv.id = 'qwebr-console-area-' + qwebrCounter;
+    consoleAreaDiv.className = 'qwebr-console-area';
+
+    // Create editor div
+    var editorDiv = document.createElement('div');
+    editorDiv.id = 'qwebr-editor-' + qwebrCounter;
+    editorDiv.className = 'qwebr-editor';
+
+    // Create output code area div
+    var outputCodeAreaDiv = document.createElement('div');
+    outputCodeAreaDiv.id = 'qwebr-output-code-area-' + qwebrCounter;
+    outputCodeAreaDiv.className = 'qwebr-output-code-area';
+    outputCodeAreaDiv.setAttribute('aria-live', 'assertive');
+
+    // Create pre element inside output code area
+    var preElement = document.createElement('pre');
+    preElement.style.visibility = 'hidden';
+    outputCodeAreaDiv.appendChild(preElement);
+
+    // Create output graph area div
+    var outputGraphAreaDiv = document.createElement('div');
+    outputGraphAreaDiv.id = 'qwebr-output-graph-area-' + qwebrCounter;
+    outputGraphAreaDiv.className = 'qwebr-output-graph-area';
+
+    // Append buttons to the toolbar
+    toolbarDiv.appendChild(leftButtonsDiv);
+    toolbarDiv.appendChild(rightButtonsDiv);
+
+    // Append all elements to the main div
+    mainDiv.appendChild(toolbarDiv);
+    consoleAreaDiv.appendChild(editorDiv);
+    consoleAreaDiv.appendChild(outputCodeAreaDiv);
+    mainDiv.appendChild(consoleAreaDiv);
+    mainDiv.appendChild(outputGraphAreaDiv);
+
+    return mainDiv;
+  }
+
+  // Function that adds output structure for non-interactive output
+  globalThis.qwebrCreateNonInteractiveOutputElement = function(qwebrCounter, qwebrOptions) {
+    // Create main div element
+    var mainDiv = document.createElement('div');
+    mainDiv.id = 'qwebr-noninteractive-area-' + qwebrCounter;
+    mainDiv.className = `qwebr-noninteractive-area`;
+    if (qwebrOptions.classes) {
+      mainDiv.className += " " + qwebrOptions.classes
+    }
+    
+    // Add a unique cell identifier that users can customize
+    if (qwebrOptions.label) {
+      mainDiv.setAttribute('data-id', qwebrOptions.label);
+    }
+    
+    // Create a status container div
+    var statusContainer = createLoadingContainer(qwebrCounter);
+
+    // Create output code area div
+    var outputCodeAreaDiv = document.createElement('div');
+    outputCodeAreaDiv.id = 'qwebr-output-code-area-' + qwebrCounter;
+    outputCodeAreaDiv.className = 'qwebr-output-code-area';
+    outputCodeAreaDiv.setAttribute('aria-live', 'assertive');
+
+    // Create pre element inside output code area
+    var preElement = document.createElement('pre');
+    preElement.style.visibility = 'hidden';
+    outputCodeAreaDiv.appendChild(preElement);
+
+    // Create output graph area div
+    var outputGraphAreaDiv = document.createElement('div');
+    outputGraphAreaDiv.id = 'qwebr-output-graph-area-' + qwebrCounter;
+    outputGraphAreaDiv.className = 'qwebr-output-graph-area';
+
+    // Append all elements to the main div
+    mainDiv.appendChild(statusContainer);
+    mainDiv.appendChild(outputCodeAreaDiv);
+    mainDiv.appendChild(outputGraphAreaDiv);
+
+    return mainDiv;
+  };
+
+  // Function that adds a stub in the page to indicate a setup cell was used.
+  globalThis.qwebrCreateNonInteractiveSetupElement = function(qwebrCounter, qwebrOptions) {
+    // Create main div element
+    var mainDiv = document.createElement('div');
+    mainDiv.id = `qwebr-noninteractive-setup-area-${qwebrCounter}`;
+    mainDiv.className = `qwebr-noninteractive-setup-area`;
+    if (qwebrOptions.classes) {
+      mainDiv.className += " " + qwebrOptions.classes
+    }
+
+
+    // Add a unique cell identifier that users can customize
+    if (qwebrOptions.label) {
+      mainDiv.setAttribute('data-id', qwebrOptions.label);
+    }
+
+    // Create a status container div
+    var statusContainer = createLoadingContainer(qwebrCounter);
+
+    // Append status onto the main div
+    mainDiv.appendChild(statusContainer);
+
+    return mainDiv;
+  }
+
+
+  // Function to create loading container with specified ID
+  globalThis.createLoadingContainer = function(qwebrCounter) {
+
+    // Create a status container
+    const container = document.createElement('div');
+    container.id = `qwebr-non-interactive-loading-container-${qwebrCounter}`;
+    container.className = 'qwebr-non-interactive-loading-container qwebr-cell-needs-evaluation';
+
+    // Create an R project logo to indicate its a code space
+    const rProjectIcon = document.createElement('i');
+    rProjectIcon.className = 'fa-brands fa-r-project fa-3x qwebr-r-project-logo';
+
+    // Setup a loading icon from font awesome
+    const spinnerIcon = document.createElement('i');
+    spinnerIcon.className = 'fa-solid fa-spinner fa-spin fa-1x qwebr-icon-status-spinner';
+
+    // Add a section for status text
+    const statusText = document.createElement('p');
+    statusText.id = `qwebr-status-text-${qwebrCounter}`;
+    statusText.className = `qwebr-status-text qwebr-cell-needs-evaluation`;
+    statusText.innerText = 'Loading webR...';
+
+    // Incorporate an inner container
+    const innerContainer = document.createElement('div');
+
+    // Append elements to the inner container
+    innerContainer.appendChild(spinnerIcon);
+    innerContainer.appendChild(statusText);
+
+    // Append elements to the main container
+    container.appendChild(rProjectIcon);
+    container.appendChild(innerContainer);
+
+    return container;
+  }
+  </script>
+  <script type="module">
+  // Function to install a single package
+  async function qwebrInstallRPackage(packageName) {
+    await mainWebR.evalRVoid(`webr::install('${packageName}');`);
+  }
+
+  // Function to load a single package
+  async function qwebrLoadRPackage(packageName) {
+    await mainWebR.evalRVoid(`require('${packageName}', quietly = TRUE)`);
+  }
+
+  // Generic function to process R packages
+  async function qwebrProcessRPackagesWithStatus(packages, processType, displayStatusMessageUpdate = true) {
+    // Switch between contexts
+    const messagePrefix = processType === 'install' ? 'Installing' : 'Loading';
+
+    // Modify button state
+    qwebrSetInteractiveButtonState(`🟡 ${messagePrefix} package ...`, false);
+
+    // Iterate over packages
+    for (let i = 0; i < packages.length; i++) {
+      const activePackage = packages[i];
+      const formattedMessage = `${messagePrefix} package ${i + 1} out of ${packages.length}: ${activePackage}`;
+
+      // Display the update in header
+      if (displayStatusMessageUpdate) {
+        qwebrUpdateStatusHeader(formattedMessage);
+      }
+
+      // Display the update in non-active areas
+      qwebrUpdateStatusMessage(formattedMessage);
+
+      // Run package installation
+      if (processType === 'install') {
+        await qwebrInstallRPackage(activePackage);
+      } else {
+        await qwebrLoadRPackage(activePackage);
+      }
+    }
+
+    // Clean slate
+    if (processType === 'load') {
+      await mainWebR.flush();
+    }
+  }
+
+  // Start a timer
+  const initializeWebRTimerStart = performance.now();
+
+  // Encase with a dynamic import statement
+  globalThis.qwebrInstance = import(qwebrCustomizedWebROptions.baseURL + "webr.mjs").then(
+    async ({ WebR, ChannelType }) => {
+      // Populate WebR options with defaults or new values based on `webr` meta
+      globalThis.mainWebR = new WebR(qwebrCustomizedWebROptions);
+
+      // Initialization WebR
+      await mainWebR.init();
+
+      // Setup a shelter
+      globalThis.mainWebRCodeShelter = await new mainWebR.Shelter();
+
+      // Setup a pager to allow processing help documentation
+      await mainWebR.evalRVoid('webr::pager_install()');
+
+      // Setup a viewer to allow processing htmlwidgets.
+      // This might not be available in old webr version
+      await mainWebR.evalRVoid('try({ webr::viewer_install() })');
+
+      // Override the existing install.packages() to use webr::install()
+      await mainWebR.evalRVoid('webr::shim_install()');
+
+      // Specify the repositories to pull from
+      // Note: webR does not use the `repos` option, but instead uses `webr_pkg_repos`
+      // inside of `install()`. However, other R functions still pull from `repos`.
+      await mainWebR.evalRVoid(`
+        options(
+          webr_pkg_repos = c(${qwebrPackageRepoURLS.map(repoURL => `'${repoURL}'`).join(',')}),
+          repos = c(${qwebrPackageRepoURLS.map(repoURL => `'${repoURL}'`).join(',')})
+        )
+      `);
+
+      // Check to see if any packages need to be installed
+      if (qwebrSetupRPackages) {
+        // Obtain only a unique list of packages
+        const uniqueRPackageList = Array.from(new Set(qwebrInstallRPackagesList));
+
+        // Install R packages one at a time (either silently or with a status update)
+        await qwebrProcessRPackagesWithStatus(uniqueRPackageList, 'install', qwebrShowStartupMessage);
+
+        if (qwebrAutoloadRPackages) {
+          // Load R packages one at a time (either silently or with a status update)
+          await qwebrProcessRPackagesWithStatus(uniqueRPackageList, 'load', qwebrShowStartupMessage);
+        }
+      }
+    }
+  );
+
+  // Stop timer
+  const initializeWebRTimerEnd = performance.now();
+
+  </script>
+  <script type="module">
+  // Function to verify a given JavaScript Object is empty
+  globalThis.qwebrIsObjectEmpty = function (arr) {
+      return Object.keys(arr).length === 0;
+  }
+
+  // Global version of the Escape HTML function that converts HTML
+  // characters to their HTML entities.
+  globalThis.qwebrEscapeHTMLCharacters = function(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+  };
+
+  // Passthrough results
+  globalThis.qwebrIdentity = function(x) {
+      return x;
+  };
+
+  // Append a comment
+  globalThis.qwebrPrefixComment = function(x, comment) {
+      return `${comment}${x}`;
+  };
+
+  // Function to store the code in the history
+  globalThis.qwebrLogCodeToHistory = function(codeToRun, options) {
+      qwebrRCommandHistory.push(
+          `# Ran code in ${options.label} at ${new Date().toLocaleString()} ----\n${codeToRun}`
+      );
+  };
+
+  // Function to attach a download button onto the canvas
+  // allowing the user to download the image.
+  function qwebrImageCanvasDownloadButton(canvas, canvasContainer) {
+
+      // Create the download button
+      const downloadButton = document.createElement('button');
+      downloadButton.className = 'qwebr-canvas-image-download-btn';
+      downloadButton.textContent = 'Download Image';
+      canvasContainer.appendChild(downloadButton);
+
+      // Trigger a download of the image when the button is clicked
+      downloadButton.addEventListener('click', function() {
+          const image = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.href = image;
+          link.download = 'qwebr-canvas-image.png';
+          link.click();
+      });
+  }
+
+
+  // Function to parse the pager results
+  globalThis.qwebrParseTypePager = async function (msg) {
+
+      // Split out the event data
+      const { path, title, deleteFile } = msg.data;
+
+      // Process the pager data by reading the information from disk
+      const paged_data = await mainWebR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+              content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+      });
+
+      // Unlink file if needed
+      if (deleteFile) {
+          await mainWebR.FS.unlink(path);
+      }
+
+      // Return extracted data with spaces
+      return paged_data;
+  };
+
+
+  // Function to parse the browse results
+  globalThis.qwebrParseTypeBrowse = async function (msg) {
+
+      // msg.type === "browse"
+      const path = msg.data.url;
+
+      // Process the browse data by reading the information from disk
+      const browse_data = await mainWebR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          return content;
+      });
+
+      // Return extracted data as-is
+      return browse_data;
+  };
+
+  // Function to run the code using webR and parse the output
+  globalThis.qwebrComputeEngine = async function(
+      codeToRun,
+      elements,
+      options) {
+
+      // Call into the R compute engine that persists within the document scope.
+      // To be prepared for all scenarios, the following happens:
+      // 1. We setup a canvas device to write to by making a namespace call into the {webr} package
+      // 2. We use values inside of the options array to set the figure size.
+      // 3. We capture the output stream information (STDOUT and STERR)
+      // 4. We disable the current device's image creation.
+      // 5. Piece-wise parse the results into the different output areas
+
+      // Create a pager variable for help/file contents
+      let pager = [];
+
+      // Handle how output is processed
+      let showMarkup = options.results === "markup" && options.output !== "asis";
+      let processOutput;
+
+      if (showMarkup) {
+          processOutput = qwebrEscapeHTMLCharacters;
+      } else {
+          processOutput = qwebrIdentity;
+      }
+
+      // ----
+      // Convert from Inches to Pixels by using DPI (dots per inch)
+      // for bitmap devices (dpi * inches = pixels)
+      let fig_width = options["fig-width"] * options["dpi"];
+      let fig_height = options["fig-height"] * options["dpi"];
+
+      // Initialize webR
+      await mainWebR.init();
+
+      // Configure capture output
+      let captureOutputOptions = {
+          withAutoprint: true,
+          captureStreams: true,
+          captureConditions: false,
+          // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+      };
+
+      // Determine if the browser supports OffScreen
+      if (qwebrOffScreenCanvasSupport()) {
+          // Mirror default options of webr::canvas()
+          // with changes to figure height and width.
+          captureOutputOptions.captureGraphics = {
+              width: fig_width,
+              height: fig_height,
+              bg: "white", // default: transparent
+              pointsize: 12,
+              capture: true
+          };
+      }  else {
+          // Disable generating graphics
+          captureOutputOptions.captureGraphics = false;
+      }
+
+      // Store the code to run in history
+      qwebrLogCodeToHistory(codeToRun, options);
+
+      // Setup a webR canvas by making a namespace call into the {webr} package
+      // Evaluate the R code
+      // Remove the active canvas silently
+      const result = await mainWebRCodeShelter.captureR(
+          `${codeToRun}`,
+          captureOutputOptions
+      );
+
+      // -----
+
+      // Start attempting to parse the result data
+      processResultOutput:try {
+
+          // Avoid running through output processing
+          if (options.results === "hide" || options.output === "false") {
+              break processResultOutput;
+          }
+
+          // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+          // Require both `warning` and `message` to be true to display `STDErr`.
+          const out = result.output
+          .filter(
+              evt => evt.type === "stdout" ||
+              ( evt.type === "stderr" && (options.warning === "true" && options.message === "true"))
+          )
+          .map((evt, index) => {
+              const className = `qwebr-output-code-${evt.type}`;
+              const outputResult = qwebrPrefixComment(processOutput(evt.data), options.comment);
+              return `<code id="${className}-editor-${elements.id}-result-${index + 1}" class="${className}">${outputResult}</code>`;
+          })
+          .join("\n");
+
+
+          // Clean the state
+          // We're now able to process pager events.
+          // As a result, we cannot maintain a true 1-to-1 output order
+          // without individually feeding each line
+          const msgs = await mainWebR.flush();
+
+          // Use `map` to process the filtered "pager" events asynchronously
+          const pager = [];
+          const browse = [];
+
+          await Promise.all(
+              msgs.map(
+                  async (msg) => {
+
+                      const msgType = msg.type || "unknown";
+
+                      switch(msgType) {
+                          case 'pager':
+                              const pager_data = await qwebrParseTypePager(msg);
+                              pager.push(pager_data);
+                              break;
+                          case 'browse':
+                              const browse_data = await qwebrParseTypeBrowse(msg);
+                              browse.push(browse_data);
+                              break;
+                      }
+                      return;
+                  }
+              )
+          );
+
+          // Nullify the output area of content
+          elements.outputCodeDiv.innerHTML = "";
+          elements.outputGraphDiv.innerHTML = "";
+
+          // Design an output object for messages
+          const pre = document.createElement("pre");
+          if (/\S/.test(out)) {
+              // Display results as HTML elements to retain output styling
+              const div = document.createElement("div");
+              div.innerHTML = out;
+
+              // Calculate a scaled font-size value
+              const scaledFontSize = qwebrScaledFontSize(
+                  elements.outputCodeDiv, options);
+
+              // Override output code cell size
+              pre.style.fontSize = `${scaledFontSize}px`;
+              pre.appendChild(div);
+          } else {
+              // If nothing is present, hide the element.
+              pre.style.visibility = "hidden";
+          }
+
+          elements.outputCodeDiv.appendChild(pre);
+
+          // Determine if we have graphs to display
+          if (result.images.length > 0) {
+
+              // Create figure element
+              const figureElement = document.createElement("figure");
+              figureElement.className = "qwebr-canvas-image";
+
+              // Place each rendered graphic onto a canvas element
+              result.images.forEach((img) => {
+
+                  // Construct canvas for object
+                  const canvas = document.createElement("canvas");
+
+                  // Add an image download button
+                  qwebrImageCanvasDownloadButton(canvas, figureElement);
+
+                  // Set canvas size to image
+                  canvas.width = img.width;
+                  canvas.height = img.height;
+
+                  // Apply output truncations
+                  canvas.style.width = options["out-width"] ? options["out-width"] : `${fig_width}px`;
+                  if (options["out-height"]) {
+                      canvas.style.height = options["out-height"];
+                  }
+
+                  // Apply styling
+                  canvas.style.display = "block";
+                  canvas.style.margin = "auto";
+
+                  // Draw image onto Canvas
+                  const ctx = canvas.getContext("2d");
+                  ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                  // Append canvas to figure output area
+                  figureElement.appendChild(canvas);
+
+              });
+
+              if (options['fig-cap']) {
+                  // Create figcaption element
+                  const figcaptionElement = document.createElement('figcaption');
+                  figcaptionElement.innerText = options['fig-cap'];
+                  // Append figcaption to figure
+                  figureElement.appendChild(figcaptionElement);
+              }
+
+              elements.outputGraphDiv.appendChild(figureElement);
+
+          }
+
+          // Display the pager data
+          if (pager.length > 0) {
+              // Use the `pre` element to preserve whitespace.
+              pager.forEach((paged_data, index) => {
+                  const pre_pager = document.createElement("pre");
+                  pre_pager.innerText = paged_data;
+                  pre_pager.classList.add("qwebr-output-code-pager");
+                  pre_pager.setAttribute("id", `qwebr-output-code-pager-editor-${elements.id}-result-${index + 1}`);
+                  elements.outputCodeDiv.appendChild(pre_pager);
+              });
+          }
+
+          // Display the browse data
+          if (browse.length > 0) {
+              // Use the `pre` element to preserve whitespace.
+              browse.forEach((browse_data, index) => {
+                  const iframe_browse = document.createElement('iframe');
+                  iframe_browse.classList.add("qwebr-output-code-browse");
+                  iframe_browse.setAttribute("id", `qwebr-output-code-browse-editor-${elements.id}-result-${index + 1}`);
+                  iframe_browse.style.width = "100%";
+                  iframe_browse.style.minHeight = "500px";
+                  elements.outputCodeDiv.appendChild(iframe_browse);
+
+                  iframe_browse.contentWindow.document.open();
+                  iframe_browse.contentWindow.document.write(browse_data);
+                  iframe_browse.contentWindow.document.close();
+              });
+          }
+      } finally {
+          // Clean up the remaining code
+          mainWebRCodeShelter.purge();
+      }
+  };
+
+  // Function to execute the code (accepts code as an argument)
+  globalThis.qwebrExecuteCode = async function (
+      codeToRun,
+      id,
+      options = {}) {
+
+      // If options are not passed, we fall back on the bare minimum to handle the computation
+      if (qwebrIsObjectEmpty(options)) {
+          options = {
+              "context": "interactive",
+              "fig-width": 7, "fig-height": 5,
+              "out-width": "700px", "out-height": "",
+              "dpi": 72,
+              "results": "markup",
+              "warning": "true", "message": "true",
+          };
+      }
+
+      // Next, we access the compute areas values
+      const elements = {
+          runButton: document.getElementById(`qwebr-button-run-${id}`),
+          outputCodeDiv: document.getElementById(`qwebr-output-code-area-${id}`),
+          outputGraphDiv: document.getElementById(`qwebr-output-graph-area-${id}`),
+          id: id,
+      }
+
+      // Disallowing execution of other code cells
+      document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+          btn.disabled = true;
+      });
+
+      if (options.context == EvalTypes.Interactive) {
+          // Emphasize the active code cell
+          elements.runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run Code</span>';
+      }
+
+      // Evaluate the code and parse the output into the document
+      await qwebrComputeEngine(codeToRun, elements, options);
+
+      // Switch to allowing execution of code
+      document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+          btn.disabled = false;
+      });
+
+      if (options.context == EvalTypes.Interactive) {
+          // Revert to the initial code cell state
+          elements.runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run Code</span>';
+      }
+  }
+
+  </script>
+</head>
+<body class="quarto-light">
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/loader.js"></script>
+<script type="module" id="qwebr-monaco-editor-init">
+
+  // Configure the Monaco Editor's loader
+  require.config({
+    paths: {
+      'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs'
+    }
+  });
+</script>
+<script type="module">
+// Function to update Monaco Editors when body class changes
+function updateMonacoEditorsOnBodyClassChange() {
+    // Select the body element
+    const body = document.querySelector('body');
+
+    // Options for the observer (which mutations to observe)
+    const observerOptions = {
+        attributes: true,  // Observe changes to attributes
+        attributeFilter: ['class'] // Only observe changes to the 'class' attribute
+    };
+
+    // Callback function to execute when mutations are observed
+    const bodyClassChangeCallback = function(mutationsList, observer) {
+        for(let mutation of mutationsList) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                // Class attribute has changed
+                // Update all Monaco Editors on the page
+                updateMonacoEditorTheme();
+            }
+        }
+    };
+
+    // Create an observer instance linked to the callback function
+    const observer = new MutationObserver(bodyClassChangeCallback);
+
+    // Start observing the target node for configured mutations
+    observer.observe(body, observerOptions);
+}
+
+// Function to update all instances of Monaco Editors on the page
+function updateMonacoEditorTheme() {
+    // Determine what VS Theme to use
+    const vsThemeToUse = document.body.classList.contains("quarto-dark") ? 'vs-dark' : 'vs' ;
+
+    // Iterate through all initialized Monaco Editors
+    qwebrEditorInstances.forEach( function(editorInstance) { 
+        editorInstance.updateOptions({ theme: vsThemeToUse }); 
+    });
+}
+
+// Call the function to start observing changes to body class
+updateMonacoEditorsOnBodyClassChange();
+</script>
+<script type="module">
+// Global array to store Monaco Editor instances
+globalThis.qwebrEditorInstances = [];
+
+function isValidCodeLineNumbers(stringCodeLineNumbers) {
+  // Regular expression to match valid input strings
+  const regex = /^(\d+(-\d+)?)(,\d+(-\d+)?)*$/;
+  return regex.test(stringCodeLineNumbers);
+}
+
+// Function that builds and registers a Monaco Editor instance    
+globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
+
+  const initialCode = cellData.code;
+  const qwebrCounter = cellData.id;
+  const qwebrOptions = cellData.options;
+
+  // Retrieve the previously created document elements
+  let runButton = document.getElementById(`qwebr-button-run-${qwebrCounter}`);
+  let resetButton = document.getElementById(`qwebr-button-reset-${qwebrCounter}`);
+  let copyButton = document.getElementById(`qwebr-button-copy-${qwebrCounter}`);
+  let editorDiv = document.getElementById(`qwebr-editor-${qwebrCounter}`);
+
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: initialCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // Works wonderfully with RevealJS
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: qwebrScaledFontSize(editorDiv, qwebrOptions),         
+      renderLineHighlight: "none",      // Disable current line highlighting
+      hideCursorInOverviewRuler: true,  // Remove cursor indictor in right hand side scroll bar
+      readOnly: qwebrOptions['read-only'] ?? false,
+      quickSuggestions: qwebrOptions['editor-quick-suggestions'] ?? false,
+      wordWrap: (qwebrOptions['editor-word-wrap'] == 'true' ? "on" : "off")
+    });
+
+    // Store the official counter ID to be used in keyboard shortcuts
+    editor.__qwebrCounter = qwebrCounter;
+
+    // Store the official div container ID
+    editor.__qwebrEditorId = `qwebr-editor-${qwebrCounter}`;
+
+    // Store the initial code value and options
+    editor.__qwebrinitialCode = initialCode;
+    editor.__qwebrOptions = qwebrOptions;
+
+    // Set at the model level the preferred end of line (EOL) character to LF.
+    // This prevent `\r\n` from being given to the webR engine if the user is on Windows.
+    // See details in: https://github.com/coatless/quarto-webr/issues/94
+    // Associated error text: 
+    // Error: <text>:1:7 unexpected input
+
+    // Retrieve the underlying model
+    const model = editor.getModel();
+    // Set EOL for the model
+    model.setEOL(monaco.editor.EndOfLineSequence.LF);
+    
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      // Increment editor height by 2 to prevent vertical scroll bar from appearing
+      const contentHeight = editor.getContentHeight() + 2;
+
+      // Retrieve editor-max-height option
+      const maxEditorHeight = qwebrOptions['editor-max-height'];
+
+      // If editor-max-height is missing, allow infinite growth. Otherwise, threshold.
+      const editorHeight = !maxEditorHeight ?  contentHeight : Math.min(contentHeight, maxEditorHeight);
+
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${editorHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Function to generate decorations to highlight lines
+    // in the editor based on input string.
+    function decoratorHighlightLines(codeLineNumbers) {
+      // Store the lines to be lighlight
+      let linesToHighlight = [];
+      
+      // Parse the codeLineNumbers string to get the line numbers to highlight
+      // First, split the string by commas
+      codeLineNumbers.split(',').forEach(part => {
+        // Check if we have a range of lines
+        if (part.includes('-')) {
+            // Handle range of lines (e.g., "6-8")
+            const [start, end] = part.split('-').map(Number);
+            for (let i = start; i <= end; i++) {
+                linesToHighlight.push(i);
+            }
+        } else {
+            // Handle single line (e.g., "7")
+            linesToHighlight.push(Number(part));
+        }
+      });
+  
+      // Create monaco decorations for the lines to highlight
+      const decorations = linesToHighlight.map(lineNumber => ({
+          range: new monaco.Range(lineNumber, 1, lineNumber, 1),
+          options: {
+              isWholeLine: true,
+              className: 'qwebr-editor-highlight-line'
+          }
+      }));
+  
+      // Return decorations to be applied to the editor
+      return decorations;
+    }
+
+    // Ensure that the editor-code-line-numbers option is set and valid
+    // then apply styling
+    if (qwebrOptions['editor-code-line-numbers']) {
+      // Remove all whitespace from the string
+      const codeLineNumbers = qwebrOptions['editor-code-line-numbers'].replace(/\s/g,'');
+      // Check if the string is valid for line numbers, e.g., "1,3-5,7"
+      if (isValidCodeLineNumbers(codeLineNumbers)) {
+        // Apply the decorations to the editor
+        editor.createDecorationsCollection(decoratorHighlightLines(codeLineNumbers));
+      } else {
+        // Warn the user that the input is invalid
+        console.warn(`Invalid "editor-code-line-numbers" value in code cell ${qwebrOptions['label']}: ${codeLineNumbers}`);
+      }
+    }
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        qwebrExecuteCode(editor.getValue(), editor.__qwebrCounter, editor.__qwebrOptions);
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          qwebrExecuteCode(currentLine, editor.__qwebrCounter, editor.__qwebrOptions);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          qwebrExecuteCode(selectedText, editor.__qwebrCounter, editor.__qwebrOptions);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+
+    // Store the editor instance in the global dictionary
+    qwebrEditorInstances[editor.__qwebrCounter] = editor;
+
+  });
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    qwebrExecuteCode(editor.getValue(), editor.__qwebrCounter, editor.__qwebrOptions);
+  };
+
+  // Add a click event listener to the reset button
+  copyButton.onclick = function () {
+    // Retrieve current code data
+    const data = editor.getValue();
+    
+    // Write code data onto the clipboard.
+    navigator.clipboard.writeText(data || "");
+  };
+  
+  // Add a click event listener to the copy button
+  resetButton.onclick = function () {
+    editor.setValue(editor.__qwebrinitialCode);
+  };
+  
+}
+</script>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title"><p><b>プレゼミ</b> <br> <span style="color: #282A36; ">Day2 : リプリケーションと文献レビューによる仮説構築サイクル／Rの基礎とROE計算</span></p></h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Soichi Matsuura
+</div>
+</div>
+</div>
+
+</section>
+<section id="今日の95分" class="slide level2">
+<h2>今日の95分</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>時間</th>
+<th>誰が</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>00–05</td>
+<td>教員</td>
+<td><strong>オープニング／その場で予想：反証可能なのはどれか？</strong></td>
+</tr>
+<tr class="even">
+<td>05–15</td>
+<td>学生</td>
+<td>予想の検討：なぜそう予想したか（挙手 ＆ ペアで理由共有）</td>
+</tr>
+<tr class="odd">
+<td>15–30</td>
+<td>学生</td>
+<td><strong>講義内ワーク：経済ニュースを「検証可能な問い」に書き直す</strong>（ペアで作成 → 発表）</td>
+</tr>
+<tr class="even">
+<td>30–50</td>
+<td><strong>教員</strong></td>
+<td><strong>教員解説（前半）：リプリケーションと文献レビューによる仮説構築サイクル</strong></td>
+</tr>
+<tr class="odd">
+<td>50–75</td>
+<td><strong>学生</strong></td>
+<td><strong>ライブ分析（後半）：webRでR基本操作 ＆ ROEとデュポン分解の計算</strong></td>
+</tr>
+<tr class="even">
+<td>75–85</td>
+<td>学生</td>
+<td>結果の持ち寄り：ROEが高い会社の「正体」を議論</td>
+</tr>
+<tr class="odd">
+<td>85–95</td>
+<td>教員</td>
+<td>ラップアップ／<strong>裏切り（ROEの罠）</strong>／次回からの事前課題の案内</td>
+</tr>
+</tbody>
+</table>
+<div class="code-output">
+<p>今日のゴール： ① <strong>「反証可能な仮説」はどうやって作るのか</strong>（文献レビューとリプリケーションの循環）を講義内ワークで体感する<br>
+② ブラウザ上のR（webR）で、<strong>ROE（自己資本利益率）の計算と要因分解</strong>を自分で実行できるようになる</p>
+</div>
+</section>
+<section>
+<section id="オープニング-その場で予想" class="title-slide slide level1 center">
+<h1>オープニング &amp; その場で予想！</h1>
+
+</section>
+<section id="今日の問い" class="slide level2">
+<h2>今日の問い</h2>
+<p><br></p>
+<div class="r-fit-text">
+<p><strong>その主張、どうやったら「間違いだ」と示せるか</strong></p>
+</div>
+<p><br></p>
+<ul>
+<li class="fragment">経済ニュースやビジネス書には、もっともらしい主張があふれています</li>
+<li class="fragment">しかし、実証研究における主張には、決定的なルールがあります</li>
+<li class="fragment"><span class="markp"><strong>「どんなデータが出たら、自分の主張は間違いだったと認めるか」</strong></span>が、データを見る前に決まっていることです</li>
+</ul>
+<aside class="notes">
+<p>みなさんこんにちは。プレゼミ第2回です。 今日はまず、教室にいるみなさんにその場で「直感の予想」をしてもらうところから始めます。 今日の問いは「その主張、どうやったら間違いだと示せるか」です。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="その場で予想してください1分" class="slide level2 smaller">
+<h2>その場で予想してください（1分）</h2>
+<p>次の3つは、どれも経済ニュースや教科書で見かけそうな主張です。</p>
+<blockquote>
+<p><strong>ア．</strong> 日本の上場企業は、現金をため込みすぎている。<br>
+<strong>イ．</strong> 配当を増やすと発表した企業の株価は、発表の翌日に上がりやすい。<br>
+<strong>ウ．</strong> 会計を学んだ人は、ビジネスで成功しやすい。</p>
+</blockquote>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="code-output">
+<p><strong>Q．データで「間違いだ」と示せる（反証できる）主張は、ア・イ・ウのどれだと思いますか？</strong></p>
+<ul>
+<li>直感で選んでください（複数選んでもOK）</li>
+<li><strong>いまから挙手してもらいます！</strong>（アの人？ イの人？ ウの人？）</li>
+</ul>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="code-output">
+<p><strong>ペアワーク（2分）</strong>：<br>
+隣の人と、自分がどれを選んだか、<strong>その理由</strong>を共有してください。 「なぜ他の選択肢は反証できないと思ったか」も話してみましょう。</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>手元の直感で選んでみてください。 アだと思う人、手を挙げてください。……イだと思う人？……ウだと思う人？ 手が綺麗に分かれましたね！ では隣の人と、なぜそれを選んだのか理由を2分間で話し合ってみてください。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="解説反証できるのはイだけ" class="slide level2 smaller">
+<h2>解説：反証できるのは「イ」だけ</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="ア現金をため込みすぎ">ア．現金をため込みすぎ</h3>
+<div class="code-output">
+<p>❌ <strong>反証が極めて困難</strong></p>
+</div>
+<ul>
+<li>「すぎている」の客観的基準が存在しない</li>
+<li>経営者：「将来の危機や投資のための安全弁」</li>
+<li>投資家：「余剰資金は配当に回すべき」</li>
+<li><strong>主観的価値判断</strong>のため、現金の数字を見せても「いや、まだ足りない」「多すぎる」と水掛け論になる</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="イ増配発表で翌日株価上昇">イ．増配発表で翌日株価上昇</h3>
+<div class="code-output">
+<p>⭕ <strong>明確に反証可能！</strong></p>
+</div>
+<ul>
+<li><strong>測る対象が明確</strong>：
+<ul>
+<li>「増配発表の事実」</li>
+<li>「発表翌日の株価騰落率」</li>
+</ul></li>
+<li><strong>負けの条件が事前にある</strong>：
+<ul>
+<li>もし増配発表企業の株価が翌日上がらなかったり、他社と差がなければ<strong>主張は倒れる</strong></li>
+</ul></li>
+<li>だからこそ、データで確かめる価値がある！</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="ウ会計を学ぶと成功しやすい">ウ．会計を学ぶと成功しやすい</h3>
+<div class="code-output">
+<p>❌ <strong>反証が極めて困難</strong></p>
+</div>
+<ul>
+<li><strong>「成功」の定義が曖昧</strong>（年収？ 役職？ 起業？ 幸福度？）</li>
+<li><strong>循環論法・自己選択バイアス</strong>：
+<ul>
+<li>成功した人を見て「やはり会計を学んでいた」と後付けで語る</li>
+<li>もともと意欲が高い人が会計を勉強しただけかもしれない</li>
+</ul></li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>結論から言うと、この中で反証可能なのは「イ」だけです。 アの「すぎている」は価値判断です。 ウの「成功」は定義が曖昧で、かつ「因果関係」が証明しにくい。 イだけが、「いつ・誰と誰を比べ・何で測り・どうなったら負けか」が事前に定義されています。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="反証可能性falsifiabilityとは何か" class="slide level2 smaller">
+<h2>反証可能性（Falsifiability）とは何か</h2>
+<p>科学哲学者カール・ポパー（Karl Popper）が提唱した、科学と疑似科学を分ける基準です。</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="科学的な主張の特徴">科学的な主張の特徴</h3>
+<ol type="1">
+<li><strong>負けの条件が先に決まっている</strong>
+<ul>
+<li>「もしデータがこうなっていたら、自分の仮説は間違っていたと潔く認める」</li>
+</ul></li>
+<li><strong>賭けに出ている</strong>
+<ul>
+<li>主張が具体的であればあるほど、反証されるリスク（賭け）は高くなる</li>
+</ul></li>
+<li><strong>データに耐えることで信頼性を得る</strong>
+<ul>
+<li>厳しい反証テストをくぐり抜けた主張だけが、強固な知識として残る</li>
+</ul></li>
+</ol>
+</div><div class="column" style="width:50%;">
+<h3 id="反証できない主張の3大パターン">反証できない主張の3大パターン</h3>
+<ol type="1">
+<li><strong>循環論法（結果による後付け定義）</strong>
+<ul>
+<li>「良い経営をしている会社は伸びる」</li>
+<li>（伸びた会社を見て『やはり良い経営だった』と言う）</li>
+</ul></li>
+<li><strong>いつでも逃げられる（期限・範囲の不在）</strong>
+<ul>
+<li>「市場は長期的には正しい」</li>
+<li>（暴落しても『まだ長期的ではない』と逃げる）</li>
+</ul></li>
+<li><strong>規範的判断（「〜べき」論）</strong>
+<ul>
+<li>「会計は企業の実態を正確に映すべきだ」</li>
+<li>（事実の記述ではなく倫理・規範の主張）</li>
+</ul></li>
+</ol>
+</div></div>
+<div class="fragment">
+<div class="code-output">
+<p>実証研究の第一歩は、<span class="markp"><strong>「自分の仮説が負ける条件」をデータを見る前に言語化すること</strong></span>です。</p>
+</div>
+</div>
+<aside class="notes">
+<p>ポパーの反証可能性の要点は、「負けの条件を先に決めることは、主張を弱くすることではなく、堂々と賭けに出ることだ」という点です。 逃げ道を用意した主張は、一見無敵に見えますが、データから何も学べないため科学的には無価値なのです。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="講義内ワーク問いの書き直し" class="title-slide slide level1 center">
+<h1>講義内ワーク：問いの書き直し</h1>
+
+</section>
+<section id="実演ニュースの見出しを検証可能な問いに直す" class="slide level2 smaller">
+<h2>実演：ニュースの見出しを「検証可能な問い」に直す</h2>
+<div class="code-output">
+<p>世の中のニュースやSNSの言説は、そのままだと<strong>反証不能</strong>なものが大半です。<br>
+それを<strong>「データで白黒つけられる形」</strong>に直す手順を実演します。</p>
+</div>
+<p><br></p>
+<p><strong>ステップ実演</strong></p>
+<ul>
+<li><strong>元の見出し</strong>：「値上げに踏み切った食品メーカー、業績好調」</li>
+<li><strong>手順1．主張を1文で抜き出す</strong>：<br>
+「値上げをした食品メーカーは、業績が良い」</li>
+<li><strong>手順2．負けの条件（反証条件）を書く</strong>：<br>
+「値上げした企業としなかった同業他社を比べ、翌年度の利益率に<strong>差がない、またはむしろ低い</strong>なら間違い」</li>
+<li><strong>手順3．データで測れるか考える</strong>：<br>
+値上げ発表（プレスリリース等）／営業利益率（有価証券報告書にある）── <strong>客観的に測れる！</strong></li>
+<li><strong>手順4．問いの形に仕立て直す</strong>：<br>
+&gt; <span class="marky">「2024年に主要製品の値上げを発表した食品メーカーは、発表しなかった食品メーカーに比べて、2025年度の売上高営業利益率が高いか」</span></li>
+</ul>
+<aside class="notes">
+<p>ニュースの見出しをそのまま信じるのではなく、「検証可能な問い」に翻訳する練習をします。 上の手順を見てください。 「いつ・誰と誰を比べ・何で測り・どうなったら負けか」がすべて入っています。 では、これを今からペアでやってみましょう！</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ペアワーク5分身近な話題を1つ書き直してみよう" class="slide level2 smaller">
+<h2>ペアワーク（5分）：身近な話題を1つ書き直してみよう</h2>
+<p>隣の人とペアを組み、スマホ等で直近の経済ニュースを1本見るか、気になるビジネスの話題を1つ選んでください。</p>
+<div class="code-output">
+<p><strong>話題のヒント（これらを使ってもOK！）</strong>：<br>
+「新NISA人気で株価上昇」「インバウンド効果で百貨店好調」「AI導入で残業削減」「初任給引き上げで若手採用成功」</p>
+</div>
+<p><br></p>
+<h3 id="ペアで手元のメモに書く3点セット">ペアで手元のメモに書く3点セット</h3>
+<ol type="1">
+<li class="fragment"><strong>元の主張</strong>（「〜すると、…になる」）</li>
+<li class="fragment"><strong>負けの条件</strong>（どんなデータが出たら、自分の主張は間違いだと認めるか？）</li>
+<li class="fragment"><strong>検証可能な問い</strong>（いつ、誰と誰を比べ、どの指標で測るか）</li>
+</ol>
+<p><br></p>
+<div class="fragment">
+
+</div>
+<aside class="notes">
+<p>5分間時間を取ります。 ペアで1つ話題を選んで、手元のメモやPCに3点セットを書き出してください。 生成AIに相談しても構いません。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside><div>
+<p>※ スマホの生成AI（ChatGPTやClaude等）に「反証条件を考えて」と相談しても構いません！<br>
+ただし最後のチェック（測れる言葉か？ 比較相手はいるか？）は自分の目で確認してください。</p>
+</div></aside></section>
+<section id="持ち寄り共有その問い反証できるか" class="slide level2 smaller">
+<h2>持ち寄り共有：その問い、反証できるか？</h2>
+<p>2〜3組のペアに、作った「問い」と「負けの条件」を発表してもらいましょう！</p>
+<div class="code-output">
+<p><strong>発表フォーマット（1人30秒〜1分）</strong>：<br>
+① 選んだ話題・見出し<br>
+② 作った「検証可能な問い」<br>
+③ 「どんなデータが出たら負けか（反証条件）」</p>
+</div>
+<p><br></p>
+<h3 id="クラス全体で判定しよう聞いている人のチェック">クラス全体で判定しよう（聞いている人のチェック）</h3>
+<ul class="task-list">
+<li class="fragment"><label><input type="checkbox"><strong>言葉は測れるか？</strong>（「好調」「人気」「DX」などの言葉が、具体的な指標になっているか）</label></li>
+<li class="fragment"><label><input type="checkbox"><strong>比べる相手（対照群）がいるか？</strong>（その会社だけでなく、同業他社や過去と比較しているか）</label></li>
+<li class="fragment"><label><input type="checkbox"><strong>負けの条件が明確か？</strong>（結果を見てから言い訳できる逃げ道が塞がれているか）</label></li>
+</ul>
+<p><br></p>
+<div class="fragment">
+<blockquote>
+<p>👏 <strong>反証条件がしっかり書けていれば合格！ 素晴らしい「問い」の誕生です。</strong></p>
+</blockquote>
+</div>
+<aside class="notes">
+<p>では何組か発表してもらいましょう。 聞いている人は、3つのチェックポイントに照らして判定してみてください。 うまく反証条件が言えていれば、立派な実証研究のスタート地点です。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="教員解説前半-会計学の実証分析入門に即した-仮説構築サイクル" class="title-slide slide level1 center">
+<h1>教員解説（前半）<br>『会計学の実証分析入門』に即した<br>仮説構築サイクル</h1>
+
+</section>
+<section id="なぜ思いつきの仮説は失敗するのか" class="slide level2 smaller">
+<h2>なぜ「思いつき」の仮説は失敗するのか</h2>
+<p>初心者が卒業論文やゼミ論でやりがちな「落とし穴」があります。</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="初心者のありがちな発想">初心者のありがちな発想</h3>
+<ul>
+<li>「最近SDGsが流行っているから、環境に配慮している企業は儲かるんじゃないか？」</li>
+<li>「CMをたくさん流している企業は、ROEが高いはずだ！」</li>
+<li>「女性役員が多い企業は、株価が上がるに違いない！」</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="なぜこれでは研究にならないのか">なぜこれでは研究にならないのか</h3>
+<ol type="1">
+<li class="fragment"><strong>すでに何百本もの先行研究がある（車輪の再発明）</strong>
+<ul>
+<li class="fragment">過去40年間に世界中で調べ尽くされており、すでに結論や条件が出ている</li>
+</ul></li>
+<li class="fragment"><strong>理論的メカニズムが欠けている</strong>
+<ul>
+<li class="fragment">「なぜ」そうなるのか（コスト増 vs 売上増、ブランド効果 vs 広告宣伝費負担）の説明がない</li>
+</ul></li>
+<li class="fragment"><strong>データのバイアスを無視している</strong>
+<ul>
+<li class="fragment">「儲かっている余裕のある大企業だからCMを流せるだけ」かもしれない（逆の因果・交絡）</li>
+</ul></li>
+</ol>
+</div></div>
+<div class="fragment">
+<div class="code-output">
+<p><strong>ゼロから自分の頭だけで考えてはいけません。</strong><br>
+研究とは、<span class="markp"><strong>「人類がこれまでに積み上げてきた知識の山（先行研究）」のてっぺんに、小石を1個乗せる作業</strong></span>です。</p>
+</div>
+</div>
+<aside class="notes">
+<p>実証研究を始めるとき、多くの人が「何か誰も思いついていない斬新なテーマを見つけなきゃ」と焦ります。 しかし、思いつきの仮説は大抵、過去の研究者たちがすでに検証済みか、あるいは論理的な欠陥があります。 私たちがすべきなのは「巨人の肩に乗る」ことです。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="巨人の肩に乗る2大必須ツール" class="slide level2 smaller">
+<h2>巨人の肩に乗る：2大必須ツール</h2>
+<p>アイザック・ニュートンの有名な言葉： &gt; 「私が遠くを見ることができたとすれば、それは巨人たちの肩の上に乗っていたからです。」</p>
+<p><br></p>
+<p>実証会計研究において、巨人の肩に乗るための具体的な手段が次の2つです。</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="文献レビューliterature-review">1. 文献レビュー（Literature Review）</h3>
+<ul>
+<li>先行研究を体系的に読み解く作業</li>
+<li>目的は単なる「読書感想文」ではない</li>
+<li><span class="marky"><strong>「何がどこまで分かっていて、何がまだ未解決なのか（リサーチギャップ）」の地図を描くこと</strong></span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="リプリケーションreplication-追試再現">2. リプリケーション（Replication: 追試・再現）</h3>
+<ul>
+<li>先行研究のデータと分析コードを、<strong>自分の手元でそのまま再現してみること</strong></li>
+<li>教科書『会計学の実証分析入門』の根幹をなすアプローチ</li>
+<li><span class="markp"><strong>先行研究の数値を完全に再現できて初めて、その先の独自分析に進める</strong></span></li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>教科書の黒木先生たちが強調しているのが、まさにこの「文献レビュー」と「リプリケーション」です。 この2つがあって初めて、科学的で反証可能な独自の仮説が立ち上がります。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="文献レビューの本質リサーチギャップの発見" class="slide level2 smaller">
+<h2>文献レビューの本質：リサーチギャップの発見</h2>
+<p>文献レビューは、論文の要約を並べる「あらすじ集」ではありません。</p>
+<div class="code-output">
+<p><strong>文献レビューの真の目的</strong>：<br>
+過去の論文たちが議論してきた「論争の現場」に入り、<strong>未解決の隙間（リサーチギャップ）</strong>を特定すること。</p>
+</div>
+<p><br></p>
+<h3 id="先行研究を整理する3つの視点">先行研究を整理する3つの視点</h3>
+<ol type="1">
+<li class="fragment"><strong>共通の合意（スタイライズド・ファクト / 確立された事実）</strong>
+<ul>
+<li class="fragment">例：「会計利益が市場予想を上回ると、株価は即座にプラスに反応する」（Ball and Brown 1968以来、数千の研究で確認済み）</li>
+</ul></li>
+<li class="fragment"><strong>対立する見解（論争中のテーマ）</strong>
+<ul>
+<li class="fragment">先行研究A：「ROEの高さは企業の稼ぐ力を反映し、将来のリターンを高める」</li>
+<li class="fragment">先行研究B：「負債を過剰に増やしてROEを釣り上げている場合、むしろ株価暴落リスクが高まる」</li>
+</ul></li>
+<li class="fragment"><strong>条件による違い（コンテキストへの依存）</strong>
+<ul>
+<li class="fragment">「米国市場では成り立つが、メインバンク制度が強い日本市場ではどうなのか？」</li>
+<li class="fragment">「平時では正の相関だが、リーマンショックやコロナ禍のような危機時ではどうなるか？」</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>文献を読むときは、「何がわかったか」だけでなく「何がまだ分かっていないのか」「文献同士で食い違っている点はどこか」を探します。 その食い違いや条件の違いこそが、みなさんの研究の「問い」になります。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="なぜリプリケーション再現追試が重要なのか" class="slide level2 smaller">
+<h2>なぜリプリケーション（再現・追試）が重要なのか</h2>
+<div class="code-output">
+<p><strong>リプリケーション（Replication）とは</strong>：<br>
+先行研究と同じ（または同等の）データを用い、同じ分析モデルを自分の手で推計して、<strong>論文に掲載された表や数値を再現すること</strong>。</p>
+</div>
+<p><br></p>
+<h3 id="リプリケーションを通じて身につく研究の職人技">リプリケーションを通じて身につく「研究の職人技」</h3>
+<ol type="1">
+<li class="fragment"><strong>変数の厳密な定義と計算手順が身体でわかる</strong>
+<ul>
+<li class="fragment">論文に「ROEを用いた」と書いてあっても、当期純利益なのか親会社株主帰属純利益なのか？ 期首自己資本か、期末自己資本か、期中平均か？</li>
+<li class="fragment">自分でコードを書いて数字を合わせる作業を通じて、<strong>定義の微妙な違いが結果に与える影響</strong>を痛感する。</li>
+</ul></li>
+<li class="fragment"><strong>サンプル抽出（フィルタリング）のルールを体得できる</strong>
+<ul>
+<li class="fragment">「金融・保険業を除外する」「債務超過企業を除外する」「3月決算企業に限定する」といった、実証分析の「業界標準のルール」がなぜ必要なのかを理解できる。</li>
+</ul></li>
+<li class="fragment"><strong>再現性（Reproducibility）の担保</strong>
+<ul>
+<li class="fragment">科学における最低条件は「第三者が同じ手順を踏めば、同じ結果が出ること」。</li>
+<li class="fragment">他人の分析を再現できる人は、自分の分析も再現可能な形で残せる（第4回〜第6回で徹底的に学びます）。</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>教科書『会計学の実証分析入門』が画期的なのは、各章で実際のデータとRコードが提供され、読者がリプリケーションを体験できるようになっている点です。 他人の結果を再現してみることで、データの扱い方、欠損値処理、外れ値への配慮といった実践的な作法がすべて身につきます。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="仮説構築サイクルthe-hypothesis-cycle" class="slide level2 diagram-fit">
+<h2>仮説構築サイクル（The Hypothesis Cycle）</h2>
+<p>実証会計研究は、次のような環状のサイクル（循環）として進みます。</p>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A["① 経営現象・現実の疑問&lt;br&gt;（ニュース、企業の動き、観察）"] --&gt; B["② 文献レビュー&lt;br&gt;（先行研究の整理・リサーチギャップの特定）"]
+    B --&gt; C["③ リプリケーション&lt;br&gt;（先行研究のデータ＆モデルの追試・再現）"]
+    C --&gt; D["④ 独自の仮説構築&lt;br&gt;（理論的根拠 ＋ 反証可能性の明示）"]
+    D --&gt; E["⑤ 実証的検証&lt;br&gt;（データ収集・統計分析・頑健性チェック）"]
+    E --&gt; F["⑥ 結論とフィードバック&lt;br&gt;（新たな知見として文献の山に蓄積）"]
+    F --&gt; A
+    
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+
+<aside class="notes">
+<p>この図が今日の最重要スライドの一つです。 現実の疑問（①）からいきなり仮説（④）にジャンプしてはいけません。 必ず文献レビュー（②）で地図を確認し、リプリケーション（③）で基礎工事をしてから、独自の仮説（④）を立てる。 そして検証された結果（⑤）は、新たな先行研究（⑥）として蓄積され、次の世代の問いにつながります。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside><div>
+<p>教科書『会計学の実証分析入門』は、まさにこの <strong>②文献レビュー → ③リプリケーション → ④仮説構築</strong> のステップをRで実践するための道標です。</p>
+</div></aside></section>
+<section id="リプリケーションから独自の仮説を作る4パターン" class="slide level2 smaller">
+<h2>リプリケーションから「独自の仮説」を作る4パターン</h2>
+<p>先行研究をリプリケーションしたら、どこを「1箇所」変えれば独自の仮説になるでしょうか？</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="パターン1対象サンプルの拡張">パターン1：対象（サンプル）の拡張</h3>
+<ul>
+<li>先行研究：米国企業のデータで検証</li>
+<li><strong>あなたの仮説</strong>： &gt; 「日本企業でも同様の関係が見られるか？ 日本特有の取引慣行や系列関係によって効果は弱まるのではないか？」</li>
+</ul>
+<h3 id="パターン2期間時代背景の更新">パターン2：期間（時代背景）の更新</h3>
+<ul>
+<li>先行研究：2000年代のデータで検証</li>
+<li><strong>あなたの仮説</strong>： &gt; 「コロナショック後、あるいは近年のインフレ・金利上昇期においても同じ関係が維持されているか？」</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="パターン3制度環境文脈の違い">パターン3：制度環境・文脈の違い</h3>
+<ul>
+<li>先行研究：日本基準（J-GAAP）の時代</li>
+<li><strong>あなたの仮説</strong>： &gt; 「IFRS（国際財務報告基準）の任意適用企業では、会計情報の有用性がさらに高まっているか？」</li>
+</ul>
+<h3 id="パターン4条件調整変数の追加">パターン4：条件（調整変数）の追加</h3>
+<ul>
+<li>先行研究：XとYに正の相関があると主張</li>
+<li><strong>あなたの仮説</strong>： &gt; 「その相関は、<strong>財務レバレッジが高い企業</strong>や<strong>研究開発費の多い企業</strong>においてのみ顕著なのではないか？」</li>
+</ul>
+</div></div>
+<div class="fragment">
+<div class="code-output">
+<p><strong>安心してください</strong>：まったく新しい数式をゼロから発明する必要はありません。<br>
+巨人の立ち位置から、<span class="markp"><strong>「角度を少し変える」「対象を広げる」「条件を絞る」</strong></span>だけで、立派な新しい仮説になります。</p>
+</div>
+</div>
+<aside class="notes">
+<p>卒業論文やゼミでの研究テーマは、この4パターンのどれかで考えると非常にスムーズです。 特に学部2年生の段階では「先行研究の日本企業版」や「近年のデータへの更新」「業種ごとの違いの比較」が最も手堅く、かつ学術的にも価値のある問いになります。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="良い仮説のチェックリスト" class="slide level2 smaller">
+<h2>「良い仮説」のチェックリスト</h2>
+<p>リプリケーションと文献レビューを経て立てた仮説が、実証研究として成立しているか確認しましょう。</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>チェック項目</th>
+<th>問いかけ</th>
+<th>ダメな例</th>
+<th>良い例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>① 理論的根拠</strong></td>
+<td>なぜその関係が起きるのか、経済的メカニズムを説明できるか？</td>
+<td>「AIを使っている会社は儲かるはずだ（なんとなく）」</td>
+<td>「AI投資は業務効率化を通じて販管費率を引き下げ、営業利益率を高める」</td>
+</tr>
+<tr class="even">
+<td><strong>② 変数の測定可能性</strong></td>
+<td>使う変数は、公開された財務諸表や株価から客観的に計算できるか？</td>
+<td>「経営者のやる気が高い企業ほど…（測れない）」</td>
+<td>「経営者報酬に占める業績連動比率が高い企業ほど…（有報に記載あり）」</td>
+</tr>
+<tr class="odd">
+<td><strong>③ 反証可能性</strong></td>
+<td>どんな結果が出たら「仮説は間違いだった」と認めるか？</td>
+<td>「長期的には株価が上がる（いつまでか不明）」</td>
+<td>「同業他社と比較して、3年累積の株式超過リターンがゼロまたは有意にマイナスなら棄却」</td>
+</tr>
+<tr class="even">
+<td><strong>④ 事前性</strong></td>
+<td>データを見る前に仮説を立てているか？（後付けの辻褄合わせでないか）</td>
+<td>「データを見たら相関があったから、これを仮説にしよう（HARKing）」</td>
+<td>「先行研究と理論から仮説を立て、手付かずのデータで検証する」</td>
+</tr>
+</tbody>
+</table>
+
+<aside class="notes">
+<p>特に④のHARKing（ハーキング）に注意してください。 データをごちゃごちゃいじって「たまたま有意になった関係」を見つけてから「最初からこう予想していました」と論文を書くのは、科学的な不正に近い行為です。 だからこそ「文献レビュー」と「事前仮説」が大切なのです。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside><div>
+<p>※ HARKing = Hypothesizing After the Results are Known（結果を見てから後付けで仮説を作ること。実証研究の重大なタブー）。</p>
+</div></aside></section></section>
+<section>
+<section id="ライブ分析後半-webrでr基本操作-roeとデュポン分解の計算" class="title-slide slide level1 center">
+<h1>ライブ分析（後半）<br>webRでR基本操作 ＆<br>ROEとデュポン分解の計算</h1>
+
+</section>
+<section id="webrの準備ブラウザ上のr環境" class="slide level2 smaller">
+<h2>webRの準備：ブラウザ上のR環境</h2>
+<p>後半は、いよいよRを実際に動かしてみます！</p>
+<ul>
+<li>ここから先のコードは、<strong>スライドの中で直接実行・編集できます</strong>（webR技術）</li>
+<li>面倒なインストールや初期設定は一切不要です</li>
+<li>コード枠の右上にある <span class="markp"><strong>「▶ Run Code」ボタン</strong></span> を押すと、ブラウザが裏でRを起動して計算します</li>
+</ul>
+<p><br></p>
+<div class="code-output">
+<p><strong>まずはお試し！ 下の枠の ▶ を押してみてください</strong>（初回のみ数秒の読み込みがあります）</p>
+</div>
+<div id="qwebr-insertion-location-1"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<aside class="notes">
+<p>それでは授業の後半に入ります。 スライド内のコードセルの「Run Code」ボタンを押してください。 初回だけwebRのエンジンをダウンロードするので数秒かかりますが、2回目以降は一瞬で動きます。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rの基本操作①電卓と代入-" class="slide level2 smaller">
+<h2>Rの基本操作①：電卓と代入（<code>&lt;-</code>）</h2>
+<p>Rは世界最高峰の統計解析言語ですが、まずは<strong>「超高性能な電卓」</strong>として使えます。</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="四則演算">1. 四則演算</h3>
+<ul>
+<li><code>+</code>（足し算）</li>
+<li><code>-</code>（引き算）</li>
+<li><code>*</code>（かけ算）</li>
+<li><code>/</code>（割り算）</li>
+<li><code>^</code>（累乗）</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="変数への代入-">2. 変数への代入（<code>&lt;-</code>）</h3>
+<ul>
+<li>数字や文字に「名前」をつけて保存する</li>
+<li>アロー演算子 <code>&lt;-</code> （小なり記号とハイフン）を使う
+<ul>
+<li>例：<code>sales &lt;- 1000</code></li>
+</ul></li>
+<li>キーボードの <code>Alt + -</code>（Win）または <code>Option + -</code>（Mac）で一発入力</li>
+</ul>
+</div></div>
+<div id="qwebr-insertion-location-2"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<aside class="notes">
+<p>Rの最も基本的な操作は「変数への代入」です。 矢印 <code>&lt;-</code> は、「右側の計算結果を、左側の名前の箱に入れる」という意味です。 一度箱に入れてしまえば、その名前を使って何度でも次の計算ができます。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="会計の基本指標roe自己資本利益率とは" class="slide level2 smaller">
+<h2>会計の基本指標：ROE（自己資本利益率）とは</h2>
+<p>実証会計研究や企業分析で最も頻繁に登場する指標の一つが <strong>ROE（Return on Equity）</strong> です。</p>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="roeの定義式">ROEの定義式</h3>
+<p><span class="math display">
+\text{ROE} = \frac{\text{当期純利益}}{\text{自己資本（純資産）}} \times 100 \quad [\%]
+</span></p>
+<ul>
+<li><strong>分子（当期純利益）</strong>：1年間の企業活動の最終的な成果（株主に帰属する利益）</li>
+<li><strong>分母（自己資本）</strong>：株主が拠出した資本 ＋ 過去の利益の蓄積（内部留保）</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<h3 id="なぜroeが重視されるのか">なぜROEが重視されるのか？</h3>
+<ul>
+<li class="fragment"><strong>株主の視点</strong>：<br>
+「私たちが預けた元手を使って、経営陣はどれだけ効率的に利益を生み出したか？」</li>
+<li class="fragment">日本再興戦略（伊藤レポート, 2014）以来、<strong>「ROE 8%以上」</strong> が日本企業の重要ターゲットに</li>
+<li class="fragment">経営者の評価や役員報酬にも広く連動</li>
+</ul>
+</div></div>
+<div class="fragment">
+<div class="code-output">
+<p><strong>実証会計の問い</strong>：<br>
+「ROEが高い企業は、本当に経営効率が良いのか？ それとも何か<strong>数字の裏技</strong>があるのか？」</p>
+</div>
+</div>
+<aside class="notes">
+<p>会計学やファイナンスで絶対に避けて通れない指標がROEです。 自己資本（株主のお金）に対して、最終的にどれだけの利益を生み出したかという投資効率を表します。 まずはこのROEを、Rで計算してみましょう。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="webr演習①1社のroeを計算する" class="slide level2 smaller">
+<h2>webR演習①：1社のROEを計算する</h2>
+<p>自動車メーカー「A社」の財務データを使って、ROEを計算してみましょう。</p>
+<ul>
+<li>売上高：8,558,000 百万円（約8.5兆円）</li>
+<li>当期純利益：34,435 百万円（約344億円）</li>
+<li>自己資本（純資産）：526,962 百万円（約5,269億円）</li>
+</ul>
+<div id="qwebr-insertion-location-3"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="code-output">
+<p><strong>やってみよう</strong>：<br>
+A社の当期純利益が好調で <strong>45,000百万円</strong> に増えたとします。<br>
+<code>earnings</code> の数値を書き換えて、もう一度 ▶ を押してください。ROEは何％になりますか？</p>
+</div>
+<aside class="notes">
+<p>実際に数値をいじって ▶ を押してみてください。 利益が増えるとROEが上昇することが一瞬で確認できますね。 これがRの「電卓としての使い方」です。 しかし、企業が100社、1000社あったら、1社ずつ数値を手入力するのは大変です。そこで「ベクトル」を使います。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rの基本操作②ベクトルcで複数企業を扱う" class="slide level2 smaller">
+<h2>Rの基本操作②：ベクトル（<code>c()</code>）で複数企業を扱う</h2>
+<p>Rの最大の強みは、<strong>「たくさんの数字をまとめて一瞬で計算できること（ベクトル演算）」</strong> です。</p>
+<ul>
+<li><code>c(...)</code> 関数（combineの略）で、複数の数値をひとまとめにします</li>
+<li>エクセルなら1行ずつコピー＆ペーストする計算が、Rなら<strong>1行のコードで全社同時に完了</strong>します</li>
+</ul>
+<div id="qwebr-insertion-location-4"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="code-output">
+<p>ループ処理（繰り返し文）を書かなくても、ベクトル同士を割り算するだけで全要素が一括計算されます！</p>
+</div>
+<aside class="notes">
+<p>エクセルでセルを下に引っ張る作業を、Rではベクトル演算一発で行います。 10社でも、1万社でも、コードは全く同じ <code>earnings / equity * 100</code> の1行です。 これがプログラミングを使う最大の理由です。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rの基本操作③データフレーム表形式データ" class="slide level2 smaller">
+<h2>Rの基本操作③：データフレーム（表形式データ）</h2>
+<p>実証分析では、企業名、利益、資本などをまとめた<strong>「表（データフレーム）」</strong> を扱います。</p>
+<div id="qwebr-insertion-location-5"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+
+<aside class="notes">
+<p><code>data.frame()</code> で作った表は、Excelのシートと同じ構造です。 <code>df$ROE &lt;- ...</code> と書くだけで、表の右端に「ROE」という新しい列が自動的に追加されます。 次はいよいよ、このROEを深く掘り下げる「デュポン分解」です。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside><div>
+<p><code>df$列名</code> で、データフレームの中の特定の列を自由に取り出したり、新しい列を追加したりできます。</p>
+</div></aside></section>
+<section id="roeのデュポン分解dupont-analysis" class="slide level2 smaller">
+<h2>ROEのデュポン分解（DuPont Analysis）</h2>
+<p>会計学の古典的・強力なフレームワーク：<strong>デュポンシステム</strong></p>
+<p>ROEは、単なる1つの比率ではなく、<strong>企業の3つの異なる活動の積</strong>に分解できます。</p>
+<p><span class="math display">
+\text{ROE} = \frac{\text{当期純利益}}{\text{自己資本}} = \underbrace{\frac{\text{当期純利益}}{\text{売上高}}}_{\text{① 売上高純利益率}} \times \underbrace{\frac{\text{売上高}}{\text{総資産}}}_{\text{② 総資産回転率}} \times \underbrace{\frac{\text{総資産}}{\text{自己資本}}}_{\text{③ 財務レバレッジ}}
+</span></p>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="売上高純利益率">① 売上高純利益率</h3>
+<p><strong>【収益性 / マージン】</strong><br>
+売上高のうち、どれだけ最終利益として残せたか？<br>
+（高付加価値、ブランド力）</p>
+</div><div class="column" style="width:33%;">
+<h3 id="総資産回転率">② 総資産回転率</h3>
+<p><strong>【効率性 / 資産回転】</strong><br>
+持っている資産を使って、どれだけ効率よく売上を稼いだか？<br>
+（薄利多売、店舗や設備の回転速度）</p>
+</div><div class="column" style="width:33%;">
+<h3 id="財務レバレッジ">③ 財務レバレッジ</h3>
+<p><strong>【財務構成 / てこの原理】</strong><br>
+自己資本の何倍の総資産を動かしているか？<br>
+（借入金・負債の活用度合い）</p>
+</div></div>
+<aside class="notes">
+<p>デュポン分解は、ROEという数字の「中身」をレントゲン写真のように暴き出す手法です。 同じROE 10%の企業でも、 ・圧倒的な利益率で稼いでいるのか（Appleなど） ・薄利多売で資産を高速回転させているのか（スーパーや小売業） ・それとも莫大な借金をしてレバレッジを効かせているだけなのか によって、企業の姿は全く異なります。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="webr演習②デュポン分解をrで計算する" class="slide level2 smaller">
+<h2>webR演習②：デュポン分解をRで計算する</h2>
+<p>さきほどの5社データについて、3つの要素をRで計算してみましょう。</p>
+<div id="qwebr-insertion-location-6"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="code-output">
+<p><strong>確認してみよう</strong>：<br>
+①利益率（%） × ②総資産回転率 × ③レバレッジ を電卓で掛けると、ほぼ <strong>ROE（%）</strong> と一致します！<br>
+（※ 端数処理の丸め誤差を除く）</p>
+</div>
+<aside class="notes">
+<p>コードを実行してみてください。 各企業のROEが、どの要素に支えられているかが数字で見えてきます。 ここからがペアワークです！</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ペアワーク10分roeの比較と要因分析" class="slide level2 smaller">
+<h2>ペアワーク（10分）：ROEの比較と要因分析</h2>
+<p>隣の人とペアを組んで、上の表の数字をじっくり観察してください。</p>
+<div class="code-output">
+<p><strong>ペアで解き明かす2つの問い</strong>：</p>
+<ol type="1">
+<li><strong>問1</strong>：5社の中で、最もROEが高いのはどの企業ですか？ また最も低い企業は？</li>
+<li><strong>問2</strong>：最もROEが高い企業は、<strong>なぜROEが高いのでしょうか？</strong><br>
+デュポン分解の3要素（利益率・総資産回転率・レバレッジ）のどれが決定的な要因ですか？</li>
+</ol>
+</div>
+<p><br></p>
+<h3 id="探索用コード自由に数字をいじってみよう">探索用コード（自由に数字をいじってみよう）</h3>
+<div id="qwebr-insertion-location-7"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<aside class="notes">
+<p>ペアで話し合ってみてください。 単に「ROEが高い＝優れた会社」と片付けていいのか？ レバレッジの数字に注目してみると、面白い発見があるはずです。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="持ち寄り-ディスカッション" class="title-slide slide level1 center">
+<h1>持ち寄り &amp; ディスカッション</h1>
+
+</section>
+<section id="持ち寄り数字から何が見えたか" class="slide level2 smaller">
+<h2>持ち寄り：数字から何が見えたか？</h2>
+<p>各ペアで発見したことを共有しましょう。</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="結果の確認">結果の確認</h3>
+<ul>
+<li><strong>ROE最高</strong>：<strong>B自動車</strong>（約 8.30%）</li>
+<li><strong>ROE最低</strong>：<strong>C自動車</strong>（約 4.13%）</li>
+<li><strong>A自動車</strong>：約 6.54%</li>
+<li><strong>D自動車</strong>：約 7.37%</li>
+<li><strong>E自動車</strong>：約 6.93%</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="デュポン分解で見えたb自動車の正体">デュポン分解で見えた「B自動車の正体」</h3>
+<ul>
+<li class="fragment">B自動車の売上高純利益率は <strong>0.88%</strong>（5社中ワースト2位！）</li>
+<li class="fragment">それなのに、なぜROEはトップなのか？</li>
+<li class="fragment">→ <strong>財務レバレッジが 12.74倍</strong> と突出して高い！</li>
+<li class="fragment">つまり、B自動車は「稼ぐ力が飛び抜けている」のではなく、<strong>「多額の負債（借入金）を活用して自己資本を小さく抑えている」</strong> ためにROEが高く見えている！</li>
+</ul>
+</div></div>
+<div class="fragment">
+<div class="code-output">
+<p><span class="markp"><strong>「ROEが高い ＝ 経営効率が良い優良企業」という素朴な見方は、本当か？</strong></span></p>
+</div>
+</div>
+<aside class="notes">
+<p>B自動車の数字を見ましたか？ 純利益率は1%未満で、ちっとも儲かっていません。 しかしレバレッジが12倍以上あります。 つまり借金で資産を膨らませているから、分母の自己資本が小さくなってROEが高く見えているだけなのです。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="裏切りtwist" class="title-slide slide level1 center">
+<h1>裏切り（Twist）</h1>
+
+</section>
+<section id="今日の裏切りroeの罠と仮説の深化" class="slide level2 smaller">
+<h2>今日の裏切り：ROEの罠と「仮説の深化」</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="素朴な仮説世間の常識">素朴な仮説（世間の常識）</h3>
+<p>「ROEが高い企業ほど、経営が優秀であり、将来の株価リターンも高いはずだ」</p>
+<p><br></p>
+<p>経済ニュースや投資本は、こぞってこう書きます：<br>
+<em>「ROE 8%以上の優良企業に投資せよ！」</em></p>
+</div><div class="column" style="width:50%;">
+<h3 id="実証会計研究が暴いた裏の現実">実証会計研究が暴いた「裏の現実」</h3>
+<ol type="1">
+<li class="fragment"><strong>過剰負債のリスク</strong>
+<ul>
+<li class="fragment">レバレッジで引き上げたROEは、不況や金利上昇局面で一瞬にして巨額赤字・倒産危機に転落する</li>
+</ul></li>
+<li class="fragment"><strong>自社株買いによる「見かけのROE操作」</strong>
+<ul>
+<li class="fragment">利益が増えていなくても、余元で自社株買いをして自己資本（分母）を減らせば、ROEはいくらでも吊り上げられる</li>
+</ul></li>
+<li class="fragment"><strong>先行研究の知見（リサーチギャップ）</strong>
+<ul>
+<li class="fragment">先行研究は、ROEをそのまま信じるのではなく、「営業キャッシュフロー」や「発生高（アクルーアル）」、「資本コスト」と対比して評価するモデルを発展させてきた</li>
+</ul></li>
+</ol>
+</div></div>
+<div class="fragment">
+<div class="code-output">
+<p><strong>これが仮説構築サイクルの醍醐味です</strong>：<br>
+「ROEが高い＝良い」という常識を疑い、<strong>文献レビューとリプリケーションによって「どんな条件のときROEは危険なシグナルになるか」</strong> を突き詰めることこそが、実証研究のフロンティアです。</p>
+</div>
+</div>
+<aside class="notes">
+<p>これこそが「裏切り」です。 ROEが高い企業を手放しで褒めてはいけません。 自社株買いや借金で分母を圧縮した「見かけのROE」に騙されないために、会計研究者は様々な工夫をしてきました。 この話は、第7回・第8回の「利益マネジメント」や第11回の「ファンダメンタル分析」へとつながっていきます。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="今日のまとめ" class="slide level2 smaller">
+<h2>今日のまとめ</h2>
+<ol type="1">
+<li class="fragment"><strong>反証可能性が実証研究の命</strong>
+<ul>
+<li class="fragment">「どんなデータが出たら自分の仮説は間違いか（負けの条件）」を、データを見る前に決める。</li>
+<li class="fragment">測れる言葉、比較対象、規範論（べき論）の排除。</li>
+</ul></li>
+<li class="fragment"><strong>仮説構築のサイクル</strong>
+<ul>
+<li class="fragment">思いつきで仮説を立てない。</li>
+<li class="fragment"><strong>文献レビュー</strong>で既知と未知（リサーチギャップ）を整理し、<strong>リプリケーション</strong>で先行研究を追試・再現してから、独自の仮説を導出する。</li>
+</ul></li>
+<li class="fragment"><strong>Rの基本操作とROE計算</strong>
+<ul>
+<li class="fragment">変数代入（<code>&lt;-</code>）、ベクトル（<code>c()</code>）、データフレーム（<code>data.frame()</code>）。</li>
+<li class="fragment">ROEをデュポン分解（利益率 × 回転率 × レバレッジ）することで、企業の真の姿をあぶり出すことができる。</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>今日学んだことを整理しました。 反証可能性、文献レビューとリプリケーションのサイクル、そしてRでのROEとデュポン分解の計算です。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="次回に向けて" class="title-slide slide level1 center">
+<h1>次回に向けて</h1>
+
+</section>
+<section id="次回第3回のテーマrでのデータ分析分布と集計" class="slide level2 smaller">
+<h2>次回（第3回）のテーマ：Rでのデータ分析（分布と集計）</h2>
+<div class="code-output">
+<p><strong>今日の問い</strong>は「ROEの裏側」でした。<br>
+<strong>次回の問い</strong>は：<span class="markp"><strong>「『平均的な日本企業』とは、どんな企業か？」</strong></span> です。</p>
+</div>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="次回扱うこと">次回扱うこと</h3>
+<ul>
+<li>上場企業のリアルな財務データ</li>
+<li><strong>ExcelファイルやCSVをRで読み込む方法</strong></li>
+<li>平均値 vs 中央値（<strong>分布の歪み</strong>）</li>
+<li>なぜ実証分析では「金額」ではなく「比率」にするのか（<strong>規模効果の除去</strong>）</li>
+<li>Rによる業種別集計</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="授業後半のビッグイベント">授業後半のビッグイベント！</h3>
+<ul>
+<li><strong>環境構築大会（15分）</strong></li>
+<li>教室で全員一斉に自分のPCへ <strong>R + VS Code + Quarto</strong> をインストールします！</li>
+<li>事前に必要な準備は次回の事前課題を確認してください。</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>次回は第3回です。 配布するデータ（Excel/CSV）をRで読み込み、日本の全上場企業の売上高分布を調べます。 平均値と中央値の違いに驚くはずです。 そして授業の後半では、全員のPCにRの開発環境をインストールする環境構築大会を行います！</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="次回第3回の事前課題" class="slide level2 smaller">
+<h2>次回（第3回）の事前課題</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 31%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>課題</th>
+<th>内容</th>
+<th style="text-align: center;">目安時間</th>
+<th style="text-align: center;">提出</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A. 読む</strong></td>
+<td>教科書 第3章／解説動画（moodle）</td>
+<td style="text-align: center;">20分</td>
+<td style="text-align: center;">なし</td>
+</tr>
+<tr class="even">
+<td><strong>B. 予想する</strong></td>
+<td><span class="markp"><strong>予想シート</strong></span>：上場企業の売上高、<strong>平均値と中央値はどちらが大きいか？ 何倍違うか？</strong></td>
+<td style="text-align: center;"><strong>3分</strong></td>
+<td style="text-align: center;"><strong>必須（moodle）</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>C. 手を動かす</strong></td>
+<td>配布データ（Excel/CSV）をRで読み込み、関数（<code>mean()</code>, <code>median()</code>, <code>summary()</code>）で計算してみる</td>
+<td style="text-align: center;">15分</td>
+<td style="text-align: center;"><strong>必須（moodle）</strong></td>
+</tr>
+<tr class="even">
+<td><strong>D. 環境準備</strong></td>
+<td>自分のノートPCの空き容量（3GB以上）を確認し、教室に持参する準備をする</td>
+<td style="text-align: center;">5分</td>
+<td style="text-align: center;">なし</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<div class="code-output">
+<ul>
+<li><strong>今回から本格的な事前課題が始まります！</strong><br>
+</li>
+<li><strong>特に Bの予想シート（3分）は必ず提出してください！</strong> 次回はみなさんの回答分布を冒頭に映します。</li>
+<li>提出先：<strong>moodle+R</strong> の各提出欄から提出してください。</li>
+<li>質問・相談はいつでもメールへ：📧 <code>matsuura@fc.ritsumei.ac.jp</code></li>
+</ul>
+</div>
+<aside class="notes">
+<p>第1回は事前課題がありませんでしたが、次回（第3回）に向けて今回から初めて事前課題が始まります。 特にBの予想シートは3分で終わる簡単なものですので、忘れずにmoodleから提出してください。 次回はみんなの予想の集計から授業を始めます！ お疲れ様でした。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="img/rits_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Ritsumeikan University, Business Administration</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="Presemi_2026_02_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="Presemi_2026_02_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="Presemi_2026_02_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="Presemi_2026_02_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="Presemi_2026_02_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="Presemi_2026_02_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="Presemi_2026_02_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="Presemi_2026_02_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="Presemi_2026_02_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1400,
+
+        height: 800,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    <script type="module">
+    // Handle cell initialization initialization
+    qwebrCellDetails.map(
+      (entry) => {
+        // Handle the creation of the element
+        qwebrCreateHTMLElement(entry);
+        // In the event of interactive, initialize the monaco editor
+        if (entry.options.context == EvalTypes.Interactive) {
+          qwebrCreateMonacoEditorInstance(entry);
+        }
+      }
+    );
+
+    // Identify non-interactive cells (in order)
+    const filteredEntries = qwebrCellDetails.filter(entry => {
+      const contextOption = entry.options && entry.options.context;
+      return ['output', 'setup'].includes(contextOption) || (contextOption == "interactive" && entry.options && entry.options.autorun === 'true');
+    });
+
+    // Condition non-interactive cells to only be run after webR finishes its initialization.
+    qwebrInstance.then(
+      async () => {
+        const nHiddenCells = filteredEntries.length;
+        var currentHiddenCell = 0;
+
+
+        // Modify button state
+        qwebrSetInteractiveButtonState(`🟡 Running hidden code cells ...`, false);
+
+        // Begin processing non-interactive sections
+        // Due to the iteration policy, we must use a for() loop.
+        // Otherwise, we would need to switch to using reduce with an empty
+        // starting promise
+        for (const entry of filteredEntries) {
+
+          // Determine cell being examined
+          currentHiddenCell = currentHiddenCell + 1;
+          const formattedMessage = `Evaluating hidden cell ${currentHiddenCell} out of ${nHiddenCells}`;
+
+          // Update the document status header
+          if (qwebrShowStartupMessage) {
+            qwebrUpdateStatusHeader(formattedMessage);
+          }
+
+          // Display the update in non-active areas
+          qwebrUpdateStatusMessage(formattedMessage);
+
+          // Extract details on the active cell
+          const evalType = entry.options.context;
+          const cellCode = entry.code;
+          const qwebrCounter = entry.id;
+
+          if (['output', 'setup'].includes(evalType)) {
+            // Disable further global status updates
+            const activeContainer = document.getElementById(`qwebr-non-interactive-loading-container-${qwebrCounter}`);
+            activeContainer.classList.remove('qwebr-cell-needs-evaluation');
+            activeContainer.classList.add('qwebr-cell-evaluated');
+
+            // Update status on the code cell
+            const activeStatus = document.getElementById(`qwebr-status-text-${qwebrCounter}`);
+            activeStatus.innerText = " Evaluating hidden code cell...";
+            activeStatus.classList.remove('qwebr-cell-needs-evaluation');
+            activeStatus.classList.add('qwebr-cell-evaluated');
+          }
+
+          switch (evalType) {
+            case 'interactive':
+              // TODO: Make this more standardized.
+              // At the moment, we're overriding the interactive status update by pretending its
+              // output-like. 
+              const tempOptions = entry.options;
+              tempOptions["context"] = "output"
+              // Run the code in a non-interactive state that is geared to displaying output
+              await qwebrExecuteCode(`${cellCode}`, qwebrCounter, tempOptions);
+              break;
+            case 'output':
+              // Run the code in a non-interactive state that is geared to displaying output
+              await qwebrExecuteCode(`${cellCode}`, qwebrCounter, entry.options);
+              break;
+            case 'setup':
+              const activeDiv = document.getElementById(`qwebr-noninteractive-setup-area-${qwebrCounter}`);
+
+              // Store code in history
+              qwebrLogCodeToHistory(cellCode, entry.options);
+
+              // Run the code in a non-interactive state with all output thrown away
+              await mainWebR.evalRVoid(`${cellCode}`);
+              break;
+            default: 
+              break; 
+          }
+
+          if (['output', 'setup'].includes(evalType)) {
+            // Disable further global status updates
+            const activeContainer = document.getElementById(`qwebr-non-interactive-loading-container-${qwebrCounter}`);
+            // Disable visibility
+            activeContainer.style.visibility = 'hidden';
+            activeContainer.style.display = 'none';
+          }
+        }
+      }
+    ).then(
+      () => {
+        // Release document status as ready
+
+        if (qwebrShowStartupMessage) {
+          qwebrStartupMessage.innerText = "🟢 Ready!"
+        }
+      
+        qwebrSetInteractiveButtonState(
+          `<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run Code</span>`, 
+          true
+        );  
+      }
+    );
+    </script>
+    
+
+</body></html>
