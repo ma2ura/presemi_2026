@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="ja"><head>
-<script src="Presemi_2026_02_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Presemi_2026_02_files/libs/quarto-html/tabby.min.js"></script>
-<script src="Presemi_2026_02_files/libs/quarto-html/popper.min.js"></script>
-<script src="Presemi_2026_02_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="Presemi_2026_02_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Presemi_2026_02_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="Presemi_2026_02_files/libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="Presemi_2026_01_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Presemi_2026_01_files/libs/quarto-html/tabby.min.js"></script>
+<script src="Presemi_2026_01_files/libs/quarto-html/popper.min.js"></script>
+<script src="Presemi_2026_01_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="Presemi_2026_01_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Presemi_2026_01_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="Presemi_2026_01_files/libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Soichi Matsuura">
-  <title>プレゼミ   Day2 : リプリケーションと文献レビューによる仮説構築サイクル／Rの基礎とROE計算</title>
+  <title>プレゼミ   Day1 : ガイダンス／実証分析の必要性</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="Presemi_2026_02_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="Presemi_2026_02_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="Presemi_2026_01_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="Presemi_2026_01_files/libs/revealjs/dist/reveal.css">
   <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -35,7 +35,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="Presemi_2026_02_files/libs/revealjs/dist/theme/quarto-50f7abaff187893784be4eb6a7ac547f.css">
+  <link rel="stylesheet" href="Presemi_2026_01_files/libs/revealjs/dist/theme/quarto-50f7abaff187893784be4eb6a7ac547f.css">
   <link rel="stylesheet" href="mystyle.css">
   <link rel="stylesheet" href="slide-fit.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
@@ -54,10 +54,10 @@
 }}});
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
-  <link href="Presemi_2026_02_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="Presemi_2026_02_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="Presemi_2026_02_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="Presemi_2026_02_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="Presemi_2026_01_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="Presemi_2026_01_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="Presemi_2026_01_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="Presemi_2026_01_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -145,9 +145,9 @@
       margin-right: 0; 
     }
   </style>
-  <script src="Presemi_2026_02_files/libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="Presemi_2026_02_files/libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="Presemi_2026_02_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+  <script src="Presemi_2026_01_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="Presemi_2026_01_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="Presemi_2026_01_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
@@ -448,7 +448,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"code":"# プレゼミ Day 2: 初めてのRコード\nmessage(\"Rのエンジンが正常に起動しました！\")\n2026 - 1968 # Ball and Brown (1968) から何年経った？","id":1,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-1","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# 売上高と費用から利益を計算する\nsales <- 10000 # 売上高（百万円）\ncost <- 8500 # 売上原価・販管費（百万円）\n\noperating_income <- sales - cost # 営業利益\noperating_income","id":2,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-2","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# A社のデータ\nsales <- 8558000\nearnings <- 34435\nequity <- 526962\n\n# ROEの計算（%表示にするため100倍）\nroe <- (earnings / equity) * 100\n\n# 結果の表示（小数点以下2桁に丸める）\nround(roe, 2)","id":3,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-3","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# 自動車メーカー5社のデータ（架空のサンプル値：百万円）\nfirm_names <- c(\"A自動車\", \"B自動車\", \"C自動車\", \"D自動車\", \"E自動車\")\nearnings <- c(34435, 28200, 26019, 24752, 42997)\nequity <- c(526962, 339960, 358425, 336024, 620792)\n\n# 5社分のROEを一括計算！\nroe_vec <- (earnings / equity) * 100\n\n# 結果を並べて表示\nnames(roe_vec) <- firm_names\nround(roe_vec, 2)","id":4,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-4","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# 自動車5社のデータフレームを作成する\ndf <- data.frame(\n    企業名 = firm_names,\n    売上高 = c(8558000, 3206000, 1813000, 455000, 2218000),\n    当期利益 = earnings,\n    自己資本 = equity,\n    総資産 = c(9132565, 4330121, 2931162, 594721, 1927577)\n)\n\n# 新しい列として「ROE」を追加する（$マークを使う）\ndf$ROE <- round((df$当期利益 / df$自己資本) * 100, 2)\n\n# 表の中身を確認\ndf","id":5,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-5","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# デュポン分解の3要素を計算\ndf$利益率 <- round((df$当期利益 / df$売上高) * 100, 2) # ① %\ndf$総資産回転率 <- round(df$売上高 / df$総資産, 2) # ② 回\ndf$レバレッジ <- round(df$総資産 / df$自己資本, 2) # ③ 倍\n\n# 必要な列だけを抽出して見やすく表示\ndf[, c(\"企業名\", \"ROE\", \"利益率\", \"総資産回転率\", \"レバレッジ\")]","id":6,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-6","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# 最もROEが高い企業を特定するコード\ndf[which.max(df$ROE), c(\"企業名\", \"ROE\", \"利益率\", \"総資産回転率\", \"レバレッジ\")]\n\n# 最もROEが低い企業を特定するコード\ndf[which.min(df$ROE), c(\"企業名\", \"ROE\", \"利益率\", \"総資産回転率\", \"レバレッジ\")]","id":7,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-7","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+  globalThis.qwebrCellDetails = [{"code":"1 + 2 # 足し算\n3 * 4 # かけ算\n6^2 # 累乗\nsqrt(2) # 平方根","id":1,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-1","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"dice <- 1:6\ntoss <- 10\nx <- sample(dice, toss, replace = TRUE)\nmean(x)","id":2,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-2","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"dice <- 1:6\ntoss <- 100 # ← ここだけ変える\nx <- sample(dice, toss, replace = TRUE)\nmean(x)","id":3,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-3","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"dice <- 1:6\ntoss <- 10\nmean(sample(dice, toss, replace = TRUE))","id":4,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-4","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# サイコロを10回振って平均を出す、を10回繰り返す\ndice <- 1:6\ntoss <- 10\ntrial <- 10\nresult <- numeric(trial)\n\nfor (i in 1:trial) {\n    x <- sample(dice, toss, replace = TRUE)\n    result[i] <- mean(x)\n}\nresult","id":5,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"0.5","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-5","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
   </script>
   <script type="module">
@@ -1991,7 +1991,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title"><p><b>プレゼミ</b> <br> <span style="color: #282A36; ">Day2 : リプリケーションと文献レビューによる仮説構築サイクル／Rの基礎とROE計算</span></p></h1>
+  <h1 class="title"><p><b>プレゼミ</b> <br> <span style="color: #282A36; ">Day1 : ガイダンス／実証分析の必要性</span></p></h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -2004,6 +2004,184 @@ Soichi Matsuura
 </section>
 <section id="今日の95分" class="slide level2">
 <h2>今日の95分</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>00–20</td>
+<td>ガイダンス（運営方法・評価・AI利用ポリシー）</td>
+</tr>
+<tr class="even">
+<td>20–35</td>
+<td><strong>今日の問い</strong>：決算発表の日、株価はなぜ動くのか</td>
+</tr>
+<tr class="odd">
+<td>35–50</td>
+<td>教員解説：実証研究とは／検証可能性と反証可能性</td>
+</tr>
+<tr class="even">
+<td>50–75</td>
+<td><strong>ライブ分析①</strong>：ブラウザでRを触ってみる</td>
+</tr>
+<tr class="odd">
+<td>75–85</td>
+<td><strong>持ち寄り</strong>：気になる企業と、知りたいこと</td>
+</tr>
+<tr class="even">
+<td>85–95</td>
+<td>次回の事前課題／担当の割り当て</td>
+</tr>
+</tbody>
+</table>
+<div class="code-output">
+<p>第2回以降は、<strong>冒頭で「みんなの予想の集計」を映すところから</strong>始まります。 今日はその予行演習です。</p>
+</div>
+</section>
+<section>
+<section id="ガイダンス" class="title-slide slide level1 center">
+<h1>ガイダンス</h1>
+
+</section>
+<section id="このクラスの方針" class="slide level2">
+<h2>このクラスの方針</h2>
+<ul>
+<li class="fragment"><strong>手を動かす。</strong>聞くだけの時間は95分のうち30分だけです。</li>
+<li class="fragment"><strong>予想してから、答え合わせをする。</strong>外すことに価値があります。</li>
+<li class="fragment"><strong>AIを使ってよい。</strong>ただし、検算と説明はあなたの仕事です。</li>
+<li class="fragment"><strong>反論するのが仕事の人がいる。</strong>毎回、ディスカッサントを指名します。</li>
+</ul>
+<div class="fragment">
+<div class="code-output">
+<p>このクラスのゴールは、教科書を覚えることではありません。 <span class="markp"><strong>まだ誰も見ていない図を、自分の手で1枚作ること</strong></span>です。</p>
+</div>
+</div>
+</section>
+<section id="講義の目的" class="slide level2 smaller">
+<h2>講義の目的</h2>
+<ul>
+<li>現実に生じている経営現象に注目し、その現象がどのようなメカニズムで生じているのかを考え、 そのメカニズムを特定し、理論化することで、経営現象が生じている理由を説明できるようになる。</li>
+<li>このような<span class="markp">事実解明型の研究を<strong>実証研究</strong>(positive research)</span>と呼ぶ。</li>
+</ul>
+<p><br></p>
+<p><strong>実証研究を行う際に重要な要素</strong></p>
+<ol type="1">
+<li><strong>検証可能性</strong>（testability）── 仮説をデータで確かめられること</li>
+<li><strong>反証可能性</strong>（falsifiability）── 「間違いだ」と示せること</li>
+<li><strong>社会現象との相互作用</strong> ── 研究の対象は人の行動なので、研究結果が知られると、経営者や投資家、制度の側が変わることがある</li>
+</ol>
+
+<aside><div>
+<p>1と2は、このあと「良い問いの2条件」で詳しく扱います。</p>
+</div></aside></section>
+<section id="講義の位置づけ" class="slide level2 diagram-fit">
+<h2>講義の位置づけ</h2>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    subgraph 基礎
+        A[企業と会計]
+        B[会計学]
+    end
+    subgraph 入門
+        C[企業分析論]
+        D[会計制度論]
+    end
+    subgraph 発展
+        G[実証会計論]
+        E[連結会計論]
+        F[財務会計論]
+        H[管理会計論]
+        I[原価計算論]
+    end
+    A ==&gt; B
+    B ==&gt; C
+    B ==&gt; D
+    D ==&gt; G
+    D --&gt; E
+    D --&gt; F
+    C --&gt; H &amp; I &amp; F
+    C ==&gt; G
+    style G fill:#f9d6ea,stroke:#e3439e,stroke-width:3px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>このプレゼミは、<strong>実証会計論</strong>へ向かう最初の一歩です。</p>
+</section>
+<section id="授業の進め方反転授業" class="slide level2">
+<h2>授業の進め方：反転授業</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><strong>ふつうの授業</strong></p>
+<ol type="1">
+<li>教員が説明（70分）</li>
+<li>少し練習（20分）</li>
+</ol>
+<p>→ <span class="markp"><strong>分かっていないことに気づけない</strong></span></p>
+</div><div class="column" style="width:52%;">
+<p><strong>このクラス</strong></p>
+<ol type="1">
+<li><strong>授業の前に</strong>、動画と教科書で学ぶ</li>
+<li>授業では、<strong>予想し・手を動かし・持ち寄る</strong></li>
+</ol>
+<p>→ <span class="marky"><strong>分かっていないことが自分で分かる</strong></span></p>
+</div></div>
+<div class="code-output">
+<p>95分の中に「説明」と「実践」の両方は入りません。だから<strong>説明を外に出します。</strong></p>
+</div>
+</section>
+<section id="授業の前にやってくること約1時間" class="slide level2 smaller">
+<h2>授業の前にやってくること（約1時間）</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>内容</th>
+<th>目安</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A. 見る</strong></td>
+<td>解説動画（5〜10分）＋教科書の該当ページ</td>
+<td>30分</td>
+</tr>
+<tr class="even">
+<td><strong>B. 予想する</strong></td>
+<td><span class="markp"><strong>予想シート1問</strong></span>（選択式＋理由1行）</td>
+<td><strong>3分</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>C. 手を動かす</strong></td>
+<td>配布コードの<strong>指定の1箇所だけ</strong>を変えて実行し、結果を貼る</td>
+<td>20〜30分</td>
+</tr>
+</tbody>
+</table>
+<div class="code-output">
+<ul>
+<li><strong>B は当たり外れを評価しません。</strong>出したかどうかだけを見ます。 集計して<span class="marky"><strong>授業の冒頭で映します。</strong></span></li>
+<li><strong>C は白紙からコードを書きません。</strong>完成コードを配ります。変えるのは1箇所。 <strong>AIに聞いてもかまいません。</strong></li>
+</ul>
+</div>
+</section>
+<section id="分の使い方" class="slide level2 smaller">
+<h2>95分の使い方</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -2021,718 +2199,120 @@ Soichi Matsuura
 <tr class="odd">
 <td>00–05</td>
 <td>教員</td>
-<td><strong>オープニング／その場で予想：反証可能なのはどれか？</strong></td>
+<td>今日の問い／<strong>みんなの予想の集計結果</strong></td>
 </tr>
 <tr class="even">
 <td>05–15</td>
-<td>学生</td>
-<td>予想の検討：なぜそう予想したか（挙手 ＆ ペアで理由共有）</td>
+<td><strong>学生</strong></td>
+<td>なぜそう予想したか、隣の人と2分 → 数名が発言</td>
 </tr>
 <tr class="odd">
-<td>15–30</td>
-<td>学生</td>
-<td><strong>講義内ワーク：経済ニュースを「検証可能な問い」に書き直す</strong>（ペアで作成 → 発表）</td>
+<td>15–40</td>
+<td><strong>学生</strong></td>
+<td><strong>担当班の報告</strong> → <strong>ディスカッサントの反論</strong> → 議論</td>
 </tr>
 <tr class="even">
-<td>30–50</td>
-<td><strong>教員</strong></td>
-<td><strong>教員解説（前半）：リプリケーションと文献レビューによる仮説構築サイクル</strong></td>
+<td>40–55</td>
+<td>教員</td>
+<td>解説（背景・つまずきどころ・研究の裏話）</td>
 </tr>
 <tr class="odd">
-<td>50–75</td>
+<td>55–75</td>
 <td><strong>学生</strong></td>
-<td><strong>ライブ分析（後半）：webRでR基本操作 ＆ ROEとデュポン分解の計算</strong></td>
+<td><strong>ライブ分析</strong>（ペアで手を動かす）</td>
 </tr>
 <tr class="even">
 <td>75–85</td>
-<td>学生</td>
-<td>結果の持ち寄り：ROEが高い会社の「正体」を議論</td>
+<td><strong>学生</strong></td>
+<td><strong>結果を持ち寄る</strong> → クラス全体の図表を完成させる</td>
 </tr>
 <tr class="odd">
 <td>85–95</td>
 <td>教員</td>
-<td>ラップアップ／<strong>裏切り（ROEの罠）</strong>／次回からの事前課題の案内</td>
+<td>まとめ／次回への「裏切り」／次回の事前課題</td>
 </tr>
 </tbody>
 </table>
-<div class="code-output">
-<p>今日のゴール： ① <strong>「反証可能な仮説」はどうやって作るのか</strong>（文献レビューとリプリケーションの循環）を講義内ワークで体感する<br>
-② ブラウザ上のR（webR）で、<strong>ROE（自己資本利益率）の計算と要因分解</strong>を自分で実行できるようになる</p>
-</div>
+<p><span class="markp"><strong>学生の活動が65分、教員の解説は30分。</strong></span></p>
 </section>
-<section>
-<section id="オープニング-その場で予想" class="title-slide slide level1 center">
-<h1>オープニング &amp; その場で予想！</h1>
-
-</section>
-<section id="今日の問い" class="slide level2">
-<h2>今日の問い</h2>
-<p><br></p>
-<div class="r-fit-text">
-<p><strong>その主張、どうやったら「間違いだ」と示せるか</strong></p>
-</div>
-<p><br></p>
-<ul>
-<li class="fragment">経済ニュースやビジネス書には、もっともらしい主張があふれています</li>
-<li class="fragment">しかし、実証研究における主張には、決定的なルールがあります</li>
-<li class="fragment"><span class="markp"><strong>「どんなデータが出たら、自分の主張は間違いだったと認めるか」</strong></span>が、データを見る前に決まっていることです</li>
-</ul>
-<aside class="notes">
-<p>みなさんこんにちは。プレゼミ第2回です。 今日はまず、教室にいるみなさんにその場で「直感の予想」をしてもらうところから始めます。 今日の問いは「その主張、どうやったら間違いだと示せるか」です。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="その場で予想してください1分" class="slide level2 smaller">
-<h2>その場で予想してください（1分）</h2>
-<p>次の3つは、どれも経済ニュースや教科書で見かけそうな主張です。</p>
-<blockquote>
-<p><strong>ア．</strong> 日本の上場企業は、現金をため込みすぎている。<br>
-<strong>イ．</strong> 配当を増やすと発表した企業の株価は、発表の翌日に上がりやすい。<br>
-<strong>ウ．</strong> 会計を学んだ人は、ビジネスで成功しやすい。</p>
-</blockquote>
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:60%;">
-<div class="code-output">
-<p><strong>Q．データで「間違いだ」と示せる（反証できる）主張は、ア・イ・ウのどれだと思いますか？</strong></p>
-<ul>
-<li>直感で選んでください（複数選んでもOK）</li>
-<li><strong>いまから挙手してもらいます！</strong>（アの人？ イの人？ ウの人？）</li>
-</ul>
-</div>
-</div><div class="column" style="width:40%;">
-<div class="code-output">
-<p><strong>ペアワーク（2分）</strong>：<br>
-隣の人と、自分がどれを選んだか、<strong>その理由</strong>を共有してください。 「なぜ他の選択肢は反証できないと思ったか」も話してみましょう。</p>
-</div>
-</div></div>
-<aside class="notes">
-<p>手元の直感で選んでみてください。 アだと思う人、手を挙げてください。……イだと思う人？……ウだと思う人？ 手が綺麗に分かれましたね！ では隣の人と、なぜそれを選んだのか理由を2分間で話し合ってみてください。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="解説反証できるのはイだけ" class="slide level2 smaller">
-<h2>解説：反証できるのは「イ」だけ</h2>
-<div class="columns">
-<div class="column" style="width:33%;">
-<h3 id="ア現金をため込みすぎ">ア．現金をため込みすぎ</h3>
-<div class="code-output">
-<p>❌ <strong>反証が極めて困難</strong></p>
-</div>
-<ul>
-<li>「すぎている」の客観的基準が存在しない</li>
-<li>経営者：「将来の危機や投資のための安全弁」</li>
-<li>投資家：「余剰資金は配当に回すべき」</li>
-<li><strong>主観的価値判断</strong>のため、現金の数字を見せても「いや、まだ足りない」「多すぎる」と水掛け論になる</li>
-</ul>
-</div><div class="column" style="width:33%;">
-<h3 id="イ増配発表で翌日株価上昇">イ．増配発表で翌日株価上昇</h3>
-<div class="code-output">
-<p>⭕ <strong>明確に反証可能！</strong></p>
-</div>
-<ul>
-<li><strong>測る対象が明確</strong>：
-<ul>
-<li>「増配発表の事実」</li>
-<li>「発表翌日の株価騰落率」</li>
-</ul></li>
-<li><strong>負けの条件が事前にある</strong>：
-<ul>
-<li>もし増配発表企業の株価が翌日上がらなかったり、他社と差がなければ<strong>主張は倒れる</strong></li>
-</ul></li>
-<li>だからこそ、データで確かめる価値がある！</li>
-</ul>
-</div><div class="column" style="width:33%;">
-<h3 id="ウ会計を学ぶと成功しやすい">ウ．会計を学ぶと成功しやすい</h3>
-<div class="code-output">
-<p>❌ <strong>反証が極めて困難</strong></p>
-</div>
-<ul>
-<li><strong>「成功」の定義が曖昧</strong>（年収？ 役職？ 起業？ 幸福度？）</li>
-<li><strong>循環論法・自己選択バイアス</strong>：
-<ul>
-<li>成功した人を見て「やはり会計を学んでいた」と後付けで語る</li>
-<li>もともと意欲が高い人が会計を勉強しただけかもしれない</li>
-</ul></li>
-</ul>
-</div></div>
-<aside class="notes">
-<p>結論から言うと、この中で反証可能なのは「イ」だけです。 アの「すぎている」は価値判断です。 ウの「成功」は定義が曖昧で、かつ「因果関係」が証明しにくい。 イだけが、「いつ・誰と誰を比べ・何で測り・どうなったら負けか」が事前に定義されています。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="反証可能性falsifiabilityとは何か" class="slide level2 smaller">
-<h2>反証可能性（Falsifiability）とは何か</h2>
-<p>科学哲学者カール・ポパー（Karl Popper）が提唱した、科学と疑似科学を分ける基準です。</p>
+<section id="役割報告者ディスカッサント記録者" class="slide level2">
+<h2>役割：報告者・ディスカッサント・記録者</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="科学的な主張の特徴">科学的な主張の特徴</h3>
-<ol type="1">
-<li><strong>負けの条件が先に決まっている</strong>
+<p><strong>報告者</strong>（順番に回ります）</p>
 <ul>
-<li>「もしデータがこうなっていたら、自分の仮説は間違っていたと潔く認める」</li>
-</ul></li>
-<li><strong>賭けに出ている</strong>
-<ul>
-<li>主張が具体的であればあるほど、反証されるリスク（賭け）は高くなる</li>
-</ul></li>
-<li><strong>データに耐えることで信頼性を得る</strong>
-<ul>
-<li>厳しい反証テストをくぐり抜けた主張だけが、強固な知識として残る</li>
-</ul></li>
-</ol>
+<li>事前課題を発展させて<strong>7分で報告</strong></li>
+<li>きれいにまとめる必要はありません</li>
+<li><span class="marky"><strong>どこで詰まったかを正直に</strong></span></li>
+</ul>
 </div><div class="column" style="width:50%;">
-<h3 id="反証できない主張の3大パターン">反証できない主張の3大パターン</h3>
-<ol type="1">
-<li><strong>循環論法（結果による後付け定義）</strong>
+<p><strong>ディスカッサント</strong>（反論担当）</p>
 <ul>
-<li>「良い経営をしている会社は伸びる」</li>
-<li>（伸びた会社を見て『やはり良い経営だった』と言う）</li>
-</ul></li>
-<li><strong>いつでも逃げられる（期限・範囲の不在）</strong>
-<ul>
-<li>「市場は長期的には正しい」</li>
-<li>（暴落しても『まだ長期的ではない』と逃げる）</li>
-</ul></li>
-<li><strong>規範的判断（「〜べき」論）</strong>
-<ul>
-<li>「会計は企業の実態を正確に映すべきだ」</li>
-<li>（事実の記述ではなく倫理・規範の主張）</li>
-</ul></li>
-</ol>
+<li><span class="markp"><strong>必ず1つ以上の反論・疑問</strong></span>を出す</li>
+<li>資料は事前に受け取ります</li>
+<li><strong>これが仕事です。</strong>遠慮は不要</li>
+</ul>
 </div></div>
-<div class="fragment">
 <div class="code-output">
-<p>実証研究の第一歩は、<span class="markp"><strong>「自分の仮説が負ける条件」をデータを見る前に言語化すること</strong></span>です。</p>
+<p>学会と同じ形式です。<strong>全員に順番に回します。</strong> さらに毎回1名が<strong>記録者</strong>として、議論で出た「疑問」を共有ドキュメントに残します。</p>
+<p>「質問してもいいですよ」では誰も質問しません。 でも「反論するのがあなたの仕事です」と言われれば、言えるようになります。</p>
 </div>
-</div>
-<aside class="notes">
-<p>ポパーの反証可能性の要点は、「負けの条件を先に決めることは、主張を弱くすることではなく、堂々と賭けに出ることだ」という点です。 逃げ道を用意した主張は、一見無敵に見えますが、データから何も学べないため科学的には無価値なのです。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="講義内ワーク問いの書き直し" class="title-slide slide level1 center">
-<h1>講義内ワーク：問いの書き直し</h1>
-
 </section>
-<section id="実演ニュースの見出しを検証可能な問いに直す" class="slide level2 smaller">
-<h2>実演：ニュースの見出しを「検証可能な問い」に直す</h2>
-<div class="code-output">
-<p>世の中のニュースやSNSの言説は、そのままだと<strong>反証不能</strong>なものが大半です。<br>
-それを<strong>「データで白黒つけられる形」</strong>に直す手順を実演します。</p>
-</div>
-<p><br></p>
-<p><strong>ステップ実演</strong></p>
-<ul>
-<li><strong>元の見出し</strong>：「値上げに踏み切った食品メーカー、業績好調」</li>
-<li><strong>手順1．主張を1文で抜き出す</strong>：<br>
-「値上げをした食品メーカーは、業績が良い」</li>
-<li><strong>手順2．負けの条件（反証条件）を書く</strong>：<br>
-「値上げした企業としなかった同業他社を比べ、翌年度の利益率に<strong>差がない、またはむしろ低い</strong>なら間違い」</li>
-<li><strong>手順3．データで測れるか考える</strong>：<br>
-値上げ発表（プレスリリース等）／営業利益率（有価証券報告書にある）── <strong>客観的に測れる！</strong></li>
-<li><strong>手順4．問いの形に仕立て直す</strong>：<br>
-&gt; <span class="marky">「2024年に主要製品の値上げを発表した食品メーカーは、発表しなかった食品メーカーに比べて、2025年度の売上高営業利益率が高いか」</span></li>
-</ul>
-<aside class="notes">
-<p>ニュースの見出しをそのまま信じるのではなく、「検証可能な問い」に翻訳する練習をします。 上の手順を見てください。 「いつ・誰と誰を比べ・何で測り・どうなったら負けか」がすべて入っています。 では、これを今からペアでやってみましょう！</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="ライブ分析は分担します" class="slide level2">
+<h2>ライブ分析は「分担」します</h2>
+<p>授業中、<strong>ペアごとに違う会社・違う業種・違う年</strong>を担当します。 1人分の結果はバラバラでも、クラス全員分を重ねると<strong>はっきりした形が現れます</strong>。</p>
+<svg viewbox="0 0 1000 350" role="img" aria-label="1社だけの結果とクラス全員分を重ねた結果の比較" style="width:100%;max-width:1040px;height:auto;">
+<g transform="translate(10,0)"> <rect x="40" y="30" width="410" height="230" fill="#ffffff" stroke="#e7e2e2" stroke-width="1.5"></rect> <line x1="40" y1="170" x2="450" y2="170" stroke="#e7e2e2" stroke-width="1.5"></line> <line x1="245" y1="35" x2="245" y2="255" stroke="#e3439e" stroke-width="2" stroke-dasharray="6 5"></line> <polyline fill="none" stroke="#9f3535" stroke-width="3" stroke-linejoin="round" points="50,170 70,150 90,185 110,140 130,195 150,160 170,120 190,175 210,145 230,200 250,130 270,165 290,110 310,180 330,150 350,205 370,140 390,175 410,125 430,160"></polyline> <text x="245" y="290" fill="#282A36" font-size="21" font-weight="900" text-anchor="middle">あなた1人が1社だけ調べると</text> <text x="245" y="318" fill="#9f3535" font-size="18" text-anchor="middle">ノイズだらけで、何も見えない</text> </g> <g transform="translate(520,0)"> <rect x="40" y="30" width="410" height="230" fill="#ffffff" stroke="#e7e2e2" stroke-width="1.5"></rect> <line x1="40" y1="170" x2="450" y2="170" stroke="#e7e2e2" stroke-width="1.5"></line> <line x1="245" y1="35" x2="245" y2="255" stroke="#e3439e" stroke-width="2" stroke-dasharray="6 5"></line> <polyline fill="none" stroke="#8556c7" stroke-width="4" stroke-linejoin="round" points="50,172 70,168 90,171 110,167 130,170 150,166 170,169 190,165 210,168 230,166 245,167 260,118 280,114 300,116 320,112 340,115 360,111 380,114 400,110 420,113 440,109"></polyline> <text x="245" y="290" fill="#282A36" font-size="21" font-weight="900" text-anchor="middle">クラス全員分を重ねると</text> <text x="245" y="318" fill="#8556c7" font-size="18" text-anchor="middle">はっきりした形が現れる</text> </g>
+</svg>
+<p><span class="markp"><strong>1人サボると、その分だけ図がぼやけます。</strong></span></p>
 </section>
-<section id="ペアワーク5分身近な話題を1つ書き直してみよう" class="slide level2 smaller">
-<h2>ペアワーク（5分）：身近な話題を1つ書き直してみよう</h2>
-<p>隣の人とペアを組み、スマホ等で直近の経済ニュースを1本見るか、気になるビジネスの話題を1つ選んでください。</p>
-<div class="code-output">
-<p><strong>話題のヒント（これらを使ってもOK！）</strong>：<br>
-「新NISA人気で株価上昇」「インバウンド効果で百貨店好調」「AI導入で残業削減」「初任給引き上げで若手採用成功」</p>
-</div>
-<p><br></p>
-<h3 id="ペアで手元のメモに書く3点セット">ペアで手元のメモに書く3点セット</h3>
-<ol type="1">
-<li class="fragment"><strong>元の主張</strong>（「〜すると、…になる」）</li>
-<li class="fragment"><strong>負けの条件</strong>（どんなデータが出たら、自分の主張は間違いだと認めるか？）</li>
-<li class="fragment"><strong>検証可能な問い</strong>（いつ、誰と誰を比べ、どの指標で測るか）</li>
-</ol>
-<p><br></p>
-<div class="fragment">
-
-</div>
-<aside class="notes">
-<p>5分間時間を取ります。 ペアで1つ話題を選んで、手元のメモやPCに3点セットを書き出してください。 生成AIに相談しても構いません。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<aside><div>
-<p>※ スマホの生成AI（ChatGPTやClaude等）に「反証条件を考えて」と相談しても構いません！<br>
-ただし最後のチェック（測れる言葉か？ 比較相手はいるか？）は自分の目で確認してください。</p>
-</div></aside></section>
-<section id="持ち寄り共有その問い反証できるか" class="slide level2 smaller">
-<h2>持ち寄り共有：その問い、反証できるか？</h2>
-<p>2〜3組のペアに、作った「問い」と「負けの条件」を発表してもらいましょう！</p>
-<div class="code-output">
-<p><strong>発表フォーマット（1人30秒〜1分）</strong>：<br>
-① 選んだ話題・見出し<br>
-② 作った「検証可能な問い」<br>
-③ 「どんなデータが出たら負けか（反証条件）」</p>
-</div>
-<p><br></p>
-<h3 id="クラス全体で判定しよう聞いている人のチェック">クラス全体で判定しよう（聞いている人のチェック）</h3>
-<ul class="task-list">
-<li class="fragment"><label><input type="checkbox"><strong>言葉は測れるか？</strong>（「好調」「人気」「DX」などの言葉が、具体的な指標になっているか）</label></li>
-<li class="fragment"><label><input type="checkbox"><strong>比べる相手（対照群）がいるか？</strong>（その会社だけでなく、同業他社や過去と比較しているか）</label></li>
-<li class="fragment"><label><input type="checkbox"><strong>負けの条件が明確か？</strong>（結果を見てから言い訳できる逃げ道が塞がれているか）</label></li>
-</ul>
-<p><br></p>
-<div class="fragment">
-<blockquote>
-<p>👏 <strong>反証条件がしっかり書けていれば合格！ 素晴らしい「問い」の誕生です。</strong></p>
-</blockquote>
-</div>
-<aside class="notes">
-<p>では何組か発表してもらいましょう。 聞いている人は、3つのチェックポイントに照らして判定してみてください。 うまく反証条件が言えていれば、立派な実証研究のスタート地点です。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="教員解説前半-会計学の実証分析入門に即した-仮説構築サイクル" class="title-slide slide level1 center">
-<h1>教員解説（前半）<br>『会計学の実証分析入門』に即した<br>仮説構築サイクル</h1>
-
-</section>
-<section id="なぜ思いつきの仮説は失敗するのか" class="slide level2 smaller">
-<h2>なぜ「思いつき」の仮説は失敗するのか</h2>
-<p>初心者が卒業論文やゼミ論でやりがちな「落とし穴」があります。</p>
+<section id="成績評価" class="slide level2">
+<h2>成績評価</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="初心者のありがちな発想">初心者のありがちな発想</h3>
-<ul>
-<li>「最近SDGsが流行っているから、環境に配慮している企業は儲かるんじゃないか？」</li>
-<li>「CMをたくさん流している企業は、ROEが高いはずだ！」</li>
-<li>「女性役員が多い企業は、株価が上がるに違いない！」</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="なぜこれでは研究にならないのか">なぜこれでは研究にならないのか</h3>
-<ol type="1">
-<li class="fragment"><strong>すでに何百本もの先行研究がある（車輪の再発明）</strong>
-<ul>
-<li class="fragment">過去40年間に世界中で調べ尽くされており、すでに結論や条件が出ている</li>
-</ul></li>
-<li class="fragment"><strong>理論的メカニズムが欠けている</strong>
-<ul>
-<li class="fragment">「なぜ」そうなるのか（コスト増 vs 売上増、ブランド効果 vs 広告宣伝費負担）の説明がない</li>
-</ul></li>
-<li class="fragment"><strong>データのバイアスを無視している</strong>
-<ul>
-<li class="fragment">「儲かっている余裕のある大企業だからCMを流せるだけ」かもしれない（逆の因果・交絡）</li>
-</ul></li>
-</ol>
-</div></div>
-<div class="fragment">
-<div class="code-output">
-<p><strong>ゼロから自分の頭だけで考えてはいけません。</strong><br>
-研究とは、<span class="markp"><strong>「人類がこれまでに積み上げてきた知識の山（先行研究）」のてっぺんに、小石を1個乗せる作業</strong></span>です。</p>
-</div>
-</div>
-<aside class="notes">
-<p>実証研究を始めるとき、多くの人が「何か誰も思いついていない斬新なテーマを見つけなきゃ」と焦ります。 しかし、思いつきの仮説は大抵、過去の研究者たちがすでに検証済みか、あるいは論理的な欠陥があります。 私たちがすべきなのは「巨人の肩に乗る」ことです。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="巨人の肩に乗る2大必須ツール" class="slide level2 smaller">
-<h2>巨人の肩に乗る：2大必須ツール</h2>
-<p>アイザック・ニュートンの有名な言葉： &gt; 「私が遠くを見ることができたとすれば、それは巨人たちの肩の上に乗っていたからです。」</p>
-<p><br></p>
-<p>実証会計研究において、巨人の肩に乗るための具体的な手段が次の2つです。</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="文献レビューliterature-review">1. 文献レビュー（Literature Review）</h3>
-<ul>
-<li>先行研究を体系的に読み解く作業</li>
-<li>目的は単なる「読書感想文」ではない</li>
-<li><span class="marky"><strong>「何がどこまで分かっていて、何がまだ未解決なのか（リサーチギャップ）」の地図を描くこと</strong></span></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="リプリケーションreplication-追試再現">2. リプリケーション（Replication: 追試・再現）</h3>
-<ul>
-<li>先行研究のデータと分析コードを、<strong>自分の手元でそのまま再現してみること</strong></li>
-<li>教科書『会計学の実証分析入門』の根幹をなすアプローチ</li>
-<li><span class="markp"><strong>先行研究の数値を完全に再現できて初めて、その先の独自分析に進める</strong></span></li>
-</ul>
-</div></div>
-<aside class="notes">
-<p>教科書の黒木先生たちが強調しているのが、まさにこの「文献レビュー」と「リプリケーション」です。 この2つがあって初めて、科学的で反証可能な独自の仮説が立ち上がります。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="文献レビューの本質リサーチギャップの発見" class="slide level2 smaller">
-<h2>文献レビューの本質：リサーチギャップの発見</h2>
-<p>文献レビューは、論文の要約を並べる「あらすじ集」ではありません。</p>
-<div class="code-output">
-<p><strong>文献レビューの真の目的</strong>：<br>
-過去の論文たちが議論してきた「論争の現場」に入り、<strong>未解決の隙間（リサーチギャップ）</strong>を特定すること。</p>
-</div>
-<p><br></p>
-<h3 id="先行研究を整理する3つの視点">先行研究を整理する3つの視点</h3>
-<ol type="1">
-<li class="fragment"><strong>共通の合意（スタイライズド・ファクト / 確立された事実）</strong>
-<ul>
-<li class="fragment">例：「会計利益が市場予想を上回ると、株価は即座にプラスに反応する」（Ball and Brown 1968以来、数千の研究で確認済み）</li>
-</ul></li>
-<li class="fragment"><strong>対立する見解（論争中のテーマ）</strong>
-<ul>
-<li class="fragment">先行研究A：「ROEの高さは企業の稼ぐ力を反映し、将来のリターンを高める」</li>
-<li class="fragment">先行研究B：「負債を過剰に増やしてROEを釣り上げている場合、むしろ株価暴落リスクが高まる」</li>
-</ul></li>
-<li class="fragment"><strong>条件による違い（コンテキストへの依存）</strong>
-<ul>
-<li class="fragment">「米国市場では成り立つが、メインバンク制度が強い日本市場ではどうなのか？」</li>
-<li class="fragment">「平時では正の相関だが、リーマンショックやコロナ禍のような危機時ではどうなるか？」</li>
-</ul></li>
-</ol>
-<aside class="notes">
-<p>文献を読むときは、「何がわかったか」だけでなく「何がまだ分かっていないのか」「文献同士で食い違っている点はどこか」を探します。 その食い違いや条件の違いこそが、みなさんの研究の「問い」になります。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="なぜリプリケーション再現追試が重要なのか" class="slide level2 smaller">
-<h2>なぜリプリケーション（再現・追試）が重要なのか</h2>
-<div class="code-output">
-<p><strong>リプリケーション（Replication）とは</strong>：<br>
-先行研究と同じ（または同等の）データを用い、同じ分析モデルを自分の手で推計して、<strong>論文に掲載された表や数値を再現すること</strong>。</p>
-</div>
-<p><br></p>
-<h3 id="リプリケーションを通じて身につく研究の職人技">リプリケーションを通じて身につく「研究の職人技」</h3>
-<ol type="1">
-<li class="fragment"><strong>変数の厳密な定義と計算手順が身体でわかる</strong>
-<ul>
-<li class="fragment">論文に「ROEを用いた」と書いてあっても、当期純利益なのか親会社株主帰属純利益なのか？ 期首自己資本か、期末自己資本か、期中平均か？</li>
-<li class="fragment">自分でコードを書いて数字を合わせる作業を通じて、<strong>定義の微妙な違いが結果に与える影響</strong>を痛感する。</li>
-</ul></li>
-<li class="fragment"><strong>サンプル抽出（フィルタリング）のルールを体得できる</strong>
-<ul>
-<li class="fragment">「金融・保険業を除外する」「債務超過企業を除外する」「3月決算企業に限定する」といった、実証分析の「業界標準のルール」がなぜ必要なのかを理解できる。</li>
-</ul></li>
-<li class="fragment"><strong>再現性（Reproducibility）の担保</strong>
-<ul>
-<li class="fragment">科学における最低条件は「第三者が同じ手順を踏めば、同じ結果が出ること」。</li>
-<li class="fragment">他人の分析を再現できる人は、自分の分析も再現可能な形で残せる（第4回〜第6回で徹底的に学びます）。</li>
-</ul></li>
-</ol>
-<aside class="notes">
-<p>教科書『会計学の実証分析入門』が画期的なのは、各章で実際のデータとRコードが提供され、読者がリプリケーションを体験できるようになっている点です。 他人の結果を再現してみることで、データの扱い方、欠損値処理、外れ値への配慮といった実践的な作法がすべて身につきます。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="仮説構築サイクルthe-hypothesis-cycle" class="slide level2 diagram-fit">
-<h2>仮説構築サイクル（The Hypothesis Cycle）</h2>
-<p>実証会計研究は、次のような環状のサイクル（循環）として進みます。</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    A["① 経営現象・現実の疑問&lt;br&gt;（ニュース、企業の動き、観察）"] --&gt; B["② 文献レビュー&lt;br&gt;（先行研究の整理・リサーチギャップの特定）"]
-    B --&gt; C["③ リプリケーション&lt;br&gt;（先行研究のデータ＆モデルの追試・再現）"]
-    C --&gt; D["④ 独自の仮説構築&lt;br&gt;（理論的根拠 ＋ 反証可能性の明示）"]
-    D --&gt; E["⑤ 実証的検証&lt;br&gt;（データ収集・統計分析・頑健性チェック）"]
-    E --&gt; F["⑥ 結論とフィードバック&lt;br&gt;（新たな知見として文献の山に蓄積）"]
-    F --&gt; A
-    
-    style B fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#bbf,stroke:#333,stroke-width:2px
-    style D fill:#dfd,stroke:#333,stroke-width:2px
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-
-<aside class="notes">
-<p>この図が今日の最重要スライドの一つです。 現実の疑問（①）からいきなり仮説（④）にジャンプしてはいけません。 必ず文献レビュー（②）で地図を確認し、リプリケーション（③）で基礎工事をしてから、独自の仮説（④）を立てる。 そして検証された結果（⑤）は、新たな先行研究（⑥）として蓄積され、次の世代の問いにつながります。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<aside><div>
-<p>教科書『会計学の実証分析入門』は、まさにこの <strong>②文献レビュー → ③リプリケーション → ④仮説構築</strong> のステップをRで実践するための道標です。</p>
-</div></aside></section>
-<section id="リプリケーションから独自の仮説を作る4パターン" class="slide level2 smaller">
-<h2>リプリケーションから「独自の仮説」を作る4パターン</h2>
-<p>先行研究をリプリケーションしたら、どこを「1箇所」変えれば独自の仮説になるでしょうか？</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="パターン1対象サンプルの拡張">パターン1：対象（サンプル）の拡張</h3>
-<ul>
-<li>先行研究：米国企業のデータで検証</li>
-<li><strong>あなたの仮説</strong>： &gt; 「日本企業でも同様の関係が見られるか？ 日本特有の取引慣行や系列関係によって効果は弱まるのではないか？」</li>
-</ul>
-<h3 id="パターン2期間時代背景の更新">パターン2：期間（時代背景）の更新</h3>
-<ul>
-<li>先行研究：2000年代のデータで検証</li>
-<li><strong>あなたの仮説</strong>： &gt; 「コロナショック後、あるいは近年のインフレ・金利上昇期においても同じ関係が維持されているか？」</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="パターン3制度環境文脈の違い">パターン3：制度環境・文脈の違い</h3>
-<ul>
-<li>先行研究：日本基準（J-GAAP）の時代</li>
-<li><strong>あなたの仮説</strong>： &gt; 「IFRS（国際財務報告基準）の任意適用企業では、会計情報の有用性がさらに高まっているか？」</li>
-</ul>
-<h3 id="パターン4条件調整変数の追加">パターン4：条件（調整変数）の追加</h3>
-<ul>
-<li>先行研究：XとYに正の相関があると主張</li>
-<li><strong>あなたの仮説</strong>： &gt; 「その相関は、<strong>財務レバレッジが高い企業</strong>や<strong>研究開発費の多い企業</strong>においてのみ顕著なのではないか？」</li>
-</ul>
-</div></div>
-<div class="fragment">
-<div class="code-output">
-<p><strong>安心してください</strong>：まったく新しい数式をゼロから発明する必要はありません。<br>
-巨人の立ち位置から、<span class="markp"><strong>「角度を少し変える」「対象を広げる」「条件を絞る」</strong></span>だけで、立派な新しい仮説になります。</p>
-</div>
-</div>
-<aside class="notes">
-<p>卒業論文やゼミでの研究テーマは、この4パターンのどれかで考えると非常にスムーズです。 特に学部2年生の段階では「先行研究の日本企業版」や「近年のデータへの更新」「業種ごとの違いの比較」が最も手堅く、かつ学術的にも価値のある問いになります。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="良い仮説のチェックリスト" class="slide level2 smaller">
-<h2>「良い仮説」のチェックリスト</h2>
-<p>リプリケーションと文献レビューを経て立てた仮説が、実証研究として成立しているか確認しましょう。</p>
+<div class="column" style="width:52%;">
 <table class="caption-top">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>チェック項目</th>
-<th>問いかけ</th>
-<th>ダメな例</th>
-<th>良い例</th>
+<th>評価するもの</th>
+<th>比率</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>① 理論的根拠</strong></td>
-<td>なぜその関係が起きるのか、経済的メカニズムを説明できるか？</td>
-<td>「AIを使っている会社は儲かるはずだ（なんとなく）」</td>
-<td>「AI投資は業務効率化を通じて販管費率を引き下げ、営業利益率を高める」</td>
+<td>予想シート（<strong>出せば満点</strong>）</td>
+<td>10%</td>
 </tr>
 <tr class="even">
-<td><strong>② 変数の測定可能性</strong></td>
-<td>使う変数は、公開された財務諸表や株価から客観的に計算できるか？</td>
-<td>「経営者のやる気が高い企業ほど…（測れない）」</td>
-<td>「経営者報酬に占める業績連動比率が高い企業ほど…（有報に記載あり）」</td>
+<td>事前課題（手を動かす）</td>
+<td>20%</td>
 </tr>
 <tr class="odd">
-<td><strong>③ 反証可能性</strong></td>
-<td>どんな結果が出たら「仮説は間違いだった」と認めるか？</td>
-<td>「長期的には株価が上がる（いつまでか不明）」</td>
-<td>「同業他社と比較して、3年累積の株式超過リターンがゼロまたは有意にマイナスなら棄却」</td>
+<td>担当回の報告</td>
+<td>15%</td>
 </tr>
 <tr class="even">
-<td><strong>④ 事前性</strong></td>
-<td>データを見る前に仮説を立てているか？（後付けの辻褄合わせでないか）</td>
-<td>「データを見たら相関があったから、これを仮説にしよう（HARKing）」</td>
-<td>「先行研究と理論から仮説を立て、手付かずのデータで検証する」</td>
+<td><span class="markp"><strong>ディスカッサント（反論）</strong></span></td>
+<td>15%</td>
+</tr>
+<tr class="odd">
+<td>ライブ分析の提出</td>
+<td>15%</td>
+</tr>
+<tr class="even">
+<td>最終レポート（Quarto）</td>
+<td>25%</td>
 </tr>
 </tbody>
 </table>
-
-<aside class="notes">
-<p>特に④のHARKing（ハーキング）に注意してください。 データをごちゃごちゃいじって「たまたま有意になった関係」を見つけてから「最初からこう予想していました」と論文を書くのは、科学的な不正に近い行為です。 だからこそ「文献レビュー」と「事前仮説」が大切なのです。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<aside><div>
-<p>※ HARKing = Hypothesizing After the Results are Known（結果を見てから後付けで仮説を作ること。実証研究の重大なタブー）。</p>
-</div></aside></section></section>
-<section>
-<section id="ライブ分析後半-webrでr基本操作-roeとデュポン分解の計算" class="title-slide slide level1 center">
-<h1>ライブ分析（後半）<br>webRでR基本操作 ＆<br>ROEとデュポン分解の計算</h1>
-
-</section>
-<section id="webrの準備ブラウザ上のr環境" class="slide level2 smaller">
-<h2>webRの準備：ブラウザ上のR環境</h2>
-<p>後半は、いよいよRを実際に動かしてみます！</p>
-<ul>
-<li>ここから先のコードは、<strong>スライドの中で直接実行・編集できます</strong>（webR技術）</li>
-<li>面倒なインストールや初期設定は一切不要です</li>
-<li>コード枠の右上にある <span class="markp"><strong>「▶ Run Code」ボタン</strong></span> を押すと、ブラウザが裏でRを起動して計算します</li>
-</ul>
-<p><br></p>
+</div><div class="column" style="width:48%;">
 <div class="code-output">
-<p><strong>まずはお試し！ 下の枠の ▶ を押してみてください</strong>（初回のみ数秒の読み込みがあります）</p>
+<p><strong>予想シートは外しても満点。</strong> 出したかどうかだけを見ます。</p>
+<p><strong>反論に15%。</strong> 批判できることは能力です。</p>
+<p>一発勝負の試験はありません。 <span class="marky"><strong>毎回の積み重ねで決まります。</strong></span></p>
 </div>
-<div id="qwebr-insertion-location-1"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<aside class="notes">
-<p>それでは授業の後半に入ります。 スライド内のコードセルの「Run Code」ボタンを押してください。 初回だけwebRのエンジンをダウンロードするので数秒かかりますが、2回目以降は一瞬で動きます。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="rの基本操作①電卓と代入-" class="slide level2 smaller">
-<h2>Rの基本操作①：電卓と代入（<code>&lt;-</code>）</h2>
-<p>Rは世界最高峰の統計解析言語ですが、まずは<strong>「超高性能な電卓」</strong>として使えます。</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="四則演算">1. 四則演算</h3>
-<ul>
-<li><code>+</code>（足し算）</li>
-<li><code>-</code>（引き算）</li>
-<li><code>*</code>（かけ算）</li>
-<li><code>/</code>（割り算）</li>
-<li><code>^</code>（累乗）</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="変数への代入-">2. 変数への代入（<code>&lt;-</code>）</h3>
-<ul>
-<li>数字や文字に「名前」をつけて保存する</li>
-<li>アロー演算子 <code>&lt;-</code> （小なり記号とハイフン）を使う
-<ul>
-<li>例：<code>sales &lt;- 1000</code></li>
-</ul></li>
-<li>キーボードの <code>Alt + -</code>（Win）または <code>Option + -</code>（Mac）で一発入力</li>
-</ul>
 </div></div>
-<div id="qwebr-insertion-location-2"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <aside class="notes">
-<p>Rの最も基本的な操作は「変数への代入」です。 矢印 <code>&lt;-</code> は、「右側の計算結果を、左側の名前の箱に入れる」という意味です。 一度箱に入れてしまえば、その名前を使って何度でも次の計算ができます。</p>
+<p>【要確認】大学提出済みのシラバスでは、成績評価は「Quartoでまとめたレポートを提出」となっている。 この配分で説明する前に、シラバス記載との整合を確認すること（plan_overall.md 6章）。</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2745,37 +2325,53 @@ Soichi Matsuura
           display:block!important;
       }</style></aside>
 </section>
-<section id="会計の基本指標roe自己資本利益率とは" class="slide level2 smaller">
-<h2>会計の基本指標：ROE（自己資本利益率）とは</h2>
-<p>実証会計研究や企業分析で最も頻繁に登場する指標の一つが <strong>ROE（Return on Equity）</strong> です。</p>
-<p><br></p>
+<section id="生成aiの使い方" class="slide level2">
+<h2>生成AIの使い方</h2>
+<p><strong>全面的に使ってかまいません。隠す必要はありません。</strong></p>
+<div class="code-output">
+<p>ただし3つだけ守ってください。</p>
+<ol type="1">
+<li><strong>申告</strong> ── どのAIに何を頼んだか、提出物の末尾に記録する</li>
+<li><strong>検算</strong> ── AIが出した数値は、必ず別の方法で1つ以上確かめる</li>
+<li><strong>説明責任</strong> ── 提出物の全部の行について、聞かれたら説明できること</li>
+</ol>
+</div>
+<p><span class="markp"><strong>説明できないコードは、提出物に入れないでください。</strong></span> これは意地悪ではなく、皆さんを守るためのルールです。</p>
+<p>評価するのは「AIを使ったか」ではなく、 <span class="marky"><strong>AIを使ってどこまで深く問えたか</strong></span>です。</p>
+</section>
+<section id="教科書と参考書" class="slide level2">
+<h2>教科書と参考書</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
-<h3 id="roeの定義式">ROEの定義式</h3>
-<p><span class="math display">
-\text{ROE} = \frac{\text{当期純利益}}{\text{自己資本（純資産）}} \times 100 \quad [\%]
-</span></p>
+<p><strong>教科書</strong></p>
+<p>黒木 他 (2026)『<strong>会計学の実証分析入門</strong>』中央経済社</p>
 <ul>
-<li><strong>分子（当期純利益）</strong>：1年間の企業活動の最終的な成果（株主に帰属する利益）</li>
-<li><strong>分母（自己資本）</strong>：株主が拠出した資本 ＋ 過去の利益の蓄積（内部留保）</li>
+<li>Rで実証会計研究を実践できる入門書</li>
+<li>事前課題で毎回少しずつ読みます</li>
+<li>第7回以降は、この本の分析を<strong>章ごとに再現</strong>します</li>
 </ul>
 </div><div class="column" style="width:45%;">
-<h3 id="なぜroeが重視されるのか">なぜROEが重視されるのか？</h3>
+<p><strong>参考（無料・英語）</strong></p>
+<p>Gow &amp; Ding, <em>Empirical Research in Accounting: Tools and Methods</em></p>
+<p><a href="https://iangow.github.io/far_book/" class="uri">https://iangow.github.io/far_book/</a></p>
 <ul>
-<li class="fragment"><strong>株主の視点</strong>：<br>
-「私たちが預けた元手を使って、経営陣はどれだけ効率的に利益を生み出したか？」</li>
-<li class="fragment">日本再興戦略（伊藤レポート, 2014）以来、<strong>「ROE 8%以上」</strong> が日本企業の重要ターゲットに</li>
-<li class="fragment">経営者の評価や役員報酬にも広く連動</li>
+<li>毎回「続きは第◯章」と案内します</li>
 </ul>
 </div></div>
-<div class="fragment">
-<div class="code-output">
-<p><strong>実証会計の問い</strong>：<br>
-「ROEが高い企業は、本当に経営効率が良いのか？ それとも何か<strong>数字の裏技</strong>があるのか？」</p>
-</div>
-</div>
+</section></section>
+<section>
+<section id="今日の問い" class="title-slide slide level1 center">
+<h1>今日の問い</h1>
+
+</section>
+<section id="決算発表があったのはいつでしょう" class="slide level2">
+<h2>決算発表があったのは、いつでしょう？</h2>
+<p>ある会社の、約30取引日（1か月半ほど）の株価です。<strong>予想してください。</strong></p>
+<svg viewbox="0 0 1000 330" role="img" aria-label="株価の推移" style="width:100%;height:auto;">
+<line x1="60" y1="290" x2="975" y2="290" stroke="#879dde" stroke-width="2"></line> <line x1="60" y1="40" x2="60" y2="290" stroke="#879dde" stroke-width="2"></line> <text x="500" y="320" fill="#282A36" font-size="20" text-anchor="middle">取引日</text> <text x="20" y="165" fill="#282A36" font-size="20" text-anchor="middle" transform="rotate(-90 20 165)">株価</text> <polyline fill="none" stroke="#282A36" stroke-width="3.5" stroke-linejoin="round" points="60,210 90,205 120,214 150,202 180,208 210,198 240,206 270,196 300,203 330,192 360,200 390,190 420,197 450,188 480,194 510,186 540,191 570,184 600,188 630,118 660,124 690,112 720,118 750,108 780,114 810,104 840,110 870,100 900,106 930,96 960,102"></polyline>
+</svg>
 <aside class="notes">
-<p>会計学やファイナンスで絶対に避けて通れない指標がROEです。 自己資本（株主のお金）に対して、最終的にどれだけの利益を生み出したかという投資効率を表します。 まずはこのROEを、Rで計算してみましょう。</p>
+<p>挙手で3択：①前半 ②後半 ③この図からは分からない （正解は②。株価が跳ねるのは期間の6割あたり） 「なぜそう思ったか」を2〜3名に聞いてから次へ。</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2788,49 +2384,223 @@ Soichi Matsuura
           display:block!important;
       }</style></aside>
 </section>
-<section id="webr演習①1社のroeを計算する" class="slide level2 smaller">
-<h2>webR演習①：1社のROEを計算する</h2>
-<p>自動車メーカー「A社」の財務データを使って、ROEを計算してみましょう。</p>
+<section id="答えここです" class="slide level2">
+<h2>答え：ここです</h2>
+<svg viewbox="0 0 1000 330" role="img" aria-label="決算発表日を示した株価の推移" style="width:100%;height:auto;">
+<rect x="600" y="40" width="30" height="250" fill="#e3439e" opacity="0.15"></rect> <line x1="615" y1="40" x2="615" y2="290" stroke="#e3439e" stroke-width="2" stroke-dasharray="6 5"></line> <line x1="60" y1="290" x2="975" y2="290" stroke="#879dde" stroke-width="2"></line> <line x1="60" y1="40" x2="60" y2="290" stroke="#879dde" stroke-width="2"></line> <polyline fill="none" stroke="#282A36" stroke-width="3.5" stroke-linejoin="round" points="60,210 90,205 120,214 150,202 180,208 210,198 240,206 270,196 300,203 330,192 360,200 390,190 420,197 450,188 480,194 510,186 540,191 570,184 600,188"></polyline> <polyline fill="none" stroke="#e3439e" stroke-width="4.5" stroke-linejoin="round" points="600,188 630,118"></polyline> <polyline fill="none" stroke="#282A36" stroke-width="3.5" stroke-linejoin="round" points="630,118 660,124 690,112 720,118 750,108 780,114 810,104 840,110 870,100 900,106 930,96 960,102"></polyline> <text x="660" y="70" fill="#e3439e" font-size="24" font-weight="900">決算発表日</text> <text x="660" y="98" fill="#282A36" font-size="18">工場が増えたわけでも、新製品が出たわけでもない</text>
+</svg>
+<p><span class="markp"><strong>「数字を発表した」だけで、会社の価値の評価が変わった。</strong></span></p>
+</section>
+<section id="会計の数字は情報である" class="slide level2">
+<h2>会計の数字は「情報」である</h2>
 <ul>
-<li>売上高：8,558,000 百万円（約8.5兆円）</li>
-<li>当期純利益：34,435 百万円（約344億円）</li>
-<li>自己資本（純資産）：526,962 百万円（約5,269億円）</li>
+<li class="fragment">この日、会社の中では<strong>新しいことは何も起きていない</strong></li>
+<li class="fragment">工場が増えたわけでも、新製品が出たわけでもない</li>
+<li class="fragment">ただ「数字を発表した」だけ</li>
+<li class="fragment">それだけで、何十億円という時価総額が動く</li>
 </ul>
+<div class="fragment">
+<div class="code-output">
+<p>つまり、会計は単なる記録ではなく<span class="marky"><strong>情報</strong></span>である。</p>
+<p>── ですが、これが「当たり前」になったのは、 実は<span class="markp"><strong>1968年</strong></span>のことです。</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="実証研究とは" class="title-slide slide level1 center">
+<h1>実証研究とは</h1>
+
+</section>
+<section id="年に何が起きたか" class="slide level2">
+<h2>1968年に何が起きたか</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>1968年より前の会計学</strong></p>
+<ul>
+<li>「<strong>あるべき</strong>利益の計算とは何か」</li>
+<li>「理論的に<strong>正しい</strong>測定方法は何か」</li>
+<li>議論は机の上で行われ、決着しなかった</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Ball and Brown (1968)</strong></p>
+<ul>
+<li>「正しいかどうかは置いておこう」</li>
+<li><span class="marky"><strong>「投資家が反応するか、データに聞けばいい」</strong></span></li>
+<li>それだけの発想の転換でした</li>
+</ul>
+</div></div>
+<div class="code-output">
+<p>この論文が、会計学を「机上の議論」から<strong>データで検証する学問</strong>に変えました。 いま世界中の会計研究者がやっていることは、ほぼすべてこの1本の子孫です。</p>
+</div>
+</section>
+<section id="ball-and-brown-1968-が描いた図" class="slide level2">
+<h2>Ball and Brown (1968) が描いた図</h2>
+<p>縦軸は<strong>累積異常リターン</strong>：毎月の株価の動きが「市場平均からどれだけ外れたか」を、発表の12か月前から足し上げたもの。 「予想」は、前年の利益などから機械的に作った予想値です。</p>
+<svg viewbox="0 0 1000 540" role="img" aria-label="グッドニュース企業とバッドニュース企業の累積異常収益" style="width:100%;max-width:840px;height:auto;">
+<line x1="90" y1="250" x2="960" y2="250" stroke="#879dde" stroke-width="2"></line> <line x1="90" y1="60" x2="90" y2="480" stroke="#879dde" stroke-width="2"></line> <text x="80" y="256" fill="#282A36" font-size="18" text-anchor="end">0</text> <text x="40" y="270" fill="#282A36" font-size="19" text-anchor="middle" transform="rotate(-90 40 270)">累積異常リターン</text> <line x1="656" y1="60" x2="656" y2="480" stroke="#e3439e" stroke-width="2" stroke-dasharray="7 6"></line> <text x="656" y="45" fill="#e3439e" font-size="21" font-weight="900" text-anchor="middle">決算発表</text> <polyline fill="none" stroke="#8556c7" stroke-width="5" stroke-linejoin="round" points="90,250 137,238 184,228 232,218 279,208 326,198 373,188 421,178 468,168 515,160 562,152 609,146 657,138 704,136 751,134 798,134 846,132 893,132 940,130"></polyline> <polyline fill="none" stroke="#9f3535" stroke-width="5" stroke-linejoin="round" points="90,250 137,268 184,286 232,304 279,322 326,340 373,358 421,376 468,394 515,410 562,424 609,436 657,448 704,452 751,454 798,456 846,458 893,458 940,460"></polyline> <text x="948" y="122" fill="#8556c7" font-size="22" font-weight="900" text-anchor="end">利益が予想より良かった会社</text> <text x="948" y="486" fill="#9f3535" font-size="22" font-weight="900" text-anchor="end">利益が予想より悪かった会社</text> <text x="90" y="510" fill="#282A36" font-size="19">発表の12か月前</text> <text x="940" y="510" fill="#282A36" font-size="19" text-anchor="end">6か月後</text>
+</svg>
+</section>
+<section id="この図の本当の面白さ" class="slide level2">
+<h2>この図の、本当の面白さ</h2>
+<ul>
+<li class="fragment">利益が良かった会社は上、悪かった会社は下。<strong>ここまでは予想どおり</strong></li>
+<li class="fragment">しかし、線が分かれ始めるのは<span class="markp"><strong>発表の「ずっと前」から</strong></span></li>
+<li class="fragment">発表の瞬間にドカンと分かれるのではなく、<strong>12か月かけてじわじわ分かれる</strong></li>
+</ul>
+<div class="fragment">
+<div class="code-output">
+<p>つまり、投資家は決算発表を待たずに、他の情報からすでに業績を知っていた。</p>
+<p><span class="marky"><strong>会計情報は「重要だけれど、遅い」。</strong></span> これが1968年に発見された事実でした。</p>
+</div>
+</div>
+<div class="fragment">
+<p>では、決算発表日そのものには<strong>何の意味もない</strong>のでしょうか？ ── その答えは、<strong>第9回</strong>でやります。</p>
+</div>
+</section>
+<section id="良い問いの2条件" class="slide level2 smaller">
+<h2>良い問いの2条件</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>① 検証可能性</strong>（testability）</p>
+<p>仮説をデータで確かめられること。</p>
+<p>確かめられない仮説は、 議論しても決着しません。</p>
+</div><div class="column" style="width:50%;">
+<p><strong>② 反証可能性</strong>（falsifiability）</p>
+<p><span class="markp"><strong>「間違いだ」と示せる</strong></span>こと。</p>
+<p>どんなデータが出ても 説明できてしまう主張は、 強い主張ではなく<strong>中身のない主張</strong>です。</p>
+</div></div>
+<div class="code-output">
+<p><strong>練習：</strong>次のうち、反証可能なのはどれでしょう？</p>
+<ol type="1">
+<li>「利益が予想を上回った会社の株価は、決算発表日に上がる」</li>
+<li>「株価は、投資家の気分しだいで上がったり下がったりする」</li>
+<li>「良い経営者は、良い会計を行う」</li>
+</ol>
+</div>
+<aside class="notes">
+<p>正解は1。「予想を上回ったのに発表日に株価が下がった会社が多い」というデータが出れば、間違いだと示せる。 2は、上がっても下がっても「気分のせい」と言えてしまう（どんなデータとも矛盾しない）。 3は、「良い経営者」「良い会計」の意味が決まっていないので、確かめようがない。 次回の予想シート（事前課題B）でも同じ型の問題を出すので、ここでは答えまで示してよい。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="規範的な問いと実証的な問い" class="slide level2">
+<h2>規範的な問いと、実証的な問い</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>規範的な問い</strong>（扱わない）</p>
+<ul>
+<li>利益はどう計算す<strong>べき</strong>か</li>
+<li>会計基準はどう<strong>あるべき</strong>か</li>
+</ul>
+<p>→ 価値観の問題。データでは決着しない</p>
+</div><div class="column" style="width:50%;">
+<p><strong>実証的な問い</strong>（扱う）</p>
+<ul>
+<li>利益の発表に投資家は反応する<strong>か</strong></li>
+<li>IFRSを採用した会社に共通点は<strong>あるか</strong></li>
+<li>「わずかに黒字」が多いのは<strong>なぜか</strong></li>
+</ul>
+<p>→ <span class="marky">データで決着する</span></p>
+</div></div>
+<p>どちらが偉いという話ではありません。 このクラスは<span class="markp"><strong>右側だけ</strong></span>を扱う、というだけのことです。</p>
+</section></section>
+<section>
+<section id="ライブ分析①rを触ってみる" class="title-slide slide level1 center">
+<h1>ライブ分析①：Rを触ってみる</h1>
+
+</section>
+<section id="今日はインストール不要です" class="slide level2">
+<h2>今日はインストール不要です</h2>
+<ul>
+<li>ここから先のコードは、<strong>このスライドの中で動きます</strong>（webR）</li>
+<li>読み込みに10〜20秒かかります。<span class="markp"><strong>いま ▶ を1回押しておいてください</strong></span></li>
+<li>第4回からは、<span class="markp"><strong>自分のPCに入れた R ＋ VS Code</strong></span> を使います（入れ方は第3回に全員で）</li>
+</ul>
+<div id="qwebr-insertion-location-1"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>まずは電卓として使ってみましょう。</p>
+</section>
+<section id="予想してください" class="slide level2 smaller">
+<h2>予想してください</h2>
+<p>サイコロの出た目の平均は、理論的には</p>
+<p><span class="math display">
+\frac{1+2+3+4+5+6}{6} = 3.5
+</span></p>
+<p>です。では、<strong>実際に10回振ったときの平均</strong>は、どのくらいになるでしょう？</p>
+<div class="code-output">
+<p><strong>予想</strong>：① ちょうど3.5になる　② 3.4〜3.6の範囲に収まる　③ 3.4〜3.6の外に出ることもよくある</p>
+</div>
+<div id="qwebr-insertion-location-2"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p><span class="markp"><strong>何回か押してみてください。</strong></span>毎回違う答えが出ます。</p>
+</section>
+<section id="では回数を増やすと" class="slide level2">
+<h2>では、回数を増やすと？</h2>
+<p><code>toss</code> の数字を <strong>100 → 1000 → 100000</strong> と変えて、実行してみてください。</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="fragment">
 <div class="code-output">
-<p><strong>やってみよう</strong>：<br>
-A社の当期純利益が好調で <strong>45,000百万円</strong> に増えたとします。<br>
-<code>earnings</code> の数値を書き換えて、もう一度 ▶ を押してください。ROEは何％になりますか？</p>
+<p><strong>回数を増やすほど、3.5に近づきます。</strong>（大数の法則）</p>
+<p>言い換えると──<span class="markp"><strong>サンプルが少ないと、偶然に振り回される。</strong></span></p>
+<p>これが、このクラスで何度も出てくる考え方です。 さっきの「1社だけ調べても何も見えない」も、まったく同じ話でした。</p>
 </div>
-<aside class="notes">
-<p>実際に数値をいじって ▶ を押してみてください。 利益が増えるとROEが上昇することが一瞬で確認できますね。 これがRの「電卓としての使い方」です。 しかし、企業が100社、1000社あったら、1社ずつ数値を手入力するのは大変です。そこで「ベクトル」を使います。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
 </section>
-<section id="rの基本操作②ベクトルcで複数企業を扱う" class="slide level2 smaller">
-<h2>Rの基本操作②：ベクトル（<code>c()</code>）で複数企業を扱う</h2>
-<p>Rの最大の強みは、<strong>「たくさんの数字をまとめて一瞬で計算できること（ベクトル演算）」</strong> です。</p>
-<ul>
-<li><code>c(...)</code> 関数（combineの略）で、複数の数値をひとまとめにします</li>
-<li>エクセルなら1行ずつコピー＆ペーストする計算が、Rなら<strong>1行のコードで全社同時に完了</strong>します</li>
-</ul>
+<section id="手を動かすペアワーク10分" class="slide level2 smaller">
+<h2>手を動かす：ペアワーク（10分）</h2>
+<div class="code-output">
+<p><strong>課題</strong>：<code>toss</code> を 10 / 100 / 1000 / 10000 と変えて、それぞれ<strong>5回ずつ</strong>実行し、 平均値の<strong>最大と最小</strong>を記録してください。</p>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>toss</th>
+<th>最小</th>
+<th>最大</th>
+<th>幅（最大−最小）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>100</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>1000</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>10000</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><span class="markp"><strong>問い：<code>toss</code> が10倍になると、「幅」はどうなりますか？</strong></span></p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<div class="code-output">
-<p>ループ処理（繰り返し文）を書かなくても、ベクトル同士を割り算するだけで全要素が一括計算されます！</p>
-</div>
 <aside class="notes">
-<p>エクセルでセルを下に引っ張る作業を、Rではベクトル演算一発で行います。 10社でも、1万社でも、コードは全く同じ <code>earnings / equity * 100</code> の1行です。 これがプログラミングを使う最大の理由です。</p>
+<p>想定解：toss が10倍になると、幅はおよそ 1/√10（約0.3倍）に縮む。 100倍にすると1/10。「10倍がんばっても、ばらつきは10分の1にはならない」がポイント。 5回ずつだと幅そのものがばらつくので、ペアごとの結果を持ち寄って比べると傾向が見やすい。</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2843,238 +2613,57 @@ A社の当期純利益が好調で <strong>45,000百万円</strong> に増えた
           display:block!important;
       }</style></aside>
 </section>
-<section id="rの基本操作③データフレーム表形式データ" class="slide level2 smaller">
-<h2>Rの基本操作③：データフレーム（表形式データ）</h2>
-<p>実証分析では、企業名、利益、資本などをまとめた<strong>「表（データフレーム）」</strong> を扱います。</p>
+<section id="なぜプログラミングなのか" class="slide level2 smaller">
+<h2>なぜプログラミングなのか</h2>
+<p>同じことを手作業でやったら、何分かかるでしょうか。</p>
 <div id="qwebr-insertion-location-5"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-
-<aside class="notes">
-<p><code>data.frame()</code> で作った表は、Excelのシートと同じ構造です。 <code>df$ROE &lt;- ...</code> と書くだけで、表の右端に「ROE」という新しい列が自動的に追加されます。 次はいよいよ、このROEを深く掘り下げる「デュポン分解」です。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<aside><div>
-<p><code>df$列名</code> で、データフレームの中の特定の列を自由に取り出したり、新しい列を追加したりできます。</p>
-</div></aside></section>
-<section id="roeのデュポン分解dupont-analysis" class="slide level2 smaller">
-<h2>ROEのデュポン分解（DuPont Analysis）</h2>
-<p>会計学の古典的・強力なフレームワーク：<strong>デュポンシステム</strong></p>
-<p>ROEは、単なる1つの比率ではなく、<strong>企業の3つの異なる活動の積</strong>に分解できます。</p>
-<p><span class="math display">
-\text{ROE} = \frac{\text{当期純利益}}{\text{自己資本}} = \underbrace{\frac{\text{当期純利益}}{\text{売上高}}}_{\text{① 売上高純利益率}} \times \underbrace{\frac{\text{売上高}}{\text{総資産}}}_{\text{② 総資産回転率}} \times \underbrace{\frac{\text{総資産}}{\text{自己資本}}}_{\text{③ 財務レバレッジ}}
-</span></p>
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:33%;">
-<h3 id="売上高純利益率">① 売上高純利益率</h3>
-<p><strong>【収益性 / マージン】</strong><br>
-売上高のうち、どれだけ最終利益として残せたか？<br>
-（高付加価値、ブランド力）</p>
-</div><div class="column" style="width:33%;">
-<h3 id="総資産回転率">② 総資産回転率</h3>
-<p><strong>【効率性 / 資産回転】</strong><br>
-持っている資産を使って、どれだけ効率よく売上を稼いだか？<br>
-（薄利多売、店舗や設備の回転速度）</p>
-</div><div class="column" style="width:33%;">
-<h3 id="財務レバレッジ">③ 財務レバレッジ</h3>
-<p><strong>【財務構成 / てこの原理】</strong><br>
-自己資本の何倍の総資産を動かしているか？<br>
-（借入金・負債の活用度合い）</p>
-</div></div>
-<aside class="notes">
-<p>デュポン分解は、ROEという数字の「中身」をレントゲン写真のように暴き出す手法です。 同じROE 10%の企業でも、 ・圧倒的な利益率で稼いでいるのか（Appleなど） ・薄利多売で資産を高速回転させているのか（スーパーや小売業） ・それとも莫大な借金をしてレバレッジを効かせているだけなのか によって、企業の姿は全く異なります。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="webr演習②デュポン分解をrで計算する" class="slide level2 smaller">
-<h2>webR演習②：デュポン分解をRで計算する</h2>
-<p>さきほどの5社データについて、3つの要素をRで計算してみましょう。</p>
-<div id="qwebr-insertion-location-6"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div class="code-output">
-<p><strong>確認してみよう</strong>：<br>
-①利益率（%） × ②総資産回転率 × ③レバレッジ を電卓で掛けると、ほぼ <strong>ROE（%）</strong> と一致します！<br>
-（※ 端数処理の丸め誤差を除く）</p>
+<ul>
+<li><strong>繰り返し</strong>が一瞬で終わる</li>
+<li><strong>同じ手順を、いつでも再現できる</strong>（クリック操作は再現できない）</li>
+<li>間違いが見つかったとき、<strong>1行直して全部やり直せる</strong></li>
+</ul>
 </div>
-<aside class="notes">
-<p>コードを実行してみてください。 各企業のROEが、どの要素に支えられているかが数字で見えてきます。 ここからがペアワークです！</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="ペアワーク10分roeの比較と要因分析" class="slide level2 smaller">
-<h2>ペアワーク（10分）：ROEの比較と要因分析</h2>
-<p>隣の人とペアを組んで、上の表の数字をじっくり観察してください。</p>
+<section id="aiに書かせてみる" class="slide level2">
+<h2>AIに書かせてみる</h2>
 <div class="code-output">
-<p><strong>ペアで解き明かす2つの問い</strong>：</p>
-<ol type="1">
-<li><strong>問1</strong>：5社の中で、最もROEが高いのはどの企業ですか？ また最も低い企業は？</li>
-<li><strong>問2</strong>：最もROEが高い企業は、<strong>なぜROEが高いのでしょうか？</strong><br>
-デュポン分解の3要素（利益率・総資産回転率・レバレッジ）のどれが決定的な要因ですか？</li>
-</ol>
+<p><strong>やってみよう</strong>：手元のAIに、こう頼んでみてください。</p>
+<blockquote>
+<p>「Rで、サイコロを1000回振ったときの出た目の平均を計算するコードを書いて」</p>
+</blockquote>
 </div>
 <p><br></p>
-<h3 id="探索用コード自由に数字をいじってみよう">探索用コード（自由に数字をいじってみよう）</h3>
-<div id="qwebr-insertion-location-7"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<aside class="notes">
-<p>ペアで話し合ってみてください。 単に「ROEが高い＝優れた会社」と片付けていいのか？ レバレッジの数字に注目してみると、面白い発見があるはずです。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<ul>
+<li class="fragment">おそらく、上とほぼ同じコードが返ってきます</li>
+<li class="fragment"><strong>それでいいのです。</strong>このクラスは、コードを書けることを目標にしていません</li>
+<li class="fragment">大事なのは、返ってきたコードが<span class="markp"><strong>本当に正しいか確かめられること</strong></span></li>
+<li class="fragment">そのために、仕組みのほうを学びます</li>
+</ul>
 </section></section>
 <section>
-<section id="持ち寄り-ディスカッション" class="title-slide slide level1 center">
-<h1>持ち寄り &amp; ディスカッション</h1>
+<section id="持ち寄り" class="title-slide slide level1 center">
+<h1>持ち寄り</h1>
 
 </section>
-<section id="持ち寄り数字から何が見えたか" class="slide level2 smaller">
-<h2>持ち寄り：数字から何が見えたか？</h2>
-<p>各ペアで発見したことを共有しましょう。</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="結果の確認">結果の確認</h3>
-<ul>
-<li><strong>ROE最高</strong>：<strong>B自動車</strong>（約 8.30%）</li>
-<li><strong>ROE最低</strong>：<strong>C自動車</strong>（約 4.13%）</li>
-<li><strong>A自動車</strong>：約 6.54%</li>
-<li><strong>D自動車</strong>：約 7.37%</li>
-<li><strong>E自動車</strong>：約 6.93%</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="デュポン分解で見えたb自動車の正体">デュポン分解で見えた「B自動車の正体」</h3>
-<ul>
-<li class="fragment">B自動車の売上高純利益率は <strong>0.88%</strong>（5社中ワースト2位！）</li>
-<li class="fragment">それなのに、なぜROEはトップなのか？</li>
-<li class="fragment">→ <strong>財務レバレッジが 12.74倍</strong> と突出して高い！</li>
-<li class="fragment">つまり、B自動車は「稼ぐ力が飛び抜けている」のではなく、<strong>「多額の負債（借入金）を活用して自己資本を小さく抑えている」</strong> ためにROEが高く見えている！</li>
-</ul>
-</div></div>
-<div class="fragment">
+<section id="気になる企業を1社" class="slide level2">
+<h2>気になる企業を、1社</h2>
 <div class="code-output">
-<p><span class="markp"><strong>「ROEが高い ＝ 経営効率が良い優良企業」という素朴な見方は、本当か？</strong></span></p>
+<p><strong>共有シートに、次の3つを書いてください（1人1行）。</strong></p>
+<ol type="1">
+<li>気になる企業（1社）</li>
+<li>その企業について<strong>知りたいこと</strong>（1つ）</li>
+<li>それは<strong>データで確かめられそうか</strong>（○ / △ / ×）</li>
+</ol>
 </div>
-</div>
-<aside class="notes">
-<p>B自動車の数字を見ましたか？ 純利益率は1%未満で、ちっとも儲かっていません。 しかしレバレッジが12倍以上あります。 つまり借金で資産を膨らませているから、分母の自己資本が小さくなってROEが高く見えているだけなのです。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="裏切りtwist" class="title-slide slide level1 center">
-<h1>裏切り（Twist）</h1>
-
-</section>
-<section id="今日の裏切りroeの罠と仮説の深化" class="slide level2 smaller">
-<h2>今日の裏切り：ROEの罠と「仮説の深化」</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="素朴な仮説世間の常識">素朴な仮説（世間の常識）</h3>
-<p>「ROEが高い企業ほど、経営が優秀であり、将来の株価リターンも高いはずだ」</p>
 <p><br></p>
-<p>経済ニュースや投資本は、こぞってこう書きます：<br>
-<em>「ROE 8%以上の優良企業に投資せよ！」</em></p>
-</div><div class="column" style="width:50%;">
-<h3 id="実証会計研究が暴いた裏の現実">実証会計研究が暴いた「裏の現実」</h3>
-<ol type="1">
-<li class="fragment"><strong>過剰負債のリスク</strong>
 <ul>
-<li class="fragment">レバレッジで引き上げたROEは、不況や金利上昇局面で一瞬にして巨額赤字・倒産危機に転落する</li>
-</ul></li>
-<li class="fragment"><strong>自社株買いによる「見かけのROE操作」</strong>
-<ul>
-<li class="fragment">利益が増えていなくても、余元で自社株買いをして自己資本（分母）を減らせば、ROEはいくらでも吊り上げられる</li>
-</ul></li>
-<li class="fragment"><strong>先行研究の知見（リサーチギャップ）</strong>
-<ul>
-<li class="fragment">先行研究は、ROEをそのまま信じるのではなく、「営業キャッシュフロー」や「発生高（アクルーアル）」、「資本コスト」と対比して評価するモデルを発展させてきた</li>
-</ul></li>
-</ol>
-</div></div>
-<div class="fragment">
-<div class="code-output">
-<p><strong>これが仮説構築サイクルの醍醐味です</strong>：<br>
-「ROEが高い＝良い」という常識を疑い、<strong>文献レビューとリプリケーションによって「どんな条件のときROEは危険なシグナルになるか」</strong> を突き詰めることこそが、実証研究のフロンティアです。</p>
-</div>
-</div>
+<li>ここに書いたものが、<strong>最終レポート（第13・14回）の種</strong>になります</li>
+<li>いま「×」でも構いません。第2回で、<strong>確かめられる形に書き直す</strong>練習をします</li>
+</ul>
 <aside class="notes">
-<p>これこそが「裏切り」です。 ROEが高い企業を手放しで褒めてはいけません。 自社株買いや借金で分母を圧縮した「見かけのROE」に騙されないために、会計研究者は様々な工夫をしてきました。 この話は、第7回・第8回の「利益マネジメント」や第11回の「ファンダメンタル分析」へとつながっていきます。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="今日のまとめ" class="slide level2 smaller">
-<h2>今日のまとめ</h2>
-<ol type="1">
-<li class="fragment"><strong>反証可能性が実証研究の命</strong>
-<ul>
-<li class="fragment">「どんなデータが出たら自分の仮説は間違いか（負けの条件）」を、データを見る前に決める。</li>
-<li class="fragment">測れる言葉、比較対象、規範論（べき論）の排除。</li>
-</ul></li>
-<li class="fragment"><strong>仮説構築のサイクル</strong>
-<ul>
-<li class="fragment">思いつきで仮説を立てない。</li>
-<li class="fragment"><strong>文献レビュー</strong>で既知と未知（リサーチギャップ）を整理し、<strong>リプリケーション</strong>で先行研究を追試・再現してから、独自の仮説を導出する。</li>
-</ul></li>
-<li class="fragment"><strong>Rの基本操作とROE計算</strong>
-<ul>
-<li class="fragment">変数代入（<code>&lt;-</code>）、ベクトル（<code>c()</code>）、データフレーム（<code>data.frame()</code>）。</li>
-<li class="fragment">ROEをデュポン分解（利益率 × 回転率 × レバレッジ）することで、企業の真の姿をあぶり出すことができる。</li>
-</ul></li>
-</ol>
-<aside class="notes">
-<p>今日学んだことを整理しました。 反証可能性、文献レビューとリプリケーションのサイクル、そしてRでのROEとデュポン分解の計算です。</p>
+<p>共有スプレッドシートのURLをここに貼る。 書き終わった学生から数名に読み上げてもらい、「それは検証可能か？」をクラスで判定する。</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -3092,112 +2681,88 @@ A社の当期純利益が好調で <strong>45,000百万円</strong> に増えた
 <h1>次回に向けて</h1>
 
 </section>
-<section id="次回第3回のテーマrでのデータ分析分布と集計" class="slide level2 smaller">
-<h2>次回（第3回）のテーマ：Rでのデータ分析（分布と集計）</h2>
-<div class="code-output">
-<p><strong>今日の問い</strong>は「ROEの裏側」でした。<br>
-<strong>次回の問い</strong>は：<span class="markp"><strong>「『平均的な日本企業』とは、どんな企業か？」</strong></span> です。</p>
-</div>
-<p><br></p>
+<section id="裏切り今日の話はこれで終わりません" class="slide level2">
+<h2>裏切り：今日の話は、これで終わりません</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="次回扱うこと">次回扱うこと</h3>
+<p>今日わかったこと</p>
 <ul>
-<li>上場企業のリアルな財務データ</li>
-<li><strong>ExcelファイルやCSVをRで読み込む方法</strong></li>
-<li>平均値 vs 中央値（<strong>分布の歪み</strong>）</li>
-<li>なぜ実証分析では「金額」ではなく「比率」にするのか（<strong>規模効果の除去</strong>）</li>
-<li>Rによる業種別集計</li>
+<li>会計の数字は情報である</li>
+<li>決算発表で株価は動く</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3 id="授業後半のビッグイベント">授業後半のビッグイベント！</h3>
+<p>でも──</p>
 <ul>
-<li><strong>環境構築大会（15分）</strong></li>
-<li>教室で全員一斉に自分のPCへ <strong>R + VS Code + Quarto</strong> をインストールします！</li>
-<li>事前に必要な準備は次回の事前課題を確認してください。</li>
+<li>線は<span class="markp"><strong>発表の12か月前から</strong></span>分かれていた</li>
+<li>では、決算発表日そのものには 意味がないのか？</li>
+<li>そもそも「利益が予想より良い」の <strong>「予想」って誰の予想？</strong></li>
 </ul>
 </div></div>
-<aside class="notes">
-<p>次回は第3回です。 配布するデータ（Excel/CSV）をRで読み込み、日本の全上場企業の売上高分布を調べます。 平均値と中央値の違いに驚くはずです。 そして授業の後半では、全員のPCにRの開発環境をインストールする環境構築大会を行います！</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<div class="code-output">
+<p>問いは、答えるたびに増えます。<strong>それが研究の面白いところです。</strong></p>
+</div>
 </section>
-<section id="次回第3回の事前課題" class="slide level2 smaller">
-<h2>次回（第3回）の事前課題</h2>
+<section id="次回第2回の事前課題" class="slide level2 smaller">
+<h2>次回（第2回）の事前課題</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 31%">
-<col style="width: 31%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>課題</th>
+<th></th>
 <th>内容</th>
-<th style="text-align: center;">目安時間</th>
-<th style="text-align: center;">提出</th>
+<th>目安</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>A. 読む</strong></td>
-<td>教科書 第3章／解説動画（moodle）</td>
-<td style="text-align: center;">20分</td>
-<td style="text-align: center;">なし</td>
+<td><strong>A. 見る</strong></td>
+<td>教科書 第1章／解説動画（manabaに掲載）</td>
+<td>30分</td>
 </tr>
 <tr class="even">
 <td><strong>B. 予想する</strong></td>
-<td><span class="markp"><strong>予想シート</strong></span>：上場企業の売上高、<strong>平均値と中央値はどちらが大きいか？ 何倍違うか？</strong></td>
-<td style="text-align: center;"><strong>3分</strong></td>
-<td style="text-align: center;"><strong>必須（moodle）</strong></td>
+<td><span class="markp"><strong>予想シート</strong></span>：3つの主張のうち、反証可能なのはどれか</td>
+<td><strong>3分</strong></td>
 </tr>
 <tr class="odd">
 <td><strong>C. 手を動かす</strong></td>
-<td>配布データ（Excel/CSV）をRで読み込み、関数（<code>mean()</code>, <code>median()</code>, <code>summary()</code>）で計算してみる</td>
-<td style="text-align: center;">15分</td>
-<td style="text-align: center;"><strong>必須（moodle）</strong></td>
+<td>経済ニュースを1本選び、その主張を<strong>検証可能な問いに書き直す</strong></td>
+<td>20分</td>
 </tr>
 <tr class="even">
-<td><strong>D. 環境準備</strong></td>
-<td>自分のノートPCの空き容量（3GB以上）を確認し、教室に持参する準備をする</td>
-<td style="text-align: center;">5分</td>
-<td style="text-align: center;">なし</td>
+<td><strong>D. 問いを書く</strong></td>
+<td>今日書いた「知りたいこと」をもとに、<strong>自分の問いを1文で書く</strong></td>
+<td>10分</td>
 </tr>
 </tbody>
 </table>
-<p><br></p>
 <div class="code-output">
 <ul>
-<li><strong>今回から本格的な事前課題が始まります！</strong><br>
-</li>
-<li><strong>特に Bの予想シート（3分）は必ず提出してください！</strong> 次回はみなさんの回答分布を冒頭に映します。</li>
-<li>提出先：<strong>moodle+R</strong> の各提出欄から提出してください。</li>
-<li>質問・相談はいつでもメールへ：📧 <code>matsuura@fc.ritsumei.ac.jp</code></li>
+<li><strong>B は必ず出してください。</strong>集計結果を、次回の冒頭で映します。</li>
+<li><strong>C は正解がありません。</strong>書き直してみた、という事実が大事です。</li>
+<li><strong>D は次回、全員が1分ずつ発表します。</strong></li>
 </ul>
 </div>
-<aside class="notes">
-<p>第1回は事前課題がありませんでしたが、次回（第3回）に向けて今回から初めて事前課題が始まります。 特にBの予想シートは3分で終わる簡単なものですので、忘れずにmoodleから提出してください。 次回はみんなの予想の集計から授業を始めます！ お疲れ様でした。</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</section>
+<section id="今日決めること" class="slide level2">
+<h2>今日決めること</h2>
+<ol type="1">
+<li class="fragment"><strong>ペア</strong>（ライブ分析の相棒）── 隣の人で構いません</li>
+<li class="fragment"><strong>報告担当の順番</strong>（第7回以降）</li>
+<li class="fragment"><strong>ディスカッサントの順番</strong> ── 全員に回ります</li>
+<li class="fragment">共有スプレッドシートへのアクセス確認</li>
+<li class="fragment">manaba の予想シートが開けるか確認</li>
+</ol>
+<div class="fragment">
+<div class="code-output">
+<p>質問はいつでも 📧 matsuura@fc.ritsumei.ac.jp</p>
+<p>次回、<strong>みんなの予想の集計</strong>から始めます。</p>
+</div>
+</div>
 
 </section></section>
     </div>
@@ -3209,18 +2774,18 @@ A社の当期純利益が好調で <strong>45,000百万円</strong> に増えた
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="Presemi_2026_02_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="Presemi_2026_02_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="Presemi_2026_02_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="Presemi_2026_02_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="Presemi_2026_02_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="Presemi_2026_02_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="Presemi_2026_02_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="Presemi_2026_02_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="Presemi_2026_02_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="Presemi_2026_01_files/libs/revealjs/plugin/zoom/zoom.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
