@@ -58,3 +58,106 @@
   max-height: 260px;
   overflow: auto;
 }
+
+/* =========================================================
+   2カラム・3カラムのレイアウト重複・重なり防止
+   ========================================================= */
+
+/* --- columns コンテナ：Flexboxレイアウトと適切なgapの強制 --- */
+.reveal .columns {
+  display: flex !important;
+  gap: 2.2rem !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+/* --- column 単体：境界箱計算、縮小許可、文字折り返し --- */
+.reveal .column {
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* --- インライン幅指定時の安全なサイズ計算（gap分を引いて隣と重ならないようにする） --- */
+.reveal .columns > .column[style*="width: 50%"],
+.reveal .columns > .column[style*="width:50%"] {
+  flex: 1 1 0% !important;
+  width: calc(50% - 1.1rem) !important;
+  max-width: calc(50% - 1.1rem) !important;
+}
+
+.reveal .columns > .column[style*="width: 33%"],
+.reveal .columns > .column[style*="width:33%"] {
+  flex: 1 1 0% !important;
+  width: calc(33.333% - 1.5rem) !important;
+  max-width: calc(33.333% - 1.5rem) !important;
+}
+
+.reveal .columns > .column[style*="width: 60%"],
+.reveal .columns > .column[style*="width:60%"] {
+  flex: 3 1 0% !important;
+  width: calc(60% - 1.4rem) !important;
+  max-width: calc(60% - 1.4rem) !important;
+}
+
+.reveal .columns > .column[style*="width: 40%"],
+.reveal .columns > .column[style*="width:40%"] {
+  flex: 2 1 0% !important;
+  width: calc(40% - 1.0rem) !important;
+  max-width: calc(40% - 1.0rem) !important;
+}
+
+.reveal .columns > .column[style*="width: 70%"],
+.reveal .columns > .column[style*="width:70%"] {
+  flex: 7 1 0% !important;
+  width: calc(70% - 1.6rem) !important;
+  max-width: calc(70% - 1.6rem) !important;
+}
+
+.reveal .columns > .column[style*="width: 30%"],
+.reveal .columns > .column[style*="width:30%"] {
+  flex: 3 1 0% !important;
+  width: calc(30% - 0.8rem) !important;
+  max-width: calc(30% - 0.8rem) !important;
+}
+
+/* --- カラム内の見出し・リスト・段落の微調整 --- */
+.reveal .column h3 {
+  font-size: 1.08em !important;
+  line-height: 1.25 !important;
+  margin-top: 0.1em !important;
+  margin-bottom: 0.4em !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.reveal .column h4 {
+  font-size: 1.0em !important;
+  line-height: 1.25 !important;
+  margin-top: 0.1em !important;
+  margin-bottom: 0.3em !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.reveal .column ul,
+.reveal .column ol {
+  padding-left: 1.3em !important;
+  margin: 0.25em 0 !important;
+  box-sizing: border-box !important;
+}
+
+.reveal .column li {
+  margin-bottom: 0.2em !important;
+  line-height: 1.35 !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.reveal .column .code-output {
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
