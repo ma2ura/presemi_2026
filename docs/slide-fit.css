@@ -40,12 +40,21 @@
    foreignObject の高さ不足で切れるのを防ぐ */
 .reveal .cluster-label foreignObject { overflow: visible; }
 
-/* mermaid 図の高さ上限（.diagram-fit を付けたスライドで有効） */
-.reveal .slides section.diagram-fit pre.mermaid,
-.reveal .slides section.diagram-fit .cell-output-display > svg,
-.reveal .slides section.diagram-fit svg[id^="mermaid"] {
-  max-height: 58vh;
-  height: auto;
+/* mermaid の余白と最大幅の調整（スライド幅に収めつつ、内部foreignObjectのflex衝突を避ける） */
+.reveal .slides section.diagram-fit svg[id^="mermaid"],
+.reveal .slides section svg[id^="mermaid"] {
+  max-width: 98% !important;
+  max-height: 55vh !important;
+  height: auto !important;
+  margin: 0.5em auto !important;
+  display: block !important;
+}
+
+.reveal svg[id^="mermaid"] .node rect,
+.reveal svg[id^="mermaid"] .node circle,
+.reveal svg[id^="mermaid"] .node polygon {
+  rx: 6px !important;
+  ry: 6px !important;
 }
 
 /* --- webR のコードセル：エディタと出力欄をコンパクトに --- */
@@ -159,5 +168,31 @@
 .reveal .column .code-output {
   box-sizing: border-box !important;
   width: 100% !important;
+}
+
+/* =========================================================
+   スライド縦方向の余白・はみ出し抑制
+   ========================================================= */
+
+/* 不要に大きな br の行送りを詰める */
+.reveal .slides section br {
+  line-height: 0.3em;
+  content: "";
+  display: block;
+  margin-top: 0.15em;
+}
+
+/* blockquote の上下余白をコンパクトに */
+.reveal blockquote {
+  margin: 0.25em auto !important;
+  padding: 0.3em 1em !important;
+}
+
+/* aside（脚注）のフォントと配置 */
+.reveal .slide aside,
+.reveal .slide div.aside {
+  font-size: 0.62em !important;
+  line-height: 1.25 !important;
+  bottom: 12px !important;
 }
 
