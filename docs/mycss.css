@@ -67,14 +67,17 @@ a:hover {
     box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
 }
 
-/* 未定のリンクのスタイル */
-a[href$="html"]:not([href*="gaisho_2024"]) {
+/* 未定・準備中のリンクのスタイル（class="disabled" を付けた要素のみ適用） */
+a.disabled,
+a[aria-disabled="true"] {
     color: #999;
     background: #f8f8f8;
     cursor: not-allowed;
+    pointer-events: none;
 }
 
-a[href$="html"]:not([href*="gaisho_2024"]):hover {
+a.disabled:hover,
+a[aria-disabled="true"]:hover {
     background: #f8f8f8;
     color: #999;
     transform: none;
