@@ -1,0 +1,30 @@
+---
+title: "Quarto超入門"
+author: "Soichi Matsuura"
+format:
+  html:
+    code-line-numbers: false
+    html-math-method: katex
+    footer: "Ritsumeikan University, Business Administration"
+    logo: "img/rits_logo.png"
+engine: markdown
+execute:
+  echo: true
+  warning: false
+  highlight-style: github
+---
+
+# はじめに {background-color="#f7f5fb"}
+
+## 動的レポーティングとは
+
+動的レポーティングとは、データ分析の結果を文章としてまとめる際に、データの更新や分析の変更に応じて、レポートの内容も自動的に更新される仕組みを指します。
+これにより、手作業での更新作業を減らし、効率的かつ正確なレポート作成が可能となります。
+今日、大学生の大多数が、レポートを作成するときに用いるアプリケーションは、Microsoft社のWord(以下、MS Word)です。
+MS Wordは、文章を作るのに便利なアプリケーションですが、動的レポーティングの機能は備えていません。
+つまり、MS Wordでレポートを作成する場合、データ分析や作表、作図は、別のアプリケーションで行い(たとえば、MS Excel)、その結果をコピーしてMS Wordに貼り付ける必要があります。
+そして、データ分析の結果が更新された場合には、再度コピーして貼り付ける作業を行う必要があります。
+これは、非常に手間がかかる作業であり、また、貼り付けの際に誤って古いデータを残してしまうなどのヒューマンエラーのリスクもあります。
+
+そこで、動的レポーティングの仕組みを活用することで、データ分析の結果が更新された場合でも、レポートの内容が自動的に更新されるようになります。
+その動的レポーティングを実現するためのツールとして、**R言語**とMarkdownベースのドキュメント作成ツールである**Quarto**が注目されています。

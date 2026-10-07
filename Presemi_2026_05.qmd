@@ -1,0 +1,883 @@
+---
+title: |
+  <b>プレゼミ</b> </br>
+  <span style="color: #282A36; ">Day5 : Rでのデータ分析（応用）</span>
+author: "Soichi Matsuura"
+format:
+  revealjs:
+    theme: ["default", "dracula.scss"]
+    transition: convex
+    slide-number: true
+    df_print: paged
+    code-line-numbers: false
+    html-math-method: katex
+    width: 1400
+    footer: "Ritsumeikan University, Business Administration"
+    logo: "img/rits_logo.pdf"
+    controls: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  highlight-style: github
+css: mystyle.css
+---
+
+```{r}
+#| purl: false
+#| echo: false
+suppressMessages(library(tidyverse))
+# スライドの図で日本語が □ にならないようにする（教員側の描画設定）
+if (.Platform$OS.type == "windows") {
+  grDevices::windowsFonts(jp = grDevices::windowsFont("Meiryo"))
+  theme_set(theme_minimal(base_family = "jp", base_size = 15))
+} else {
+  theme_set(theme_minimal(base_size = 15))
+}
+options(pillar.print_max = 8, pillar.print_min = 8)
+```
+
+## 今日の95分
+
+| 時間 | 誰が | 内容 |
+|---|---|--------------|
+| 00–05 | 教員 | **みんなの予想の集計**（利益率のヒストグラムの形） |
+| 05–15 | 学生 | なぜそう予想したか／事前課題Cの図を1枚映す |
+| 15–40 | 学生 | 報告 → ディスカッサントの反論 → 議論 |
+| 40–55 | 教員 | 解説：問いの型と図の型／良い図の条件／**アンスコムの四重奏** |
+| 55–75 | **学生** | **ライブ分析：悪い図を良い図に直す**（ペアで相互チェック） |
+| 75–85 | 学生 | 持ち寄り：全員の図を貼り出して投票 |
+| 85–95 | 教員 | まとめ／裏切り／次回の事前課題 |
+
+::: {.code-output}
+今日開くファイルは <span class="markp">**`main/05_ouyou.R`**</span> 1本だけです。
+前回と同じく Posit Cloud。**インストールは何もしません。**
+:::
+
+# 前回の宿題
+
+## あの棒グラフを覚えていますか
+
+```{r}
+#| script: "05_ouyou"
+#| echo: false
+library(tidyverse)
+firms <- read_csv("data/processed/sample_firms.csv")
+```
+
+```{r}
+#| script: "05_ouyou"
+#| echo: false
+#| eval: false
+# 図の日本語が □ になるときは、ここを自分の環境に合わせて変える
+# （Posit Cloud では通常このままで表示されます）
+theme_set(theme_minimal(base_size = 13))
+```
+
+```{r}
+#| purl: false
+#| echo: false
+#| fig-height: 4.0
+#| fig-width: 11
+firms |>
+  filter(決算年度 == 2024) |>
+  group_by(業種) |>
+  summarise(売上高中央値 = median(売上高)) |>
+  ggplot(aes(x = fct_reorder(業種, 売上高中央値), y = 売上高中央値)) +
+  geom_col(fill = "#8556c7") +
+  coord_flip() +
+  labs(x = NULL, y = "売上高の中央値（百万円）")
+```
+
+::: {.code-output}
+第4回の最後に、こう聞きました。
+
+> **中央値だけを見て、何を見落としていたでしょうか。**
+:::
+
+## 棒1本は、何社分か
+
+::: {.columns}
+::: {.column width="50%"}
+**卸売業の棒の高さ**
+
+`r firms |> filter(決算年度 == 2024, 業種 == "卸売業") |> summarise(m = median(売上高)) |> pull(m) |> round() |> format(big.mark = ",")` 百万円
+
+これは <span class="markp">**`r firms |> filter(決算年度 == 2024, 業種 == "卸売業") |> nrow()`社のうちの、まん中の1社**</span>の数字です。
+:::
+::: {.column width="50%"}
+::: {.fragment}
+**残りの`r firms |> filter(決算年度 == 2024, 業種 == "卸売業") |> nrow() - 1`社は、どこへ行ったのでしょう。**
+
+<br>
+
+棒グラフは、**1つのグループを1つの数字に潰します。**
+
+潰した瞬間に消えるもの ──
+それが今日のテーマです。
+:::
+:::
+:::
+
+## 潰す前の姿を見る
+
+```{r}
+#| script: "05_ouyou"
+#| fig-height: 3.8
+#| fig-width: 11
+firms |>
+  filter(決算年度 == 2024) |>
+  ggplot(aes(x = fct_reorder(業種, 売上高, .fun = median), y = 売上高)) +
+  geom_boxplot(fill = "#8556c7", alpha = 0.4) +
+  coord_flip() +
+  labs(x = NULL, y = "売上高（百万円）")
+```
+
+::: {.fragment}
+<span class="markp">**読めません。**</span> 1社の巨大企業が、横軸を全部持っていってしまいました。
+:::
+
+::: {.notes}
+ここで「読めない図」をわざと見せる。学生に「何が悪い？」と聞く。
+「外れ値のせい」まで出れば十分。次のスライドで軸を変える。
+:::
+
+## 軸の目盛りを変えるだけで読める
+
+```{r}
+#| script: "05_ouyou"
+#| fig-height: 3.8
+#| fig-width: 11
+firms |>
+  filter(決算年度 == 2024) |>
+  ggplot(aes(x = fct_reorder(業種, 売上高, .fun = median), y = 売上高)) +
+  geom_boxplot(fill = "#8556c7", alpha = 0.4) +
+  coord_flip() +
+  scale_y_log10() +
+  labs(x = NULL, y = "売上高（百万円・対数目盛）")
+```
+
+::: {.code-output}
+`scale_y_log10()` ＝ **目盛りを「10倍ごと」に刻む**。
+`1e+03` は1,000、`1e+04` は10,000、`1e+05` は100,000 という意味です。
+:::
+
+## 箱ひげ図の読み方（30秒）
+
+::: {.columns}
+::: {.column width="46%"}
+| 部品 | 意味 |
+|---|---|
+| 箱の**まん中の線** | 中央値 |
+| 箱の**左端・右端** | 下位25%・上位25%の位置 |
+| **ひげ** | だいたいの範囲 |
+| 点 | ひげから外れた会社 |
+:::
+::: {.column width="54%"}
+::: {.code-output}
+棒グラフが見せていたのは、
+**箱のまん中の線1本だけ**でした。
+
+箱の幅（ばらつき）と点（外れ値）は、
+<span class="markp">**全部消えていた**</span>のです。
+:::
+:::
+:::
+
+::: {.fragment}
+<br>
+**そして、いちばん大事なのはこれです。**
+:::
+
+## 業種の差より、業種の中の差のほうが大きい
+
+::: {.code-output}
+さっきの図をもう一度見てください。**箱どうしが、ほとんど重なっています。**
+
+- 卸売業の下位25%の会社は、サービス業の中央値より**小さい**
+- サービス業の上位の会社は、卸売業の中央値より**大きい**
+:::
+
+<br>
+
+::: {.fragment}
+<div style="text-align:center; font-size:1.3em; font-weight:900;">
+「<span class="marky">卸売業は規模が大きい業種だ</span>」と言ったとき、<br>
+その業種の<b>どの会社の話</b>をしているのでしょうか。
+</div>
+:::
+
+::: {.notes}
+第3回の「平均的な日本企業」の議論と同じ構造。
+グループの代表値だけで語ると、グループ内の分散を無視することになる。
+第12回の「異質性」への伏線として置いておく。深追いはしない。
+:::
+
+## 今日の問い
+
+<br>
+
+<div style="text-align:center; font-size:1.6em; font-weight:900;">
+  <span class="marky">この図は、何を隠しているか</span>
+</div>
+
+<br>
+
+::: {.code-output}
+図は、見せるための道具であると同時に、**隠すための道具**でもあります。
+
+意図的に隠す人もいますが、たいていは<span class="markp">**気づかずに隠しています。**</span>
+今日は、その「気づかずに」を減らす回です。
+:::
+
+# 予想の答え合わせ
+
+## 事前課題Bの4択
+
+::: {.code-output}
+**利益率（純利益 ÷ 総資産）のヒストグラムは、どんな形になるか。**
+
+① 売上高と同じく、**右に長く裾を引いた**形
+② **ゼロ付近を中心に、ほぼ左右対称**の山
+③ 山が**2つ**ある（ふたこぶ）
+④ ほとんどが1か所に固まり、**山と呼べる形にならない**
+:::
+
+<br>
+
+::: {.code-output}
+※ 授業当日、manaba／Google Forms の集計グラフをここに貼り付けて映す。
+:::
+
+::: {.notes}
+①を選ぶ学生が多いはず。第3回・第4回で「売上高は右に歪む」を叩き込んだから。
+その「引きずられ」こそが今日の学びになる。多数派をいじらず、少数派から理由を聞く。
+:::
+
+## まず、売上高のヒストグラム
+
+```{r}
+#| script: "05_ouyou"
+#| fig-height: 3.6
+#| fig-width: 11
+firms |>
+  filter(決算年度 == 2024) |>
+  ggplot(aes(x = 売上高)) +
+  geom_histogram(bins = 40, fill = "#8556c7", colour = "white") +
+  labs(x = "売上高（百万円）", y = "社数")
+```
+
+::: {.code-output}
+おなじみの形。<span class="markp">**左に全部固まって、右に長い裾。**</span>
+「平均 ＞ 中央値」になるのは、この裾のせいでした（第3回）。
+:::
+
+## では、利益率は
+
+```{r}
+#| script: "05_ouyou"
+#| fig-height: 3.6
+#| fig-width: 11
+firms |>
+  mutate(総資産利益率 = 純利益 / 総資産) |>
+  ggplot(aes(x = 総資産利益率)) +
+  geom_histogram(bins = 40, fill = "#8556c7", colour = "white") +
+  labs(x = "総資産利益率（純利益 ÷ 総資産）", y = "社数")
+```
+
+::: {.fragment}
+<span class="marky">**答えは ② でした。**</span> 歪みが、ほとんど消えています。
+:::
+
+## なぜ歪みが消えたのか
+
+::: {.columns}
+::: {.column width="48%"}
+**売上高**（金額そのもの）
+
+会社の**大きさ**がそのまま出る。
+大企業と中小企業が同じ軸に並ぶ。
+
+→ 右に長い裾
+:::
+::: {.column width="52%"}
+**利益率**（割り算した比率）
+
+<span class="markp">**大きさで割ってある。**</span>
+大企業も中小企業も同じ土俵に乗る。
+
+→ 左右対称の山
+:::
+:::
+
+<br>
+
+::: {.fragment}
+::: {.code-output}
+第3回で「**なぜ比率にするのか**」という話をしました。答えがこれです。
+
+比率にすると、<span class="marky">**規模の違いが消えて、収益力の違いだけが残る。**</span>
+だから会計の実証研究は、金額そのものではなく比率をよく使います。
+:::
+:::
+
+## 数字でも確かめる（検算の型）
+
+```{r}
+#| script: "05_ouyou"
+firms |>
+  mutate(総資産利益率 = 純利益 / 総資産) |>
+  summarise(
+    全行数 = n(),
+    欠損数 = sum(is.na(総資産利益率)),
+    使った行数 = sum(!is.na(総資産利益率)),
+    中央値 = median(総資産利益率, na.rm = TRUE),
+    赤字の割合 = mean(総資産利益率 < 0, na.rm = TRUE)
+  )
+```
+
+::: {.code-output}
+前回おぼえた**検算の型**です。図を描いたら、必ず**行数**も見ること。
+
+さっきのヒストグラムは、`r sum(is.na(firms$純利益))`行を**黙って捨てて**描かれていました。
+`geom_histogram()` は警告を出しますが、<span class="markp">**スライドでは消えて見えません。**</span>
+:::
+
+::: {.notes}
+学生の中に「ゼロのすぐ右で段差がある」と気づく者がいたら、必ず褒める。
+ただしここでは説明しない。「それは第7回で丸ごと1回使って扱う」とだけ言う。
+先に説明すると第7回の予想シートが死ぬ。
+:::
+
+# 図は「選ぶ」もの
+
+## 問いの型と、図の型は対応している
+
+| 知りたいこと（問いの型） | 図の型 | 部品 |
+|---|---|---|
+| 1つの変数が**どう散らばっているか** | ヒストグラム | `geom_histogram()` |
+| 2つの変数に**関係があるか** | 散布図 | `geom_point()` |
+| **グループどうしを比べたい** | 箱ひげ図 | `geom_boxplot()` |
+| **時間とともにどう変わったか** | 折れ線 | `geom_line()` |
+| **大きさの順位**を見たい | 棒グラフ | `geom_col()` |
+
+::: {.code-output}
+<span class="markp">**図から考えない。問いから考える。**</span>
+
+「かっこいい図を描こう」ではなく、
+「**自分は何を知りたいのか**」を先に1文で書く。図はそれに従って決まります。
+:::
+
+## 良い図の5条件（今日のチェックリスト）
+
+::: {.incremental}
+1. **軸に名前と単位がある。** 「売上高」ではなく「売上高（百万円）」
+2. **何行で描いたか言える。** 捨てられた行はないか
+3. **1つの図で、1つのことだけ**言っている
+4. **外れ値を黙って消していない。** 消したなら図か文に書いてある
+5. **説明なしで30秒で読める**
+:::
+
+::: {.fragment}
+::: {.code-output}
+5がいちばん厳しい条件です。
+
+自分の図を隣の人に**無言で30秒見せて**、
+「何の図？」と聞かれたら、<span class="markp">**それは負けです。**</span>
+:::
+:::
+
+# アンスコムの四重奏
+
+## 4組のデータがあります
+
+```{r}
+#| purl: false
+#| echo: false
+anscombe_long <- tibble(
+  組 = rep(c("組1", "組2", "組3", "組4"), each = 11),
+  x  = c(anscombe$x1, anscombe$x2, anscombe$x3, anscombe$x4),
+  y  = c(anscombe$y1, anscombe$y2, anscombe$y3, anscombe$y4)
+)
+anscombe_long |>
+  group_by(組) |>
+  summarise(
+    xの平均 = mean(x),
+    yの平均 = round(mean(y), 2),
+    相関係数 = round(cor(x, y), 2),
+    回帰直線の傾き = round(coef(lm(y ~ x))[2], 2)
+  )
+```
+
+<br>
+
+::: {.fragment}
+<div style="text-align:center; font-size:1.3em; font-weight:900;">
+平均も、相関係数も、回帰直線の傾きも、<span class="markp">**全部同じ**</span>です。
+</div>
+:::
+
+::: {.notes}
+ここで必ず一度止める。「同じデータだと思う人？」と挙手させてから次へ。
+:::
+
+## 図にすると
+
+```{r}
+#| purl: false
+#| echo: false
+#| fig-height: 3.2
+#| fig-width: 11
+anscombe_long |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(size = 2.4, colour = "#8556c7") +
+  geom_smooth(method = "lm", se = FALSE, colour = "#e05a8a", linewidth = 0.8) +
+  facet_wrap(~組, nrow = 1) +
+  labs(x = NULL, y = NULL)
+```
+
+::: {.columns}
+::: {.column width="25%"}
+**組1**
+ふつうの関係
+:::
+::: {.column width="25%"}
+**組2**
+直線ではない
+:::
+::: {.column width="25%"}
+**組3**
+外れ値1個が線を曲げている
+:::
+::: {.column width="25%"}
+**組4**
+1点だけで線が決まっている
+:::
+:::
+
+## 教訓
+
+<br>
+
+<div style="text-align:center; font-size:1.4em; font-weight:900;">
+<span class="marky">数字だけ見ていては、気づけないことがある。</span>
+</div>
+
+<br>
+
+::: {.code-output}
+1973年、統計学者アンスコムが作った例です。50年経っても使われ続けています。
+
+- **平均を出したら、必ずヒストグラムを見る**
+- **相関を出したら、必ず散布図を見る**
+
+<span class="markp">**この2つは、順番を逆にしてはいけません。**</span>
+図が先、数字はあと。
+:::
+
+::: {.notes}
+「AIに相関を出してと頼むと、数字だけ返ってくる」ことを一言添える。
+第4回の「動いたコードが正しいコードとは限らない」の続き。
+:::
+
+# ライブ分析（20分）
+
+## この図を、良い図に直してください
+
+```{r}
+#| script: "05_ouyou"
+#| fig-height: 3.4
+#| fig-width: 11
+firms |>
+  ggplot(aes(x = 総資産, y = 純利益)) +
+  geom_point()
+```
+
+::: {.code-output}
+エラーは出ていません。**動きます。** でも、これは良い図でしょうか。
+:::
+
+## まず、欠点を4つ探す（ペアで3分）
+
+::: {.columns}
+::: {.column width="50%"}
+**ヒント：この4つを疑う**
+
+- どの**年度**のデータを描いた？
+- 点が**重なっていない**？
+- 軸に**単位**はある？
+- この図は<span class="markp">**何を言いたい**</span>図？
+:::
+::: {.column width="50%"}
+::: {.fragment}
+**答え合わせ**
+
+1. **6年分**を全部重ねている（同じ会社が6回）
+2. 6,300点が重なって**数が分からない**
+3. `2e+05` が何円か**分からない**
+4. 「大きい会社ほど利益が多い」＝
+   <span class="marky">**当たり前のこと**</span>しか言っていない
+:::
+:::
+:::
+
+::: {.notes}
+4がいちばん大事で、いちばん出てこない。
+「規模が大きければ利益額も大きい。それは分析ではなく定義に近い」と言い切る。
+:::
+
+## 4つを1つずつ直す
+
+```{r}
+#| script: "05_ouyou"
+#| eval: false
+firms |>
+  filter(決算年度 == 2024) |>                    # ① 1年に絞る
+  mutate(総資産利益率 = 純利益 / 総資産) |>       # ④ 金額 → 比率にする
+  ggplot(aes(x = 総資産, y = 総資産利益率)) +
+  geom_point(alpha = 0.3, colour = "#8556c7") +  # ② 薄くして重なりを見せる
+  scale_x_log10() +
+  labs(                                          # ③ 単位を書く
+    x = "総資産（百万円・対数目盛）",
+    y = "総資産利益率（純利益 ÷ 総資産）"
+  )
+```
+
+::: {.code-output}
+`alpha = 0.3` … 点を**70%透明**にする。濃いところ＝点が多いところ。
+:::
+
+## 直した図
+
+```{r}
+#| purl: false
+#| echo: false
+#| fig-height: 3.8
+#| fig-width: 11
+firms |>
+  filter(決算年度 == 2024) |>
+  mutate(総資産利益率 = 純利益 / 総資産) |>
+  ggplot(aes(x = 総資産, y = 総資産利益率)) +
+  geom_point(alpha = 0.3, colour = "#8556c7") +
+  scale_x_log10() +
+  labs(
+    x = "総資産（百万円・対数目盛）",
+    y = "総資産利益率（純利益 ÷ 総資産）"
+  )
+```
+
+::: {.fragment}
+::: {.code-output}
+**雲が横一直線です。** つまり ──
+
+<span class="markp">**会社が大きくても小さくても、利益率はたいして変わらない。**</span>
+
+「当たり前のこと」を言う図が、**発見のある図**に変わりました。
+同じデータです。**変えたのは図の選び方だけ**です。
+:::
+:::
+
+## ペアの作業（15分）
+
+::: {.columns}
+::: {.column width="55%"}
+**担当業種は配布シートのとおりです。**
+
+1. 自分の担当業種**だけ**に絞る
+2. 上の5条件を満たす図を**1枚**作る
+3. 隣のペアと**画面を交換**して相互チェック
+4. 5条件のうち**満たしていないもの**を指摘し合う
+:::
+::: {.column width="45%"}
+::: {.code-output}
+**図の型は自分で選んでください。**
+
+散布図でも、箱ひげ図でも、
+ヒストグラムでも構いません。
+
+ただし ──
+<span class="markp">**なぜその型を選んだか**</span>を
+1文で言えるようにしておくこと。
+:::
+:::
+:::
+
+::: {.fragment}
+**AIに聞いてよい。** ただし返ってきた図を、**5条件で自分が採点する**こと。
+:::
+
+## AIへの頼み方（図の場合）
+
+::: {.columns}
+::: {.column width="46%"}
+**悪い**
+
+> きれいなグラフを作って
+
+→ 何を知りたいか書いていない。
+**それらしい図**が返ってくる
+:::
+::: {.column width="54%"}
+**良い**
+
+> tidyverseを使っています。
+> `firms` に業種・決算年度・純利益・総資産の列があります。
+> **2024年度の建設業だけ**で、
+> **総資産利益率の分布**を見たい。
+> 軸ラベルは日本語で単位つきにしてください。
+
+:::
+:::
+
+<br>
+
+::: {.fragment}
+::: {.code-output}
+図を頼むときの追加の1点：<span class="marky">**「何行のデータで描いたかも表示して」**</span>と足す。
+
+これだけで、黙って捨てられた行に気づけます。
+:::
+:::
+
+## 持ち寄り（10分）
+
+::: {.columns}
+::: {.column width="50%"}
+**共有シートに2つ貼る**
+
+1. 自分の**図**（画像）
+2. <span class="markp">**その図で言いたいこと1文**</span>
+:::
+::: {.column width="50%"}
+::: {.code-output}
+そのあと投票します。
+
+**「一番読みやすい図」に1票。**
+
+ただし投票するとき、
+<span class="marky">**なぜ読みやすいのか**</span>を
+5条件のことばで書いてください。
+:::
+:::
+:::
+
+<br>
+
+::: {.fragment}
+**「なんとなく見やすい」は禁止です。** 言語化できたものだけが、次に使えます。
+:::
+
+# 裏切り
+
+## 機械業界：規模と利益の関係を調べます
+
+```{r}
+#| script: "05_ouyou"
+#| fig-height: 3.4
+#| fig-width: 11
+kikai <- firms |>
+  filter(決算年度 == 2024, 業種 == "機械", !is.na(純利益))
+
+kikai |>
+  ggplot(aes(x = 総資産, y = 純利益)) +
+  geom_point(alpha = 0.5, colour = "#8556c7") +
+  geom_smooth(method = "lm", se = FALSE, colour = "#e05a8a") +
+  labs(x = "総資産（百万円）", y = "純利益（百万円）")
+```
+
+::: {.code-output}
+`geom_smooth(method = "lm")` ＝ **回帰直線**を引く。`lm` は linear model の略です。
+:::
+
+## 傾きは、これです
+
+```{r}
+#| script: "05_ouyou"
+lm(純利益 ~ 総資産, data = kikai) |> coef()
+```
+
+```{r}
+#| purl: false
+#| echo: false
+b_all  <- coef(lm(純利益 ~ 総資産, data = kikai))[2]
+kikai_d <- kikai |> filter(総資産 < max(総資産))
+b_drop <- coef(lm(純利益 ~ 総資産, data = kikai_d))[2]
+```
+
+::: {.code-output}
+傾き `r round(b_all, 4)` ＝ **総資産が1万百万円（100億円）大きい会社は、純利益が約`r round(b_all * 10000)`百万円多い。**
+
+`r nrow(kikai)`社で計算しました。行数も確認済みです。
+**検算もしました。** 何も悪いことはしていません。
+:::
+
+## 1社だけ、外してみます
+
+```{r}
+#| script: "05_ouyou"
+kikai2 <- kikai |> filter(総資産 < max(総資産))   # いちばん大きい1社を外す
+
+lm(純利益 ~ 総資産, data = kikai2) |> coef()
+```
+
+::: {.fragment}
+::: {.code-output}
+| | 社数 | 傾き |
+|---|---|---|
+| 全部 | `r nrow(kikai)`社 | `r round(b_all, 4)` |
+| 1社外す | `r nrow(kikai_d)`社 | `r round(b_drop, 4)` |
+
+<span class="markp">**`r round((1 - b_drop / b_all) * 100)`%小さくなりました。**</span> 外したのは、`r nrow(kikai)`社のうち**たった1社**です。
+:::
+:::
+
+## 図で見ると
+
+```{r}
+#| purl: false
+#| echo: false
+#| fig-height: 3.6
+#| fig-width: 11
+kikai |>
+  ggplot(aes(x = 総資産, y = 純利益)) +
+  geom_point(alpha = 0.5, colour = "#8556c7") +
+  geom_point(data = kikai |> slice_max(総資産, n = 1),
+             colour = "#e05a8a", size = 5) +
+  geom_smooth(method = "lm", se = FALSE, colour = "#e05a8a") +
+  geom_smooth(data = kikai_d, method = "lm", se = FALSE,
+              colour = "#3aa0d1", linetype = "dashed") +
+  scale_x_continuous(expand = expansion(mult = c(0.02, 0.10))) +
+  labs(x = "総資産（百万円）", y = "純利益（百万円）")
+```
+
+::: {.code-output}
+<span style="color:#e05a8a;">**実線**</span>＝全部で引いた線
+<span style="color:#3aa0d1;">**点線**</span>＝ピンクの1社を外して引いた線
+:::
+
+## この1社は「外れ値」でしょうか
+
+::: {.columns}
+::: {.column width="50%"}
+**外すべき、という立場**
+
+- 1社で結論が変わるのは危うい
+- 他の`r nrow(kikai_d)`社を代表していない
+:::
+::: {.column width="50%"}
+**外してはいけない、という立場**
+
+- **実在する会社**である
+- 大きくて儲かっているのは
+  <span class="marky">**事実**</span>であって、誤りではない
+:::
+:::
+
+<br>
+
+::: {.fragment}
+::: {.code-output}
+<span class="markp">**正解はありません。**</span> どちらにも理屈があります。
+
+しかし、**やってはいけないこと**は決まっています ──
+:::
+:::
+
+## やってはいけないこと
+
+<br>
+
+<div style="text-align:center; font-size:1.4em; font-weight:900;">
+<span class="marky">都合のいいほうの図だけを見せて、<br>外したことを書かないこと。</span>
+</div>
+
+<br>
+
+::: {.code-output}
+第4回は「**動いたコードが、正しいコードとは限らない**」でした。
+
+今日はその続きです ──
+<span class="markp">**正しく描かれた図が、正しい結論を導くとは限らない。**</span>
+
+だから、外したら**書く**。両方の数字を**出す**。それだけです。
+:::
+
+::: {.notes}
+ここは第7回（利益分布アプローチ）と第8回（20個試せば1個当たる）の伏線。
+「サンプルの決め方ひとつで結論が動く」という感覚だけ残せばよい。
+外れ値処理の技法（ウィンザライズ等）はここでは一切出さない。
+:::
+
+# まとめ
+
+## 今日おぼえたこと
+
+::: {.incremental}
+- 棒グラフは、グループを**1つの数字に潰す**。潰れたものは見えない
+- **箱ひげ図**は、ばらつきと外れ値を見せてくれる
+- **金額は歪む。比率にすると歪みが消える**（規模の違いが割り算で消える）
+- **問いの型が決まれば、図の型は決まる**。図から考えない
+- **アンスコムの四重奏**：数字が同じでも、図はまるで違う
+- <span class="markp">**正しく描かれた図が、正しい結論を導くとは限らない**</span>
+:::
+
+## 今日の道具
+
+| 道具 | 何をするか |
+|---|---|
+| `geom_histogram()` | 1変数の分布を見る |
+| `geom_boxplot()` | グループを比べる |
+| `geom_point(alpha = 0.3)` | 散布図。重なりを薄さで見せる |
+| `geom_smooth(method = "lm")` | 回帰直線を引く |
+| `scale_x_log10()` | 目盛りを10倍刻みにする |
+| `labs(x = , y = )` | **軸に名前と単位をつける** |
+
+::: {.code-output}
+覚えるのは<span class="marky">**`labs()`だけ**</span>で構いません。他はAIが書いてくれます。
+`labs()` を書くかどうかは、**AIではなくあなたが決めること**だからです。
+:::
+
+## 次回（第6回）の事前課題
+
+| | 内容 | 目安 |
+|---|---|---|
+| **A** | 解説動画（6分）：Quartoで1本作って出力するまで | 20分 |
+| **B** | **予想シート**：隣の人のファイルは、自分のPCで動くか（3択） | 3分 |
+| **C** | 今日作った図を**1枚**、コードごと持ってくる | 10分 |
+
+::: {.code-output}
+第6回の問いは <span class="marky">**「半年後の自分は、この分析を再現できるか」**</span>です。
+
+そして第6回では、<span class="markp">**隣の人のファイルを自分の環境で動かします。**</span>
+:::
+
+::: {.notes}
+Cは第6回のqmdに貼り付ける材料になる。図だけでなくコードを持ってこさせること。
+「動かなかった原因」を第6回でランキングにするので、あえて予告しておく。
+:::
+
+## 詰まったら
+
+::: {.columns}
+::: {.column width="50%"}
+**その場で**
+
+1. エラー文をAIに貼る（コードも一緒に）
+2. 隣の人の画面を見る
+3. 手を挙げる
+:::
+::: {.column width="50%"}
+**あとで**
+
+- プロジェクトを**開き直す**と新品に戻ります
+- manaba の質問掲示板へ（**図とコードを両方貼ること**）
+:::
+:::
+
+<br>
+
+::: {.code-output}
+図がうまくいかないときの質問のコツ：
+<span class="markp">**「出てきた図」と「出したかった図」を両方書く。**</span>
+これだけで解決が3倍速くなります。
+:::

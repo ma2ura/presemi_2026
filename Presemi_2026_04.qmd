@@ -1,0 +1,779 @@
+---
+title: |
+  <b>プレゼミ</b> </br>
+  <span style="color: #282A36; ">Day4 : Rでのデータ分析（基礎）</span>
+author: "Soichi Matsuura"
+format:
+  revealjs:
+    theme: ["default", "dracula.scss"]
+    transition: convex
+    slide-number: true
+    df_print: paged
+    code-line-numbers: false
+    html-math-method: katex
+    width: 1400
+    footer: "Ritsumeikan University, Business Administration"
+    logo: "img/rits_logo.pdf"
+    controls: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  highlight-style: github
+css: mystyle.css
+---
+
+```{r}
+#| purl: false
+#| echo: false
+suppressMessages(library(tidyverse))
+# スライドの図で日本語が □ にならないようにする（教員側の描画設定）
+if (.Platform$OS.type == "windows") {
+  grDevices::windowsFonts(jp = grDevices::windowsFont("Meiryo"))
+  theme_set(theme_minimal(base_family = "jp", base_size = 15))
+} else {
+  theme_set(theme_minimal(base_size = 15))
+}
+options(pillar.print_max = 8, pillar.print_min = 8)
+```
+
+## 今日の95分
+
+| 時間 | 誰が | 内容 |
+|---|---|---|
+| 00–05 | 教員 | **みんなの予想の集計** |
+| 05–15 | 学生 | なぜそう予想したか |
+| 15–40 | 学生 | 報告 → ディスカッサントの反論 → 議論 |
+| 40–55 | 教員 | 解説：データフレーム／再現性／AIへの頼み方 |
+| 55–75 | **学生** | **ライブ分析：第3回のExcel作業をRで再現する** |
+| 75–85 | 学生 | 持ち寄り：**使ったプロンプト**を貼る |
+| 85–95 | 教員 | まとめ／裏切り／次回の事前課題 |
+
+::: {.code-output}
+今日から **Posit Cloud** を本格的に使います。
+インストールは何もしません。**ブラウザだけ**です。
+:::
+
+# 今日の問い
+
+## 前回、Excelで何をしましたか
+
+::: {.columns}
+::: {.column width="52%"}
+**第3回にやったこと**
+
+1. ファイルを開く
+2. 売上高の**平均**を出す
+3. 売上高の**中央値**を出す
+4. ピボットテーブルで**業種別**に集計
+5. 表を整える
+
+:::
+::: {.column width="48%"}
+::: {.fragment}
+**かかった時間**
+
+だいたい **15分**。
+
+そして──
+
+<span class="markp">**来年もう一度やれと言われたら、また15分かかります。**</span>
+:::
+:::
+:::
+
+## 今日の問い
+
+<br>
+
+<div style="text-align:center; font-size:1.6em; font-weight:900;">
+  前回のExcel作業は、<span class="marky">Rなら何行で書けるか</span>
+</div>
+
+<br>
+
+::: {.code-output}
+事前課題Bで、みなさんに4択で予想してもらいました。
+
+① 3行以内
+② 4〜10行　
+③ 11〜30行　
+④ 31行以上
+:::
+
+::: {.notes}
+ここで予想シートの集計グラフを映す。
+「④に入れた人、なぜそう思った？」から聞く。多数派ではなく少数派から聞く。
+:::
+
+## みんなの予想（集計）
+
+::: {.code-output}
+※ 授業当日、manaba／Google Forms の集計グラフをここに貼り付けて映す。
+:::
+
+<br>
+
+**隣の人と2分：なぜその数字にしましたか。**
+
+<br>
+
+::: {.fragment}
+<span class="markp">**答えは、今日の55分〜75分に自分の手で確かめます。**</span>
+:::
+
+# Posit Cloud を開く
+
+## 3ステップだけ
+
+::: {.columns}
+::: {.column width="50%"}
+1. ブラウザで <https://posit.cloud> を開く
+2. Space「**プレゼミ2026**」を選ぶ
+3. 「**第04回**」をクリック
+:::
+::: {.column width="50%"}
+::: {.code-output}
+クリックした瞬間、**あなた専用のコピー**が作られます。
+
+だから──
+
+- 何をしても壊れません
+- 壊れたら**もう一度クリックすれば新品**に戻ります
+:::
+:::
+:::
+
+<br>
+
+::: {.fragment}
+<span class="marky">**インストールは一切ありません。**</span>
+Windowsでも Mac でも Chromebook でも、画面はまったく同じです。
+:::
+
+## 画面の見方（4つの枠）
+
+| 枠 | 名前 | 何をするところ |
+|---|---|---|
+| 左上 | **エディタ** | コードを**書く**。今日開くのは `main/04_kiso.R` 1本だけ |
+| 左下 | **コンソール** | コードが**実行される**ところ。結果はここに出る |
+| 右上 | Environment | いま R が**覚えているもの**の一覧 |
+| 右下 | Files / Plots | ファイルの一覧と、**図**が出るところ |
+
+::: {.code-output}
+**実行の方法は1つだけ覚えてください。**
+
+カーソルを行に置いて → <span class="markp">**Ctrl + Enter**</span>（Macは **Cmd + Enter**）
+
+その1行だけが実行されます。**1行ずつ、結果を見ながら進むこと。**
+:::
+
+## 今日の約束
+
+::: {.incremental}
+- **一度に全部実行しない。** 1行ずつ、結果を見る。
+- **エラーが出たら、まずエラー文をよく見る。** 消さずに残す。
+- **分からなければAIに聞く。** ただし**貼る前に読む**。
+- **画面が固まったら**、いったん閉じてもう一度開く。作業は保存されています。
+:::
+
+::: {.fragment}
+::: {.code-output}
+エラーは失敗ではありません。<span class="marky">**R があなたに話しかけている**</span>だけです。
+今日は、その読み方を覚える回でもあります。
+:::
+:::
+
+# 手を動かす
+
+## まず、道具を出す
+
+```{r}
+#| script: "04_kiso"
+library(tidyverse)
+```
+
+```{r}
+#| script: "04_kiso"
+#| echo: false
+#| eval: false
+# 図の日本語が □ になるときは、ここを自分の環境に合わせて変える
+# （Posit Cloud では通常このままで表示されます）
+theme_set(theme_minimal(base_size = 13))
+```
+
+::: {.code-output}
+`tidyverse` は「データを扱う道具箱」です。**毎回いちばん最初に呼びます。**
+
+Posit Cloud には**もう入っています**。`install.packages()` は要りません。
+:::
+
+::: {.fragment}
+```{r}
+#| purl: false
+#| error: true
+libary(tidyverse)
+```
+
+<span class="markp">よくある間違い。</span>`libary` ではなく `library`。
+**このエラー文をそのままAIに貼れば、一瞬で直ります。**
+:::
+
+## データを読む
+
+```{r}
+#| script: "04_kiso"
+firms <- read_csv("data/processed/sample_firms.csv")
+```
+
+::: {.code-output}
+- `firms` … データにつけた**名前**。以後この名前で呼び出します
+- `<-` … 「**右のものを左の名前に入れる**」という意味（キーボードは `<` と `-`）
+- `read_csv()` … CSVファイルを読む道具
+:::
+
+::: {.fragment}
+実行すると、右上の Environment に `firms` が現れます。
+<span class="marky">**これで「ファイルを開く」が終わりました。1行です。**</span>
+:::
+
+## 中身を見る
+
+```{r}
+#| script: "04_kiso"
+firms
+```
+
+::: {.notes}
+1050社 × 6年 = 6300行。Excelでは開けるが、快適ではないサイズ。
+「行 = 1社の1年分」であることをここで必ず確認させる。
+:::
+
+## 列の意味
+
+| 列 | 中身 | 単位 |
+|---|---|---|
+| `企業ID` `企業名` | どの会社か | — |
+| `業種` | 10業種のどれか | — |
+| `決算年度` | 2019〜2024 | 年 |
+| `売上高` `総資産` `純利益` `自己資本` | 財務データ | 百万円 |
+| `従業員数` | 人数 | 人 |
+
+::: {.code-output}
+**1行 = 「1つの会社の、1つの年度」**です。
+
+1050社 × 6年 = <span class="markp">**6300行**</span>。
+Excelでも開けますが、**スクロールして眺めるサイズではありません。**
+:::
+
+## 平均と中央値
+
+```{r}
+#| script: "04_kiso"
+firms |>
+  summarise(
+    平均 = mean(売上高),
+    中央値 = median(売上高)
+  )
+```
+
+::: {.fragment}
+```{r}
+#| script: "04_kiso"
+firms |>
+  summarise(倍率 = mean(売上高) / median(売上高))
+```
+
+<span class="markp">**平均は中央値の約`r round(mean(firms$売上高) / median(firms$売上高), 1)`倍。**</span>
+「平均的な日本企業」という言い方が、いかに危ういか。
+:::
+
+## `|>` は「それから」と読む
+
+::: {.columns}
+::: {.column width="46%"}
+**書き方A（入れ子）**
+
+```r
+summarise(firms, 平均 = mean(売上高))
+```
+
+内側から外側へ読む。**読みにくい。**
+:::
+::: {.column width="54%"}
+**書き方B（パイプ）**
+
+```r
+firms |>
+  summarise(平均 = mean(売上高))
+```
+
+**上から下へ読める。**
+「`firms` を持ってきて、**それから** 要約する」
+:::
+:::
+
+<br>
+
+::: {.code-output}
+このクラスでは <span class="marky">**B で書きます。**</span>
+処理が3つ4つと増えたとき、Bでないと読めなくなります。
+
+キーボード：<span class="markp">**Ctrl + Shift + M**</span>（Macは Cmd + Shift + M）
+:::
+
+## 業種別に集計する
+
+前回、ピボットテーブルでやったことです。
+
+```{r}
+#| script: "04_kiso"
+firms |>
+  group_by(業種) |>
+  summarise(
+    社数 = n(),
+    売上高中央値 = median(売上高)
+  )
+```
+
+## 並べ替えて、上から見る
+
+```{r}
+#| script: "04_kiso"
+firms |>
+  group_by(業種) |>
+  summarise(
+    社数 = n(),
+    売上高中央値 = median(売上高)
+  ) |>
+  arrange(desc(売上高中央値))
+```
+
+::: {.code-output}
+`arrange(desc(...))` ＝「**大きい順に並べ替える**」。ピボットテーブルの並べ替えと同じです。
+:::
+
+## 図にする
+
+```{r}
+#| script: "04_kiso"
+#| fig-height: 4.2
+#| fig-width: 11
+firms |>
+  group_by(業種) |>
+  summarise(売上高中央値 = median(売上高)) |>
+  ggplot(aes(x = fct_reorder(業種, 売上高中央値), y = 売上高中央値)) +
+  geom_col(fill = "#8556c7") +
+  coord_flip() +
+  labs(x = NULL, y = "売上高の中央値（百万円）")
+```
+
+::: {.notes}
+「では、いちばん儲かっているのはどの業種か？」と聞く。
+たいてい「卸売業」と答える。ライブ分析でその予想が裏切られる。
+:::
+
+# 答え合わせ
+
+## 何行だったか
+
+::: {.columns}
+::: {.column width="50%"}
+**Excel（第3回）**
+
+- ファイルを開く
+- 平均・中央値を計算
+- ピボットテーブルを作る
+- 並べ替える
+- グラフにする
+
+<span class="markp">**約15分の手作業**</span>
+:::
+::: {.column width="50%"}
+**R（今日）**
+
+```r
+library(tidyverse)
+firms <- read_csv("...")
+firms |>
+  group_by(業種) |>
+  summarise(売上高中央値 = median(売上高)) |>
+  arrange(desc(売上高中央値))
+```
+
+<span class="marky">**6行**</span>
+:::
+:::
+
+::: {.fragment}
+::: {.code-output}
+**行数が少ないことが偉いのではありません。**
+
+偉いのは、この6行が
+<span class="markp">**来年も、別のデータでも、そのまま動く**</span>ことです。
+:::
+:::
+
+## 本当の差はここに出る
+
+::: {.columns}
+::: {.column width="50%"}
+**「2024年度だけで見たい」**
+
+Excel → **もう一度全部やり直し**
+:::
+::: {.column width="50%"}
+R → **1行足すだけ**
+
+```r
+firms |>
+  filter(決算年度 == 2024) |>
+  group_by(業種) |>
+  summarise(...)
+```
+:::
+:::
+
+<br>
+
+::: {.fragment}
+::: {.code-output}
+第3回の「裏切り」を覚えていますか。
+
+> 同じ作業を来年もう一度やれと言われたら？
+> **1行間違えたら、誰が気づく？**
+
+Rでは、**やり直しは1行の変更**で、**間違いはコードに残って見える**。
+これが<span class="marky">**再現性**</span>です。
+:::
+:::
+
+# AIへの頼み方
+
+## エラーが出たら、まずこれ
+
+::: {.code-output}
+**手順（今日から正式な手順です）**
+
+1. エラーメッセージを**そのまま全部**コピーする
+2. AIに貼る。**そのとき自分のコードも一緒に貼る**
+3. 返ってきたコードを**読んでから**貼り戻す
+4. 動いたら、**なぜ直ったのかを一言で書く**
+:::
+
+<br>
+
+::: {.fragment}
+<span class="markp">**4がいちばん大事です。**</span>
+「動いたからヨシ」で進むと、次に同じ所で詰まります。
+:::
+
+## 良い頼み方・悪い頼み方
+
+::: {.columns}
+::: {.column width="48%"}
+**悪い**
+
+> Rのコードを書いて
+
+→ 何のデータか分からないので、
+**動かないコードが返ってくる**
+:::
+::: {.column width="52%"}
+**良い**
+
+> tidyverseを使っています。
+> `firms` というデータフレームに
+> 業種・決算年度・売上高・純利益の列があります。
+> **業種別に純利益率の中央値**を出して、
+> 大きい順に並べたい。
+
+→ **そのまま動くコードが返ってくる**
+:::
+:::
+
+<br>
+
+::: {.fragment}
+::: {.code-output}
+コツは3つ。<span class="marky">**①道具を言う ②データの形を言う ③欲しい結果を言う**</span>
+
+ちなみに `str(firms)` の結果を貼ると、②が一発で伝わります。
+:::
+:::
+
+## 画面の並べ方
+
+::: {.code-output}
+**左に Posit Cloud、右にAIチャット。** ブラウザのタブを2つ並べてください。
+
+Windows：ウィンドウを掴んで画面の左端／右端に寄せる
+Mac：Mission Control で左右に並べる
+:::
+
+<br>
+
+<span class="markp">**コピーして、貼る。この動作を面倒がらないこと。**</span>
+
+補完してくれるAIをエディタに入れる方法もありますが、
+このクラスでは**あえてコピー＆ペースト**でやります。
+理由は、<span class="marky">**貼る前に読む時間が生まれる**</span>からです。
+
+# ライブ分析（20分）
+
+## やること
+
+::: {.columns}
+::: {.column width="55%"}
+**ペアごとに担当業種が違います。**
+
+配布シートの自分の行を見てください。
+
+1. 担当業種だけに絞る
+2. 年度別に、**純利益率の中央値**を出す
+3. 折れ線グラフを1枚描く
+4. 数値を共有シートに書き込む
+:::
+::: {.column width="45%"}
+::: {.code-output}
+**純利益率 = 純利益 ÷ 総資産**
+
+新しい列を作る道具は
+`mutate()` です。
+
+**AIに聞いてよい。**
+むしろ聞いてください。
+:::
+:::
+:::
+
+<br>
+
+::: {.fragment}
+<span class="markp">**終わらなくてかまいません。**</span>
+どこで詰まったかを持ち寄るほうが、今日は価値があります。
+:::
+
+## ヒント（ここまでは配ります）
+
+```{r}
+#| script: "04_kiso"
+#| eval: false
+# ★ここだけ自分の担当業種に書き換える★
+tantou <- "情報・通信業"
+
+firms |>
+  filter(業種 == tantou) |>
+  mutate(純利益率 = 純利益 / 総資産) |>
+  group_by(決算年度) |>
+  summarise(純利益率中央値 = median(純利益率))
+```
+
+::: {.code-output}
+`==` は**イコールが2つ**です。1つだと動きません（`<-` と混同しやすい）。
+
+この続き（図にする）は、**AIに頼んでください。**
+:::
+
+## 持ち寄り（10分）
+
+::: {.columns}
+::: {.column width="50%"}
+**共有シートに2つ書く**
+
+1. 担当業種の**2024年度の数値**
+2. <span class="markp">**使ったプロンプト**</span>
+:::
+::: {.column width="50%"}
+::: {.code-output}
+プロンプトを貼るのは、
+**良い頼み方をクラスで共有する**ためです。
+
+このあと投票します。
+:::
+:::
+:::
+
+<br>
+
+::: {.fragment}
+**全員分が揃うと、クラス全体で「業種×年度」の表が1枚完成します。**
+1人分だけでは、何も言えません。
+:::
+
+# 裏切り
+
+## AIに、こう頼んでみました
+
+> `firms` の純利益の平均を出してください。
+
+::: {.fragment}
+返ってきたコードが、これでした。
+
+```{r}
+#| purl: false
+firms |>
+  summarise(純利益の平均 = mean(純利益, na.rm = TRUE))
+```
+:::
+
+::: {.fragment}
+別のAIは、こう返しました。
+
+```{r}
+#| purl: false
+firms |>
+  mutate(純利益 = replace_na(純利益, 0)) |>
+  summarise(純利益の平均 = mean(純利益))
+```
+:::
+
+## 数字が違う
+
+```{r}
+#| purl: false
+#| echo: false
+a <- firms |> summarise(v = mean(純利益, na.rm = TRUE)) |> pull(v)
+b <- firms |> mutate(純利益 = replace_na(純利益, 0)) |>
+  summarise(v = mean(純利益)) |> pull(v)
+tibble(
+  やり方 = c("欠損を除いて平均", "欠損を0にして平均"),
+  純利益の平均 = round(c(a, b)),
+  差 = c("—", paste0(round((b - a) / a * 100, 1), "%"))
+)
+```
+
+::: {.fragment}
+::: {.code-output}
+このデータには、純利益が**空欄の行が `r sum(is.na(firms$純利益))` 件**あります。
+
+- **除いて計算する** … 「分からないものは数えない」
+- **0にして計算する** … 「**利益がゼロだった**」と言っているのと同じ
+
+<span class="markp">**後者は、事実と違います。**</span>
+:::
+:::
+
+## しかも、空欄はランダムではない
+
+```{r}
+#| purl: false
+#| echo: false
+firms |>
+  mutate(純利益の状態 = if_else(is.na(純利益), "空欄", "数値あり")) |>
+  group_by(純利益の状態) |>
+  summarise(
+    行数 = n(),
+    総資産の中央値 = round(median(総資産))
+  )
+```
+
+::: {.fragment}
+::: {.code-output}
+**空欄になっているのは、大きい会社ばかり**です。
+
+だから0で埋めると、<span class="markp">**大きい会社の利益だけがごっそり消える**</span>。
+平均は必ず下振れします。**偶然ではなく、必ずです。**
+:::
+:::
+
+::: {.notes}
+「欠損はランダムに起きるとは限らない」＝欠測メカニズムの話。
+ここは深入りしない。第12回の自己選択バイアスの伏線として置くだけでよい。
+:::
+
+## どちらのAIも、エラーは出していない
+
+<br>
+
+<div style="text-align:center; font-size:1.4em; font-weight:900;">
+<span class="marky">動いたコードが、正しいコードとは限らない。</span>
+</div>
+
+<br>
+
+::: {.code-output}
+だから、`plan` のAIポリシーには**検算**が入っています。
+
+- 欠損は何件あるか（`sum(is.na(...))`）
+- 何行使って計算したのか（`n()`）
+
+<span class="markp">**この2つを確かめる癖をつけてください。**</span>
+5秒で終わります。
+:::
+
+## 検算の型（覚えて帰る1つ）
+
+```{r}
+#| script: "04_kiso"
+firms |>
+  summarise(
+    全行数 = n(),
+    欠損数 = sum(is.na(純利益)),
+    使った行数 = sum(!is.na(純利益)),
+    平均 = mean(純利益, na.rm = TRUE)
+  )
+```
+
+::: {.code-output}
+**平均だけを出さない。「何行で計算したか」を必ず一緒に出す。**
+
+これができていれば、AIが何を返してきても気づけます。
+:::
+
+# まとめ
+
+## 今日おぼえたこと
+
+::: {.incremental}
+- Posit Cloud は**クリックすれば自分用のコピー**ができる。壊してよい
+- **`Ctrl + Enter`** で1行ずつ実行する
+- **`|>`** は「それから」と読む
+- **`group_by()` → `summarise()`** で、ピボットテーブルと同じことができる
+- Excelの15分は、Rの**6行**になる。価値は行数ではなく**再現できること**
+- <span class="markp">**動いたコードが、正しいコードとは限らない**</span>
+:::
+
+## 次回（第5回）の事前課題
+
+| | 内容 | 目安 |
+|---|---|---|
+| **A** | 解説動画（8分）＋教科書の該当節 | 30分 |
+| **B** | **予想シート**：利益率のヒストグラムはどんな形になるか（4択） | 3分 |
+| **C** | `main/05_ouyou.R` の**フィルタ条件を1箇所だけ**変えて図を作り、貼る | 20分 |
+
+::: {.code-output}
+第5回の問いは <span class="marky">**「この図は何を隠しているか」**</span>です。
+
+今日作った棒グラフ。**中央値だけを見て、何を見落としていたでしょうか。**
+:::
+
+::: {.notes}
+中央値は分布の真ん中1点でしかない。ばらつきと外れ値が消えている。
+第5回のアンスコムの四重奏へつなぐ。
+:::
+
+## 詰まったら
+
+::: {.columns}
+::: {.column width="50%"}
+**その場で**
+
+1. エラー文をAIに貼る
+2. 隣の人の画面を見る
+3. 手を挙げる
+:::
+::: {.column width="50%"}
+**あとで**
+
+- プロジェクトを**もう一度開き直す**と新品に戻ります
+- どうしても動かないときは manaba の質問掲示板へ（**画面のスクショを貼ること**）
+:::
+:::
+
+<br>
+
+::: {.code-output}
+<span class="markp">**「動かない」は全員が通る道です。**</span>
+黙って諦めるのだけは、やめてください。
+:::
