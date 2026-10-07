@@ -1,0 +1,60 @@
+/* =========================================================
+   slide-fit.css
+   revealjs スライドを「1画面に収める」ための微調整。
+   mystyle.css の後に読み込む（YAML: css: [mystyle.css, slide-fit.css]）。
+   ========================================================= */
+
+/* --- 表：セル余白と行間を詰める（行数の多い表が収まるように） --- */
+.reveal table {
+  margin: 0.3em 0;
+  line-height: 1.25;
+}
+.reveal table th,
+.reveal table td {
+  padding: 0.15em 0.5em;
+}
+
+/* --- 段落・リストの縦方向の余白を詰める --- */
+.reveal p { margin: 0.25em 0; }
+.reveal ul,
+.reveal ol { margin: 0.3em 0; }
+.reveal li { margin-bottom: 0.15em; line-height: 1.35; }
+.reveal li > ul,
+.reveal li > ol { margin: 0.1em 0; }
+
+/* --- code-output ボックス：余白を詰め、内側の最初／最後の余白を消す --- */
+.reveal .code-output { padding: 8px 14px; margin: 0.35em 0; }
+.reveal .code-output > :first-child { margin-top: 0; }
+.reveal .code-output > :last-child { margin-bottom: 0; }
+.reveal .code-output ul,
+.reveal .code-output ol { margin: 0.2em 0; padding-left: 1.2em; }
+
+/* --- 見出し直後の余白を少し詰める --- */
+.reveal .slides section > h2 { margin-bottom: 0.4em; }
+
+/* --- 図版（手書きSVG・mermaid）がスライド高を超えないようにする --- */
+.reveal .slides section svg { display: block; margin: 0 auto; max-width: 100%; }
+.reveal .slides section figure { margin: 0.3em 0; }
+
+/* mermaid のサブグラフ見出し（基礎／入門／発展）が
+   foreignObject の高さ不足で切れるのを防ぐ */
+.reveal .cluster-label foreignObject { overflow: visible; }
+
+/* mermaid 図の高さ上限（.diagram-fit を付けたスライドで有効） */
+.reveal .slides section.diagram-fit pre.mermaid,
+.reveal .slides section.diagram-fit .cell-output-display > svg,
+.reveal .slides section.diagram-fit svg[id^="mermaid"] {
+  max-height: 58vh;
+  height: auto;
+}
+
+/* --- webR のコードセル：エディタと出力欄をコンパクトに --- */
+.reveal .qwebr-editor .cm-editor { font-size: 0.8em; }
+.reveal div.qwebr-console-area { margin-bottom: 0.2em; }
+
+/* 実行結果が長いときにスライドからはみ出さないよう、出力欄に高さ上限を設ける
+   （上限を超えた分は出力欄の中だけがスクロールする） */
+.reveal div.qwebr-output-code-area {
+  max-height: 260px;
+  overflow: auto;
+}
