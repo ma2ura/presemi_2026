@@ -1,0 +1,230 @@
+---
+title: "プレゼミ 第3回 実習ワークシート（Positron用）"
+subtitle: "「平均」の罠と記述統計／実証分析の武器としての単回帰分析"
+author: "氏名：＿＿＿＿＿＿＿（学籍番号：＿＿＿＿＿＿＿）"
+date: today
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: false
+    code-tools: true
+    df-print: paged
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# はじめに ── 本実習の目的
+
+本ワークシートは、次世代データサイエンスIDE **Positron** を使って、
+以下の3つのデータ分析スキルを実践的に習得するための演習シートです。
+
+1. **記述統計量の算出**：平均値（Mean）と中央値（Median）の乖離、歪んだ分布の把握
+2. **データの可視化**：ヒストグラム、箱ひげ図、散布図による外れ値の特定
+3. **単回帰分析（OLS）の実行と解釈**：回帰係数、統計的有意性（$p$値）、決定係数（$R^2$）の評価と、外れ値への対処（対数回帰モデル）
+
+::: {.callout-tip}
+## Positronでの操作方法
+- 各コードチャンク（枠）の右上にある **「▶（Run Chunk）」** ボタンを押すか、実行したい行で **`Cmd + Enter`**（Mac）または **`Ctrl + Enter`**（Windows）を押すと実行できます。
+- 画面上部の **「Render」** ボタンを押すと、全体の実行結果が1枚の美しいHTMLレポートとして出力されます。
+:::
+
+---
+
+# データの読み込みと構造確認
+
+東証上場企業500社（2024年度決算）の財務データを読み込みます。
+
+```{r}
+# 必要なライブラリの読み込み
+library(tidyverse)
+library(scales)
+
+# 日本語フォントの設定（Mac/Windows対応）
+if (.Platform$OS.type == "windows") {
+  theme_set(theme_minimal(base_family = "Meiryo", base_size = 12))
+} else {
+  theme_set(theme_minimal(base_size = 12))
+}
+
+# データの読み込み
+df <- read_csv("../data/03_sales_data.csv")
+
+# データの構造確認
+glimpse(df)
+```
+
+::: {.callout-note}
+## 変数一覧
+- `firm_id` : 企業ID
+- `firm_name` : 企業名
+- `industry` : 業種分類（東証）
+- `year` : 決算年度（2024）
+- `sales` : 売上高（単位：百万円）
+- `total_assets` : 総資産（単位：百万円）
+- `net_income` : 当期純利益（単位：百万円）
+:::
+
+---
+
+# 記述統計量：平均値 vs 中央値
+
+売上高（`sales`）の代表値と散布度を計算し、「平均の罠」を確認します。
+
+```{r}
+# 記述統計量の計算
+mean_s   <- mean(df$sales)
+median_s <- median(df$sales)
+ratio_s  <- mean_s / median_s
+
+cat("平均値   :", comma(round(mean_s)), "百万円 (約", round(mean_s / 10000), "00億円)\n")
+cat("中央値   :", comma(round(median_s)), "百万円 (約", round(median_s / 10000), "00億円)\n")
+cat("倍率     :", round(ratio_s, 2), "倍\n")
+cat("標準偏差 :", comma(round(sd(df$sales))), "百万円\n")
+cat("IQR      :", comma(round(IQR(df$sales))), "百万円\n")
+
+# 五数要約
+summary(df$sales)
+```
+
+## 「平均未満」の企業の割合
+
+全体の何％の企業が、平均値よりも小さい売上高でしょうか？
+
+```{r}
+under_mean_pct <- mean(df$sales < mean_s) * 100
+cat("平均値未満の企業割合:", round(under_mean_pct, 1), "%\n")
+```
+
+> **考察メモ**：  
+> 全500社中、実に **90.6%（453社）** の企業が平均値以下です。  
+> 上位の超巨大企業が平均値を劇的に引き上げているため、「平均＝標準的な姿」とみなすことはできません。
+
+---
+
+# 分布の可視化
+
+## 売上高のヒストグラム（生データ vs 対数変換）
+
+```{r}
+# 生データのヒストグラム
+ggplot(df, aes(x = sales / 1000)) + # 単位：10億円
+  geom_histogram(bins = 40, fill = "#4A90E2", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = median_s / 1000, color = "#2ECC71", linewidth = 1.2, linetype = "dashed") +
+  geom_vline(xintercept = mean_s / 1000, color = "#E74C3C", linewidth = 1.2) +
+  annotate("text", x = 1000, y = 250, 
+           label = paste0("緑点線: 中央値 (", comma(round(median_s/1000)), "0億円)\n赤実線: 平均値 (", comma(round(mean_s/1000)), "0億円)"),
+           hjust = 0, size = 4) +
+  labs(title = "図1: 上場企業500社の売上高分布（生データ）",
+       x = "売上高（10億円単位）", y = "企業数")
+```
+
+```{r}
+# 対数変換後のヒストグラム
+ggplot(df, aes(x = log(sales))) +
+  geom_histogram(bins = 25, fill = "#9B59B6", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = mean(log(df$sales)), color = "#F39C12", linewidth = 1.2) +
+  labs(title = "図2: 売上高の対数分布 log(sales)",
+       x = "log(売上高)", y = "企業数")
+```
+
+---
+
+# 単回帰分析（OLS）
+
+## モデル1：全500社での回帰分析
+
+売上高（$X$）で当期純利益（$Y$）を説明する単回帰分析を実行します。
+
+$$ \text{net\_income}_i = \beta_0 + \beta_1 \text{sales}_i + u_i $$
+
+```{r}
+model1 <- lm(net_income ~ sales, data = df)
+summary(model1)
+```
+
+```{r}
+# 散布図と回帰直線
+ggplot(df, aes(x = sales / 100, y = net_income / 100)) + # 単位：億円
+  geom_point(color = "#34495E", alpha = 0.5) +
+  geom_smooth(method = "lm", color = "#E74C3C", se = TRUE) +
+  labs(title = "図3: 当期純利益と売上高の散布図および回帰直線",
+       x = "売上高（億円）", y = "当期純利益（億円）")
+```
+
+---
+
+# 外れ値の検証と対数回帰モデル
+
+## モデル2：上位5社を除外した場合
+
+```{r}
+# 上位5社を除外した495社
+df_no_top5 <- df %>%
+  arrange(desc(sales)) %>%
+  slice(6:n())
+
+model_no_top5 <- lm(net_income ~ sales, data = df_no_top5)
+summary(model_no_top5)
+```
+
+| モデル | 傾き $\beta_1$（利益率） | 決定係数 $R^2$ |
+|---|:---:|:---:|
+| **全500社** | `r round(coef(model1)[2], 4)` | `r round(summary(model1)$r.squared, 4)` |
+| **上位5社除外（495社）** | `r round(coef(model_no_top5)[2], 4)` | `r round(summary(model_no_top5)$r.squared, 4)` |
+
+## モデル3：両対数回帰モデル（Log-Log）
+
+黒字企業について両対数回帰を実行します。
+
+```{r}
+df_pos <- df %>% filter(net_income > 0 & sales > 0)
+model_log <- lm(log(net_income) ~ log(sales), data = df_pos)
+summary(model_log)
+```
+
+```{r}
+# 対数回帰直線の描画
+ggplot(df_pos, aes(x = log(sales), y = log(net_income))) +
+  geom_point(color = "#8E44AD", alpha = 0.5) +
+  geom_smooth(method = "lm", color = "#27AE60") +
+  labs(title = "図4: 両対数回帰モデル log(net_income) ~ log(sales)",
+       x = "log(売上高)", y = "log(当期純利益)")
+```
+
+---
+
+# チャレンジ演習
+
+## 【演習1】総資産（total_assets）の記述統計
+
+総資産について、平均値・中央値・倍率を計算してみましょう。
+
+```{r}
+# ここにコードを入力して実行してください
+mean_ta   <- mean(df$total_assets)
+median_ta <- median(df$total_assets)
+
+cat("総資産の平均値 :", comma(round(mean_ta)), "百万円\n")
+cat("総資産の中央値 :", comma(round(median_ta)), "百万円\n")
+cat("倍率           :", round(mean_ta / median_ta, 2), "倍\n")
+```
+
+## 【演習2】売上高を総資産で回帰する単回帰分析
+
+売上高（`sales`）を目的変数、総資産（`total_assets`）を説明変数とする単回帰分析を実行してください。
+（※ 傾きは何を表しているでしょうか？ 第2回のデュポン分解で登場した「総資産回転率」との関係を考えてみましょう）
+
+```{r}
+# ここにコードを入力して実行してください
+model_asset <- lm(sales ~ total_assets, data = df)
+summary(model_asset)
+```
+
+> **あなたの考察**：  
+> （傾き $\beta_1$ の値と、その経営学的な意味について自由に記入してください）  
+> ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
