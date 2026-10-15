@@ -81,7 +81,7 @@ filters:
 ### みなさんの予想分布（集計速報）
 
 | 選択肢 | 予想内容 | 割合 |
-|:---:|---|:---:|
+|:---:|---------------|:---:|
 | **①** | 「平均値」がはるかに大きい（中央値の **2倍以上**） | **18%** |
 | **②** | 「平均値」が少し大きい（中央値の **1.1〜2倍未満**） | <span class="marky">**54%**</span> |
 | **③** | 「平均値」と「中央値」は**ほぼ同じ**（左右対称） | **24%** |
@@ -233,33 +233,21 @@ $$
 - **平均値 ＝ 中央値 ＝ 最頻値** が一致する
 - 平均値を「標準・代表」と呼んでよい世界
 
-```{mermaid}
-%%| echo: false
-flowchart TB
-    subgraph 左右対称の釣鐘型
-    A["山が中央に1つ<br>平均値 ＝ 中央値"]
-    end
-```
+![](img/dist_normal.svg){style="max-height: 185px; width: auto; margin: 0.1em auto; display: block;"}
 :::
 
 ::: {.column width="50%"}
 ### ② 右に歪んだ分布（ロングテール）
-- 企業の売上高、個人の所得・資産、SNSフォロワー数
+- 企業の売上高、個人の所得、フォロワー数
 - **最頻値 ＜ 中央値 ＜＜ 平均値**
 - 裾野が右側に極端に長い（べき乗則・パレート分布）
 
-```{mermaid}
-%%| echo: false
-flowchart TB
-    subgraph 右に裾野が長いロングテール
-    B["山は左（小規模）に集中<br>右端に怪獣企業が並ぶ<br>中央値 ≪ 平均値"]
-    end
-```
+![](img/dist_skewed.svg){style="max-height: 185px; width: auto; margin: 0.1em auto; display: block;"}
 :::
 :::
 
 ::: {.fragment}
-::: {.code-output style="margin-top: 0.4em;"}
+::: {.code-output style="margin-top: 0.25em; padding: 6px 12px; font-size: 0.88em;"}
 **実証分析の鉄則**：  
 社会科学・経済・ビジネスのデータは、**ほぼ100%「右に歪んだ分布」**をしています。  
 だからこそ、平均値だけを見て分析を進めると、現実を完全に見誤ります。

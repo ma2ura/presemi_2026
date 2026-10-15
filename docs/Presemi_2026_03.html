@@ -2104,9 +2104,9 @@ Soichi Matsuura
 <h3 id="みなさんの予想分布集計速報">みなさんの予想分布（集計速報）</h3>
 <table class="caption-top">
 <colgroup>
-<col style="width: 38%">
-<col style="width: 23%">
-<col style="width: 38%">
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2293,46 +2293,18 @@ Soichi Matsuura
 <li><strong>平均値 ＝ 中央値 ＝ 最頻値</strong> が一致する</li>
 <li>平均値を「標準・代表」と呼んでよい世界</li>
 </ul>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TB
-    subgraph 左右対称の釣鐘型
-    A["山が中央に1つ&lt;br&gt;平均値 ＝ 中央値"]
-    end
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
+<p><img data-src="img/dist_normal.svg" style="max-height: 185px; width: auto; margin: 0.1em auto; display: block;"></p>
 </div><div class="column" style="width:50%;">
 <h3 id="右に歪んだ分布ロングテール">② 右に歪んだ分布（ロングテール）</h3>
 <ul>
-<li>企業の売上高、個人の所得・資産、SNSフォロワー数</li>
+<li>企業の売上高、個人の所得、フォロワー数</li>
 <li><strong>最頻値 ＜ 中央値 ＜＜ 平均値</strong></li>
 <li>裾野が右側に極端に長い（べき乗則・パレート分布）</li>
 </ul>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TB
-    subgraph 右に裾野が長いロングテール
-    B["山は左（小規模）に集中&lt;br&gt;右端に怪獣企業が並ぶ&lt;br&gt;中央値 ≪ 平均値"]
-    end
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
+<p><img data-src="img/dist_skewed.svg" style="max-height: 185px; width: auto; margin: 0.1em auto; display: block;"></p>
 </div></div>
 <div class="fragment">
-<div class="code-output" style="margin-top: 0.4em;">
+<div class="code-output" style="margin-top: 0.25em; padding: 6px 12px; font-size: 0.88em;">
 <p><strong>実証分析の鉄則</strong>：<br>
 社会科学・経済・ビジネスのデータは、<strong>ほぼ100%「右に歪んだ分布」</strong>をしています。<br>
 だからこそ、平均値だけを見て分析を進めると、現実を完全に見誤ります。</p>
