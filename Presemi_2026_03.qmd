@@ -497,11 +497,7 @@ ggplot(df, aes(x = log(sales))) +
 - 縦軸（$Y$）：当期純利益（被説明変数 / 従属変数）
 - 1つの点が「1つの企業」を表す
 
-```{mermaid}
-%%| echo: false
-flowchart LR
-    X["売上高 (X)<br>【原因・規模】"] -->|影響を与える| Y["当期純利益 (Y)<br>【結果・稼ぐ力】"]
-```
+![](img/concept_xy_relation.svg){style="max-height: 220px; width: 100%; margin: 0.2em auto; display: block;"}
 :::
 :::
 
@@ -557,16 +553,9 @@ $\beta_1$ が傾き、$beta_0$ が切片です。
 
 ## OLSの直感をイメージで掴む {.smaller .diagram-fit}
 
-```{mermaid}
-%%| echo: false
-flowchart TD
-    A["実際のデータ点 (Xi, Yi)"] --> B["直線による予測値 Y_hat = β0 + β1 Xi"]
-    A -.->|ズレ（残差 ui）| B
-    B --> C["残差の二乗和 Σ ui^2 を最小化する！"]
-    C --> D["最適な傾き β1 と切片 β0 が一意に決定！"]
-```
+![](img/ols_intuition.svg){style="max-height: 235px; width: auto; margin: 0 auto; display: block;"}
 
-::: {.code-output style="margin-top: 0.5em;"}
+::: {.code-output style="margin-top: 0.3em; padding: 6px 14px; font-size: 0.88em;"}
 **回帰分析が教えてくれる3大情報**：
 
 1. **傾きの向きと大きさ（$\beta_1$）**：プラスの関係か、マイナスの関係か？ 1単位増えるといくら増えるか？

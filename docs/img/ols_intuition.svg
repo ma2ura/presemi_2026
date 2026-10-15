@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 245" width="100%" height="100%">
+  <defs>
+    <filter id="shadow-ols" x="-2%" y="-3%" width="104%" height="110%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <marker id="arrow-ols" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-step" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#7c3aed"/>
+    </marker>
+    <linearGradient id="grad-ols-panel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Card -->
+  <rect x="2" y="2" width="996" height="241" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow-ols)"/>
+
+  <!-- ================= LEFT PANEL: 2D OLS Geometry ================= -->
+  <g transform="translate(14, 12)">
+    <!-- Plot Background -->
+    <rect x="0" y="0" width="450" height="221" rx="8" fill="url(#grad-ols-panel)" stroke="#e2e8f0" stroke-width="1"/>
+
+    <!-- Plot Header Badge (placed at top right of inner plot to avoid Y-axis label) -->
+    <rect x="280" y="8" width="158" height="20" rx="4" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1"/>
+    <text x="359" y="22" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="700" fill="#6d28d9" text-anchor="middle">OLSの幾何学的イメージ</text>
+
+    <!-- Axes -->
+    <!-- X axis -->
+    <line x1="55" y1="180" x2="425" y2="180" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow-ols)"/>
+    <text x="425" y="198" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="700" fill="#334155" text-anchor="end">売上高 (X) →</text>
+
+    <!-- Y axis -->
+    <line x1="55" y1="180" x2="55" y2="28" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow-ols)"/>
+    <text x="55" y="20" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11" font-weight="800" fill="#1e293b">当期純利益 (Y) ↑</text>
+
+    <!-- Intercept beta0 point -->
+    <circle cx="55" cy="155" r="4" fill="#e11d48"/>
+    <text x="50" y="152" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="700" fill="#e11d48" text-anchor="end">切片 β₀</text>
+
+    <!-- Regression Line: from (55, 155) to (410, 48) -->
+    <line x1="55" y1="155" x2="415" y2="46" stroke="#7c3aed" stroke-width="2.5"/>
+
+    <!-- Regression line formula badge (placed nicely above the line) -->
+    <rect x="220" y="32" width="168" height="20" rx="4" fill="#7c3aed"/>
+    <text x="304" y="46" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="700" fill="#ffffff" text-anchor="middle">回帰直線: Ŷᵢ = β₀ + β₁Xᵢ</text>
+
+    <!-- Slope triangle indicator -->
+    <path d="M 330 76 L 370 76 L 370 64" fill="none" stroke="#a855f7" stroke-width="1.2" stroke-dasharray="2,2"/>
+    <text x="378" y="73" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10" font-weight="700" fill="#7c3aed">傾き β₁</text>
+
+    <!-- Residual 1: Point above line at X=140 -->
+    <!-- Line Y at X=140 is approx 129 -->
+    <!-- Point 1 at (140, 94) -> residual height = 35 -->
+    <rect x="140" y="94" width="35" height="35" fill="#f43f5e" fill-opacity="0.18" stroke="#f43f5e" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="140" y1="94" x2="140" y2="129" stroke="#e11d48" stroke-width="2"/>
+    <circle cx="140" cy="94" r="5" fill="#e11d48" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="135" y="86" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10" font-weight="700" fill="#be123c" text-anchor="end">データ点 (Xᵢ, Yᵢ)</text>
+    <circle cx="140" cy="129" r="3.5" fill="#7c3aed"/>
+    <text x="134" y="142" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="9.5" font-weight="700" fill="#6d28d9" text-anchor="end">予測値 Ŷᵢ</text>
+    <text x="180" y="112" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="800" fill="#e11d48">残差 u₁</text>
+    <text x="180" y="125" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="9" font-weight="700" fill="#9f1239">2乗 u₁²</text>
+
+    <!-- Residual 2: Point below line at X=240 -->
+    <!-- Line Y at X=240 is approx 99 -->
+    <!-- Point 2 at (240, 130) -> residual height = 31 -->
+    <rect x="240" y="99" width="31" height="31" fill="#f43f5e" fill-opacity="0.18" stroke="#f43f5e" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="240" y1="99" x2="240" y2="130" stroke="#e11d48" stroke-width="2"/>
+    <circle cx="240" cy="130" r="5" fill="#e11d48" stroke="#ffffff" stroke-width="1.5"/>
+    <circle cx="240" cy="99" r="3.5" fill="#7c3aed"/>
+    <text x="276" y="118" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="800" fill="#e11d48">残差 u₂</text>
+
+    <!-- Bottom intuition note -->
+    <rect x="18" y="188" width="280" height="24" rx="4" fill="#fff1f2" stroke="#fecdd3" stroke-width="1"/>
+    <text x="26" y="204" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="9.5" font-weight="700" fill="#be123c">💡 直線からの上下のズレ（残差 uᵢ）の「面積」を最小化！</text>
+  </g>
+
+  <!-- ================= RIGHT PANEL: 3-Step OLS Logic ================= -->
+  <g transform="translate(476, 12)">
+    <!-- Header -->
+    <text x="6" y="18" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="15" font-weight="800" fill="#1e1b4b">最小二乗法（OLS: Ordinary Least Squares）の仕組み</text>
+    <text x="6" y="36" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11" font-weight="600" fill="#64748b">なぜ「二乗」の合計を最小化するのか？ どうやって直線を決めるのか？</text>
+
+    <!-- 3 Step Cards Layout -->
+    <!-- STEP 1 -->
+    <g transform="translate(0, 48)">
+      <rect x="0" y="0" width="154" height="116" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+      <rect x="10" y="8" width="52" height="18" rx="4" fill="#64748b"/>
+      <text x="36" y="21" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">STEP 1</text>
+      <text x="10" y="44" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="12" font-weight="800" fill="#0f172a">ズレ（残差）を測る</text>
+      <text x="10" y="62" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="500" fill="#475569">各データ点と直線の</text>
+      <text x="10" y="77" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="500" fill="#475569">上下の距離を計算：</text>
+      <rect x="8" y="86" width="138" height="22" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="77" y="101" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="800" fill="#be123c" text-anchor="middle">uᵢ ＝ Yᵢ － Ŷᵢ</text>
+    </g>
+
+    <!-- Connector 1 -> 2 -->
+    <path d="M 158 106 L 174 106" stroke="#7c3aed" stroke-width="2.5" fill="none" marker-end="url(#arrow-step)"/>
+
+    <!-- STEP 2 -->
+    <g transform="translate(178, 48)">
+      <rect x="0" y="0" width="154" height="116" rx="8" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="1.2"/>
+      <rect x="10" y="8" width="52" height="18" rx="4" fill="#a855f7"/>
+      <text x="36" y="21" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">STEP 2</text>
+      <text x="10" y="44" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="12" font-weight="800" fill="#581c87">2乗して合計する</text>
+      <text x="10" y="62" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="500" fill="#475569">プラス・マイナスを</text>
+      <text x="10" y="77" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="500" fill="#475569">解消し大きく罰する：</text>
+      <rect x="8" y="86" width="138" height="22" rx="4" fill="#ffffff" stroke="#f3e8ff" stroke-width="1"/>
+      <text x="77" y="101" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="800" fill="#7e22ce" text-anchor="middle">∑ uᵢ²（残差平方和）</text>
+    </g>
+
+    <!-- Connector 2 -> 3 -->
+    <path d="M 336 106 L 352 106" stroke="#7c3aed" stroke-width="2.5" fill="none" marker-end="url(#arrow-step)"/>
+
+    <!-- STEP 3 -->
+    <g transform="translate(356, 48)">
+      <rect x="0" y="0" width="154" height="116" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.2"/>
+      <rect x="10" y="8" width="52" height="18" rx="4" fill="#16a34a"/>
+      <text x="36" y="21" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">STEP 3</text>
+      <text x="10" y="44" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="12" font-weight="800" fill="#14532d">最小化して決定！</text>
+      <text x="10" y="62" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="500" fill="#475569">∑ uᵢ² を最小にする</text>
+      <text x="10" y="77" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="700" fill="#15803d">「最適な1本の直線」：</text>
+      <rect x="8" y="86" width="138" height="22" rx="4" fill="#ffffff" stroke="#dcfce7" stroke-width="1"/>
+      <text x="77" y="101" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="800" fill="#15803d" text-anchor="middle">β₀ と β₁ が一意に決定</text>
+    </g>
+
+    <!-- Bottom Intuition Summary Pill -->
+    <g transform="translate(0, 174)">
+      <rect x="0" y="0" width="510" height="47" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1.2"/>
+      <text x="14" y="20" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11.5" font-weight="800" fill="#6d28d9">🎯 OLSの核心直感：</text>
+      <text x="14" y="37" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="600" fill="#4c1d95">すべてのデータ点からの「ズレの二乗の合計」を世界で最も小さくする、最もフェアな妥協直線！</text>
+    </g>
+  </g>
+</svg>

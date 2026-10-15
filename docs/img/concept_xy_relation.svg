@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240" width="100%" height="100%">
+  <defs>
+    <filter id="shadow-card" x="-3%" y="-4%" width="106%" height="112%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e1b4b" flood-opacity="0.06"/>
+    </filter>
+    <marker id="arrow-rel" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-axis" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b"/>
+    </marker>
+    <linearGradient id="grad-x" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdf4ff"/>
+      <stop offset="100%" stop-color="#fae8ff"/>
+    </linearGradient>
+    <linearGradient id="grad-y" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0f9ff"/>
+      <stop offset="100%" stop-color="#e0f2fe"/>
+    </linearGradient>
+    <linearGradient id="grad-plot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer background card -->
+  <rect x="2" y="2" width="596" height="236" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow-card)"/>
+
+  <!-- Top: Causal Flow (X -> Y) -->
+  <!-- Box X -->
+  <g transform="translate(16, 12)">
+    <rect x="0" y="0" width="200" height="76" rx="8" fill="url(#grad-x)" stroke="#d8b4fe" stroke-width="1.5"/>
+    <rect x="10" y="8" width="88" height="20" rx="10" fill="#9333ea"/>
+    <text x="54" y="22" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">説明変数 (X)</text>
+    <text x="14" y="48" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="17" font-weight="800" fill="#581c87">売上高</text>
+    <text x="14" y="66" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11.5" font-weight="600" fill="#7e22ce">【原因・企業の規模】</text>
+  </g>
+
+  <!-- Connector Arrow -->
+  <path d="M 226 50 L 362 50" stroke="#7c3aed" stroke-width="3" fill="none" marker-end="url(#arrow-rel)"/>
+  <rect x="240" y="24" width="110" height="22" rx="11" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="295" y="39" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11" font-weight="700" fill="#6d28d9" text-anchor="middle">影響を与える</text>
+  <text x="295" y="65" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10" font-weight="700" fill="#8b5cf6" text-anchor="middle">（傾き β₁ で測定）</text>
+
+  <!-- Box Y -->
+  <g transform="translate(384, 12)">
+    <rect x="0" y="0" width="200" height="76" rx="8" fill="url(#grad-y)" stroke="#93c5fd" stroke-width="1.5"/>
+    <rect x="10" y="8" width="98" height="20" rx="10" fill="#0284c7"/>
+    <text x="59" y="22" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">被説明変数 (Y)</text>
+    <text x="14" y="48" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="17" font-weight="800" fill="#0c4a6e">当期純利益</text>
+    <text x="14" y="66" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11.5" font-weight="600" fill="#0369a1">【結果・稼ぐ力】</text>
+  </g>
+
+  <!-- Divider Line -->
+  <line x1="20" y1="96" x2="580" y2="96" stroke="#f1f5f9" stroke-width="1.5"/>
+
+  <!-- Bottom: Mini Scatter Plot Illustration -->
+  <g transform="translate(16, 102)">
+    <!-- Inner plot bg -->
+    <rect x="0" y="0" width="370" height="126" rx="6" fill="url(#grad-plot)" stroke="#e2e8f0" stroke-width="1"/>
+
+    <!-- Grid lines -->
+    <line x1="45" y1="36" x2="350" y2="36" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="45" y1="68" x2="350" y2="68" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="45" y1="100" x2="350" y2="100" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="2,2"/>
+
+    <!-- Axes -->
+    <!-- X axis -->
+    <line x1="45" y1="102" x2="355" y2="102" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow-axis)"/>
+    <text x="355" y="118" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="700" fill="#475569" text-anchor="end">売上高 (X) →</text>
+
+    <!-- Y axis -->
+    <line x1="45" y1="102" x2="45" y2="16" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow-axis)"/>
+    <text x="45" y="12" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="700" fill="#475569">利益 (Y) ↑</text>
+
+    <!-- Trendline -->
+    <line x1="58" y1="96" x2="335" y2="28" stroke="#ec4899" stroke-width="2" stroke-dasharray="4,3"/>
+    <text x="145" y="24" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="800" fill="#be185d">右肩上がりの関係？ (正の相関)</text>
+
+    <!-- Data points (companies) -->
+    <circle cx="85" cy="88" r="4.5" fill="#7c3aed" opacity="0.8"/>
+    <circle cx="115" cy="78" r="4.5" fill="#7c3aed" opacity="0.8"/>
+    <circle cx="140" cy="84" r="4.5" fill="#7c3aed" opacity="0.8"/>
+    <circle cx="170" cy="66" r="4.5" fill="#7c3aed" opacity="0.8"/>
+    <circle cx="195" cy="58" r="4.5" fill="#7c3aed" opacity="0.8"/>
+    <circle cx="230" cy="62" r="4.5" fill="#7c3aed" opacity="0.8"/>
+    <circle cx="260" cy="46" r="4.5" fill="#7c3aed" opacity="0.8"/>
+    <circle cx="300" cy="38" r="4.5" fill="#7c3aed" opacity="0.8"/>
+
+    <!-- Point annotation (placed to avoid trendline text) -->
+    <circle cx="260" cy="46" r="7.5" fill="none" stroke="#f59e0b" stroke-width="2"/>
+    <path d="M 266 50 Q 285 70 300 70" stroke="#d97706" stroke-width="1.2" fill="none"/>
+    <rect x="255" y="72" width="94" height="20" rx="4" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+    <text x="302" y="86" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">● 1点 ＝ 1企業</text>
+  </g>
+
+  <!-- Right side note card -->
+  <g transform="translate(398, 102)">
+    <rect x="0" y="0" width="186" height="126" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="12" y="10" width="60" height="20" rx="4" fill="#3b82f6"/>
+    <text x="42" y="24" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="10.5" font-weight="700" fill="#ffffff" text-anchor="middle">散布図</text>
+    <text x="12" y="50" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="12" font-weight="700" fill="#1e293b">2変数の関係を可視化</text>
+    <text x="12" y="72" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11" font-weight="500" fill="#475569">・点の散らばり全体を見る</text>
+    <text x="12" y="91" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11" font-weight="500" fill="#475569">・「右肩上がり」か確認</text>
+    <text x="12" y="110" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" font-size="11" font-weight="700" fill="#7c3aed">・直線を引いて定量化へ！</text>
+  </g>
+</svg>

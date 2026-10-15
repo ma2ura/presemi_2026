@@ -2535,19 +2535,7 @@ Soichi Matsuura
 <li>縦軸（<span class="math inline">Y</span>）：当期純利益（被説明変数 / 従属変数）</li>
 <li>1つの点が「1つの企業」を表す</li>
 </ul>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-    X["売上高 (X)&lt;br&gt;【原因・規模】"] --&gt;|影響を与える| Y["当期純利益 (Y)&lt;br&gt;【結果・稼ぐ力】"]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
+<p><img data-src="img/concept_xy_relation.svg" style="max-height: 220px; width: 100%; margin: 0.2em auto; display: block;"></p>
 </div></div>
 <aside class="notes">
 <p>ここから第2部、回帰分析に入ります。 1つの変数の平均や中央値を見るのが「記述統計」でした。 しかし経営学や経済学の研究では、「売上高が増えたら、利益はどうなるのか？」「広告宣伝費を増やしたら、売上は伸びるのか？」といった、2つ以上の変数の関係性を調べたいケースがほとんどです。 この関係性を数式として取り出す道具が回帰分析です。</p>
@@ -2608,23 +2596,8 @@ Y_i = \beta_0 + \beta_1 X_i + u_i
 </section>
 <section id="olsの直感をイメージで掴む" class="slide level2 smaller diagram-fit">
 <h2>OLSの直感をイメージで掴む</h2>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    A["実際のデータ点 (Xi, Yi)"] --&gt; B["直線による予測値 Y_hat = β0 + β1 Xi"]
-    A -.-&gt;|ズレ（残差 ui）| B
-    B --&gt; C["残差の二乗和 Σ ui^2 を最小化する！"]
-    C --&gt; D["最適な傾き β1 と切片 β0 が一意に決定！"]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<div class="code-output" style="margin-top: 0.5em;">
+<p><img data-src="img/ols_intuition.svg" style="max-height: 235px; width: auto; margin: 0 auto; display: block;"></p>
+<div class="code-output" style="margin-top: 0.3em; padding: 6px 14px; font-size: 0.88em;">
 <p><strong>回帰分析が教えてくれる3大情報</strong>：</p>
 <ol type="1">
 <li><strong>傾きの向きと大きさ（<span class="math inline">\beta_1</span>）</strong>：プラスの関係か、マイナスの関係か？ 1単位増えるといくら増えるか？</li>
