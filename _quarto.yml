@@ -1,7 +1,12 @@
 project:
   title: "プレゼミ2026"
   output-dir: docs
+  render:
+    - "Presemi_2026_*.qmd"
+    - "!Presemi_2026_*_backup.qmd"
+
 lang: ja
+
 
 
 
