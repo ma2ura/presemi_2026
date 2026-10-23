@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<script src="Presemi_2026_01_共有用_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Presemi_2026_01_共有用_files/libs/quarto-html/tabby.min.js"></script>
+<script src="Presemi_2026_01_共有用_files/libs/quarto-html/popper.min.js"></script>
+<script src="Presemi_2026_01_共有用_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="Presemi_2026_01_共有用_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Presemi_2026_01_共有用_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="Presemi_2026_01_共有用_files/libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Soichi Matsuura">
+  <title>プレゼミ   Day1 : ガイダンス／実証分析の必要性</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="Presemi_2026_01_共有用_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="Presemi_2026_01_共有用_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="Presemi_2026_01_共有用_files/libs/revealjs/dist/theme/quarto-50f7abaff187893784be4eb6a7ac547f.css">
+  <link rel="stylesheet" href="mystyle.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="Presemi_2026_01_共有用_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="Presemi_2026_01_共有用_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="Presemi_2026_01_共有用_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="Presemi_2026_01_共有用_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="Presemi_2026_01_共有用_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="Presemi_2026_01_共有用_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="Presemi_2026_01_共有用_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title"><p><b>プレゼミ</b> <br> <span style="color: #282A36; ">Day1 : ガイダンス／実証分析の必要性</span></p></h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Soichi Matsuura
+</div>
+</div>
+</div>
+
+</section>
+<section id="今日の95分" class="slide level2">
+<h2>今日の95分</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>00–20</td>
+<td>ガイダンス（運営方法・評価・AI利用ポリシー）</td>
+</tr>
+<tr class="even">
+<td>20–35</td>
+<td><strong>今日の問い</strong>：決算発表の日、株価はなぜ動くのか</td>
+</tr>
+<tr class="odd">
+<td>35–50</td>
+<td>教員解説：実証研究とは／検証可能性と反証可能性</td>
+</tr>
+<tr class="even">
+<td>50–75</td>
+<td><strong>ライブ分析①</strong>：ブラウザでRを触ってみる</td>
+</tr>
+<tr class="odd">
+<td>75–85</td>
+<td><strong>持ち寄り</strong>：気になる企業と、知りたいこと</td>
+</tr>
+<tr class="even">
+<td>85–95</td>
+<td>次回の事前課題／担当の割り当て</td>
+</tr>
+</tbody>
+</table>
+<div class="code-output">
+<p>第2回以降は、<strong>冒頭で「みんなの予想の集計」を映すところから</strong>始まります。 今日はその予行演習です。</p>
+</div>
+</section>
+<section>
+<section id="ガイダンス" class="title-slide slide level1 center">
+<h1>ガイダンス</h1>
+
+</section>
+<section id="このクラスの方針" class="slide level2">
+<h2>このクラスの方針</h2>
+<ul>
+<li class="fragment"><strong>手を動かす。</strong>聞くだけの時間は95分のうち30分だけです。</li>
+<li class="fragment"><strong>予想してから、答え合わせをする。</strong>外すことに価値があります。</li>
+<li class="fragment"><strong>AIを使ってよい。</strong>ただし、検算と説明はあなたの仕事です。</li>
+<li class="fragment"><strong>反論するのが仕事の人がいる。</strong>毎回、ディスカッサントを指名します。</li>
+</ul>
+<div class="fragment">
+<div class="code-output">
+<p>このクラスのゴールは、教科書を覚えることではありません。 <span class="markp"><strong>まだ誰も見ていない図を、自分の手で1枚作ること</strong></span>です。</p>
+</div>
+</div>
+</section>
+<section id="講義の目的" class="slide level2 smaller">
+<h2>講義の目的</h2>
+<ul>
+<li>現実に生じている経営現象に注目し、その現象がどのようなメカニズムで生じているのかを考え、 そのメカニズムを特定し、理論化することで、経営現象が生じている理由を説明できるようになる。</li>
+<li>このような<span class="markp">事実解明型の研究を<strong>実証研究</strong>(positive research)</span>と呼ぶ。</li>
+</ul>
+<p><br></p>
+<p><strong>実証研究を行う際に重要な要素</strong></p>
+<ol type="1">
+<li><strong>検証可能性</strong>（testability）── 仮説をデータで確かめられること</li>
+<li><strong>反証可能性</strong>（falsifiability）── 「間違いだ」と示せること</li>
+<li><strong>社会現象との相互作用</strong> ── 研究の対象は人の行動なので、研究結果が知られると、経営者や投資家、制度の側が変わることがある</li>
+</ol>
+
+<aside><div>
+<p>1と2は、このあと「良い問いの2条件」で詳しく扱います。</p>
+</div></aside></section>
+<section id="講義の位置づけ" class="slide level2 diagram-fit">
+<h2>講義の位置づけ</h2>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    subgraph 基礎
+        A[企業と会計]
+        B[会計学]
+    end
+    subgraph 入門
+        C[企業分析論]
+        D[会計制度論]
+    end
+    subgraph 発展
+        G[実証会計論]
+        E[連結会計論]
+        F[財務会計論]
+        H[管理会計論]
+        I[原価計算論]
+    end
+    A ==&gt; B
+    B ==&gt; C
+    B ==&gt; D
+    D ==&gt; G
+    D --&gt; E
+    D --&gt; F
+    C --&gt; H &amp; I &amp; F
+    C ==&gt; G
+    style G fill:#f9d6ea,stroke:#e3439e,stroke-width:3px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>このプレゼミは、<strong>実証会計論</strong>へ向かう最初の一歩です。</p>
+</section>
+<section id="授業の進め方反転授業" class="slide level2">
+<h2>授業の進め方：反転授業</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><strong>ふつうの授業</strong></p>
+<ol type="1">
+<li>教員が説明（70分）</li>
+<li>少し練習（20分）</li>
+</ol>
+<p>→ <span class="markp"><strong>分かっていないことに気づけない</strong></span></p>
+</div><div class="column" style="width:52%;">
+<p><strong>このクラス</strong></p>
+<ol type="1">
+<li><strong>授業の前に</strong>、動画と教科書で学ぶ</li>
+<li>授業では、<strong>予想し・手を動かし・持ち寄る</strong></li>
+</ol>
+<p>→ <span class="marky"><strong>分かっていないことが自分で分かる</strong></span></p>
+</div></div>
+<div class="code-output">
+<p>95分の中に「説明」と「実践」の両方は入りません。だから<strong>説明を外に出します。</strong></p>
+</div>
+</section>
+<section id="授業の前にやってくること約1時間" class="slide level2 smaller">
+<h2>授業の前にやってくること（約1時間）</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>内容</th>
+<th>目安</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A. 見る</strong></td>
+<td>解説動画（5〜10分）＋教科書の該当ページ</td>
+<td>30分</td>
+</tr>
+<tr class="even">
+<td><strong>B. 予想する</strong></td>
+<td><span class="markp"><strong>予想シート1問</strong></span>（選択式＋理由1行）</td>
+<td><strong>3分</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>C. 手を動かす</strong></td>
+<td>配布コードの<strong>指定の1箇所だけ</strong>を変えて実行し、結果を貼る</td>
+<td>20〜30分</td>
+</tr>
+</tbody>
+</table>
+<div class="code-output">
+<ul>
+<li><strong>B は当たり外れを評価しません。</strong>出したかどうかだけを見ます。 集計して<span class="marky"><strong>授業の冒頭で映します。</strong></span></li>
+<li><strong>C は白紙からコードを書きません。</strong>完成コードを配ります。変えるのは1箇所。 <strong>AIに聞いてもかまいません。</strong></li>
+</ul>
+</div>
+</section>
+<section id="分の使い方" class="slide level2 smaller">
+<h2>95分の使い方</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>時間</th>
+<th>誰が</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>00–05</td>
+<td>教員</td>
+<td>今日の問い／<strong>みんなの予想の集計結果</strong></td>
+</tr>
+<tr class="even">
+<td>05–15</td>
+<td><strong>学生</strong></td>
+<td>なぜそう予想したか、隣の人と2分 → 数名が発言</td>
+</tr>
+<tr class="odd">
+<td>15–40</td>
+<td><strong>学生</strong></td>
+<td><strong>担当班の報告</strong> → <strong>ディスカッサントの反論</strong> → 議論</td>
+</tr>
+<tr class="even">
+<td>40–55</td>
+<td>教員</td>
+<td>解説（背景・つまずきどころ・研究の裏話）</td>
+</tr>
+<tr class="odd">
+<td>55–75</td>
+<td><strong>学生</strong></td>
+<td><strong>ライブ分析</strong>（ペアで手を動かす）</td>
+</tr>
+<tr class="even">
+<td>75–85</td>
+<td><strong>学生</strong></td>
+<td><strong>結果を持ち寄る</strong> → クラス全体の図表を完成させる</td>
+</tr>
+<tr class="odd">
+<td>85–95</td>
+<td>教員</td>
+<td>まとめ／次回への「裏切り」／次回の事前課題</td>
+</tr>
+</tbody>
+</table>
+<p><span class="markp"><strong>学生の活動が65分、教員の解説は30分。</strong></span></p>
+</section>
+<section id="役割報告者ディスカッサント記録者" class="slide level2">
+<h2>役割：報告者・ディスカッサント・記録者</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>報告者</strong>（順番に回ります）</p>
+<ul>
+<li>事前課題を発展させて<strong>7分で報告</strong></li>
+<li>きれいにまとめる必要はありません</li>
+<li><span class="marky"><strong>どこで詰まったかを正直に</strong></span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>ディスカッサント</strong>（反論担当）</p>
+<ul>
+<li><span class="markp"><strong>必ず1つ以上の反論・疑問</strong></span>を出す</li>
+<li>資料は事前に受け取ります</li>
+<li><strong>これが仕事です。</strong>遠慮は不要</li>
+</ul>
+</div></div>
+<div class="code-output">
+<p>学会と同じ形式です。<strong>全員に順番に回します。</strong> さらに毎回1名が<strong>記録者</strong>として、議論で出た「疑問」を共有ドキュメントに残します。</p>
+<p>「質問してもいいですよ」では誰も質問しません。 でも「反論するのがあなたの仕事です」と言われれば、言えるようになります。</p>
+</div>
+</section>
+<section id="ライブ分析は分担します" class="slide level2">
+<h2>ライブ分析は「分担」します</h2>
+<p>授業中、<strong>ペアごとに違う会社・違う業種・違う年</strong>を担当します。 1人分の結果はバラバラでも、クラス全員分を重ねると<strong>はっきりした形が現れます</strong>。</p>
+<svg viewbox="0 0 1000 350" role="img" aria-label="1社だけの結果とクラス全員分を重ねた結果の比較" style="width:100%;max-width:1040px;height:auto;">
+<g transform="translate(10,0)"> <rect x="40" y="30" width="410" height="230" fill="#ffffff" stroke="#e7e2e2" stroke-width="1.5"></rect> <line x1="40" y1="170" x2="450" y2="170" stroke="#e7e2e2" stroke-width="1.5"></line> <line x1="245" y1="35" x2="245" y2="255" stroke="#e3439e" stroke-width="2" stroke-dasharray="6 5"></line> <polyline fill="none" stroke="#9f3535" stroke-width="3" stroke-linejoin="round" points="50,170 70,150 90,185 110,140 130,195 150,160 170,120 190,175 210,145 230,200 250,130 270,165 290,110 310,180 330,150 350,205 370,140 390,175 410,125 430,160"></polyline> <text x="245" y="290" fill="#282A36" font-size="21" font-weight="900" text-anchor="middle">あなた1人が1社だけ調べると</text> <text x="245" y="318" fill="#9f3535" font-size="18" text-anchor="middle">ノイズだらけで、何も見えない</text> </g> <g transform="translate(520,0)"> <rect x="40" y="30" width="410" height="230" fill="#ffffff" stroke="#e7e2e2" stroke-width="1.5"></rect> <line x1="40" y1="170" x2="450" y2="170" stroke="#e7e2e2" stroke-width="1.5"></line> <line x1="245" y1="35" x2="245" y2="255" stroke="#e3439e" stroke-width="2" stroke-dasharray="6 5"></line> <polyline fill="none" stroke="#8556c7" stroke-width="4" stroke-linejoin="round" points="50,172 70,168 90,171 110,167 130,170 150,166 170,169 190,165 210,168 230,166 245,167 260,118 280,114 300,116 320,112 340,115 360,111 380,114 400,110 420,113 440,109"></polyline> <text x="245" y="290" fill="#282A36" font-size="21" font-weight="900" text-anchor="middle">クラス全員分を重ねると</text> <text x="245" y="318" fill="#8556c7" font-size="18" text-anchor="middle">はっきりした形が現れる</text> </g>
+</svg>
+<p><span class="markp"><strong>1人サボると、その分だけ図がぼやけます。</strong></span></p>
+</section>
+<section id="成績評価" class="slide level2">
+<h2>成績評価</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>評価するもの</th>
+<th>比率</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>予想シート（<strong>出せば満点</strong>）</td>
+<td>10%</td>
+</tr>
+<tr class="even">
+<td>事前課題（手を動かす）</td>
+<td>20%</td>
+</tr>
+<tr class="odd">
+<td>担当回の報告</td>
+<td>15%</td>
+</tr>
+<tr class="even">
+<td><span class="markp"><strong>ディスカッサント（反論）</strong></span></td>
+<td>15%</td>
+</tr>
+<tr class="odd">
+<td>ライブ分析の提出</td>
+<td>15%</td>
+</tr>
+<tr class="even">
+<td>最終レポート（Quarto）</td>
+<td>25%</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:48%;">
+<div class="code-output">
+<p><strong>予想シートは外しても満点。</strong> 出したかどうかだけを見ます。</p>
+<p><strong>反論に15%。</strong> 批判できることは能力です。</p>
+<p>一発勝負の試験はありません。 <span class="marky"><strong>毎回の積み重ねで決まります。</strong></span></p>
+</div>
+</div></div>
+</section>
+<section id="生成aiの使い方" class="slide level2">
+<h2>生成AIの使い方</h2>
+<p><strong>全面的に使ってかまいません。隠す必要はありません。</strong></p>
+<div class="code-output">
+<p>ただし3つだけ守ってください。</p>
+<ol type="1">
+<li><strong>申告</strong> ── どのAIに何を頼んだか、提出物の末尾に記録する</li>
+<li><strong>検算</strong> ── AIが出した数値は、必ず別の方法で1つ以上確かめる</li>
+<li><strong>説明責任</strong> ── 提出物の全部の行について、聞かれたら説明できること</li>
+</ol>
+</div>
+<p><span class="markp"><strong>説明できないコードは、提出物に入れないでください。</strong></span> これは意地悪ではなく、皆さんを守るためのルールです。</p>
+<p>評価するのは「AIを使ったか」ではなく、 <span class="marky"><strong>AIを使ってどこまで深く問えたか</strong></span>です。</p>
+</section>
+<section id="教科書と参考書" class="slide level2">
+<h2>教科書と参考書</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>教科書</strong></p>
+<p>黒木 他 (2026)『<strong>会計学の実証分析入門</strong>』中央経済社</p>
+<ul>
+<li>Rで実証会計研究を実践できる入門書</li>
+<li>事前課題で毎回少しずつ読みます</li>
+<li>第7回以降は、この本の分析を<strong>章ごとに再現</strong>します</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p><strong>参考（無料・英語）</strong></p>
+<p>Gow &amp; Ding, <em>Empirical Research in Accounting: Tools and Methods</em></p>
+<p><a href="https://iangow.github.io/far_book/" class="uri">https://iangow.github.io/far_book/</a></p>
+<ul>
+<li>毎回「続きは第◯章」と案内します</li>
+</ul>
+</div></div>
+</section></section>
+<section>
+<section id="今日の問い" class="title-slide slide level1 center">
+<h1>今日の問い</h1>
+
+</section>
+<section id="決算発表があったのはいつでしょう" class="slide level2">
+<h2>決算発表があったのは、いつでしょう？</h2>
+<p>ある会社の、約30取引日（1か月半ほど）の株価です。<strong>予想してください。</strong></p>
+<svg viewbox="0 0 1000 330" role="img" aria-label="株価の推移" style="width:100%;height:auto;">
+<line x1="60" y1="290" x2="975" y2="290" stroke="#879dde" stroke-width="2"></line> <line x1="60" y1="40" x2="60" y2="290" stroke="#879dde" stroke-width="2"></line> <text x="500" y="320" fill="#282A36" font-size="20" text-anchor="middle">取引日</text> <text x="20" y="165" fill="#282A36" font-size="20" text-anchor="middle" transform="rotate(-90 20 165)">株価</text> <polyline fill="none" stroke="#282A36" stroke-width="3.5" stroke-linejoin="round" points="60,210 90,205 120,214 150,202 180,208 210,198 240,206 270,196 300,203 330,192 360,200 390,190 420,197 450,188 480,194 510,186 540,191 570,184 600,188 630,118 660,124 690,112 720,118 750,108 780,114 810,104 840,110 870,100 900,106 930,96 960,102"></polyline>
+</svg>
+</section>
+<section id="答えここです" class="slide level2">
+<h2>答え：ここです</h2>
+<svg viewbox="0 0 1000 330" role="img" aria-label="決算発表日を示した株価の推移" style="width:100%;height:auto;">
+<rect x="600" y="40" width="30" height="250" fill="#e3439e" opacity="0.15"></rect> <line x1="615" y1="40" x2="615" y2="290" stroke="#e3439e" stroke-width="2" stroke-dasharray="6 5"></line> <line x1="60" y1="290" x2="975" y2="290" stroke="#879dde" stroke-width="2"></line> <line x1="60" y1="40" x2="60" y2="290" stroke="#879dde" stroke-width="2"></line> <polyline fill="none" stroke="#282A36" stroke-width="3.5" stroke-linejoin="round" points="60,210 90,205 120,214 150,202 180,208 210,198 240,206 270,196 300,203 330,192 360,200 390,190 420,197 450,188 480,194 510,186 540,191 570,184 600,188"></polyline> <polyline fill="none" stroke="#e3439e" stroke-width="4.5" stroke-linejoin="round" points="600,188 630,118"></polyline> <polyline fill="none" stroke="#282A36" stroke-width="3.5" stroke-linejoin="round" points="630,118 660,124 690,112 720,118 750,108 780,114 810,104 840,110 870,100 900,106 930,96 960,102"></polyline> <text x="660" y="70" fill="#e3439e" font-size="24" font-weight="900">決算発表日</text> <text x="660" y="98" fill="#282A36" font-size="18">工場が増えたわけでも、新製品が出たわけでもない</text>
+</svg>
+<p><span class="markp"><strong>「数字を発表した」だけで、会社の価値の評価が変わった。</strong></span></p>
+</section>
+<section id="会計の数字は情報である" class="slide level2">
+<h2>会計の数字は「情報」である</h2>
+<ul>
+<li class="fragment">この日、会社の中では<strong>新しいことは何も起きていない</strong></li>
+<li class="fragment">工場が増えたわけでも、新製品が出たわけでもない</li>
+<li class="fragment">ただ「数字を発表した」だけ</li>
+<li class="fragment">それだけで、何十億円という時価総額が動く</li>
+</ul>
+<div class="fragment">
+<div class="code-output">
+<p>つまり、会計は単なる記録ではなく<span class="marky"><strong>情報</strong></span>である。</p>
+<p>── ですが、これが「当たり前」になったのは、 実は<span class="markp"><strong>1968年</strong></span>のことです。</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="実証研究とは" class="title-slide slide level1 center">
+<h1>実証研究とは</h1>
+
+</section>
+<section id="年に何が起きたか" class="slide level2">
+<h2>1968年に何が起きたか</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>1968年より前の会計学</strong></p>
+<ul>
+<li>「<strong>あるべき</strong>利益の計算とは何か」</li>
+<li>「理論的に<strong>正しい</strong>測定方法は何か」</li>
+<li>議論は机の上で行われ、決着しなかった</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Ball and Brown (1968)</strong></p>
+<ul>
+<li>「正しいかどうかは置いておこう」</li>
+<li><span class="marky"><strong>「投資家が反応するか、データに聞けばいい」</strong></span></li>
+<li>それだけの発想の転換でした</li>
+</ul>
+</div></div>
+<div class="code-output">
+<p>この論文が、会計学を「机上の議論」から<strong>データで検証する学問</strong>に変えました。 いま世界中の会計研究者がやっていることは、ほぼすべてこの1本の子孫です。</p>
+</div>
+</section>
+<section id="ball-and-brown-1968-が描いた図" class="slide level2">
+<h2>Ball and Brown (1968) が描いた図</h2>
+<p>縦軸は<strong>累積異常リターン</strong>：毎月の株価の動きが「市場平均からどれだけ外れたか」を、発表の12か月前から足し上げたもの。 「予想」は、前年の利益などから機械的に作った予想値です。</p>
+<svg viewbox="0 0 1000 540" role="img" aria-label="グッドニュース企業とバッドニュース企業の累積異常収益" style="width:100%;max-width:840px;height:auto;">
+<line x1="90" y1="250" x2="960" y2="250" stroke="#879dde" stroke-width="2"></line> <line x1="90" y1="60" x2="90" y2="480" stroke="#879dde" stroke-width="2"></line> <text x="80" y="256" fill="#282A36" font-size="18" text-anchor="end">0</text> <text x="40" y="270" fill="#282A36" font-size="19" text-anchor="middle" transform="rotate(-90 40 270)">累積異常リターン</text> <line x1="656" y1="60" x2="656" y2="480" stroke="#e3439e" stroke-width="2" stroke-dasharray="7 6"></line> <text x="656" y="45" fill="#e3439e" font-size="21" font-weight="900" text-anchor="middle">決算発表</text> <polyline fill="none" stroke="#8556c7" stroke-width="5" stroke-linejoin="round" points="90,250 137,238 184,228 232,218 279,208 326,198 373,188 421,178 468,168 515,160 562,152 609,146 657,138 704,136 751,134 798,134 846,132 893,132 940,130"></polyline> <polyline fill="none" stroke="#9f3535" stroke-width="5" stroke-linejoin="round" points="90,250 137,268 184,286 232,304 279,322 326,340 373,358 421,376 468,394 515,410 562,424 609,436 657,448 704,452 751,454 798,456 846,458 893,458 940,460"></polyline> <text x="948" y="122" fill="#8556c7" font-size="22" font-weight="900" text-anchor="end">利益が予想より良かった会社</text> <text x="948" y="486" fill="#9f3535" font-size="22" font-weight="900" text-anchor="end">利益が予想より悪かった会社</text> <text x="90" y="510" fill="#282A36" font-size="19">発表の12か月前</text> <text x="940" y="510" fill="#282A36" font-size="19" text-anchor="end">6か月後</text>
+</svg>
+</section>
+<section id="この図の本当の面白さ" class="slide level2">
+<h2>この図の、本当の面白さ</h2>
+<ul>
+<li class="fragment">利益が良かった会社は上、悪かった会社は下。<strong>ここまでは予想どおり</strong></li>
+<li class="fragment">しかし、線が分かれ始めるのは<span class="markp"><strong>発表の「ずっと前」から</strong></span></li>
+<li class="fragment">発表の瞬間にドカンと分かれるのではなく、<strong>12か月かけてじわじわ分かれる</strong></li>
+</ul>
+<div class="fragment">
+<div class="code-output">
+<p>つまり、投資家は決算発表を待たずに、他の情報からすでに業績を知っていた。</p>
+<p><span class="marky"><strong>会計情報は「重要だけれど、遅い」。</strong></span> これが1968年に発見された事実でした。</p>
+</div>
+</div>
+<div class="fragment">
+<p>では、決算発表日そのものには<strong>何の意味もない</strong>のでしょうか？ ── その答えは、<strong>第9回</strong>でやります。</p>
+</div>
+</section>
+<section id="良い問いの2条件" class="slide level2 smaller">
+<h2>良い問いの2条件</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>① 検証可能性</strong>（testability）</p>
+<p>仮説をデータで確かめられること。</p>
+<p>確かめられない仮説は、 議論しても決着しません。</p>
+</div><div class="column" style="width:50%;">
+<p><strong>② 反証可能性</strong>（falsifiability）</p>
+<p><span class="markp"><strong>「間違いだ」と示せる</strong></span>こと。</p>
+<p>どんなデータが出ても 説明できてしまう主張は、 強い主張ではなく<strong>中身のない主張</strong>です。</p>
+</div></div>
+<div class="code-output">
+<p><strong>練習：</strong>次のうち、反証可能なのはどれでしょう？</p>
+<ol type="1">
+<li>「利益が予想を上回った会社の株価は、決算発表日に上がる」</li>
+<li>「株価は、投資家の気分しだいで上がったり下がったりする」</li>
+<li>「良い経営者は、良い会計を行う」</li>
+</ol>
+</div>
+<aside class="notes">
+<p>メモや原稿はここに書きます。</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="規範的な問いと実証的な問い" class="slide level2">
+<h2>規範的な問いと、実証的な問い</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>規範的な問い</strong>（扱わない）</p>
+<ul>
+<li>利益はどう計算す<strong>べき</strong>か</li>
+<li>会計基準はどう<strong>あるべき</strong>か</li>
+</ul>
+<p>→ 価値観の問題。データでは決着しない</p>
+</div><div class="column" style="width:50%;">
+<p><strong>実証的な問い</strong>（扱う）</p>
+<ul>
+<li>利益の発表に投資家は反応する<strong>か</strong></li>
+<li>IFRSを採用した会社に共通点は<strong>あるか</strong></li>
+<li>「わずかに黒字」が多いのは<strong>なぜか</strong></li>
+</ul>
+<p>→ <span class="marky">データで決着する</span></p>
+</div></div>
+<p>どちらが偉いという話ではありません。 このクラスは<span class="markp"><strong>右側だけ</strong></span>を扱う、というだけのことです。</p>
+</section></section>
+<section>
+<section id="ライブ分析①rを触ってみる" class="title-slide slide level1 center">
+<h1>ライブ分析①：Rを触ってみる</h1>
+
+</section>
+<section id="今日はインストール不要です" class="slide level2">
+<h2>今日はインストール不要です</h2>
+<ul>
+<li>ここから先のコードは、<strong>このスライドの中で動きます</strong>（webR）</li>
+<li>読み込みに10〜20秒かかります。<span class="markp"><strong>いま ▶ を1回押しておいてください</strong></span></li>
+<li>第4回からは、<span class="markp"><strong>自分のPCに入れた R ＋ VS Code</strong></span> を使います（入れ方は第3回に全員で）</li>
+</ul>
+<p>まずは電卓として使ってみましょう。</p>
+</section>
+<section id="予想してください" class="slide level2 smaller">
+<h2>予想してください</h2>
+<p>サイコロの出た目の平均は、理論的には</p>
+<p><span class="math display">
+\frac{1+2+3+4+5+6}{6} = 3.5
+</span></p>
+<p>です。では、<strong>実際に10回振ったときの平均</strong>は、どのくらいになるでしょう？</p>
+<div class="code-output">
+<p><strong>予想</strong>：① ちょうど3.5になる　② 3.4〜3.6の範囲に収まる　③ 3.4〜3.6の外に出ることもよくある</p>
+</div>
+<p><span class="markp"><strong>何回か押してみてください。</strong></span>毎回違う答えが出ます。</p>
+</section>
+<section id="では回数を増やすと" class="slide level2">
+<h2>では、回数を増やすと？</h2>
+<p><code>toss</code> の数字を <strong>100 → 1000 → 100000</strong> と変えて、実行してみてください。</p>
+<div class="fragment">
+<div class="code-output">
+<p><strong>回数を増やすほど、3.5に近づきます。</strong>（大数の法則）</p>
+<p>言い換えると──<span class="markp"><strong>サンプルが少ないと、偶然に振り回される。</strong></span></p>
+<p>これが、このクラスで何度も出てくる考え方です。 さっきの「1社だけ調べても何も見えない」も、まったく同じ話でした。</p>
+</div>
+</div>
+</section>
+<section id="手を動かすペアワーク10分" class="slide level2 smaller">
+<h2>手を動かす：ペアワーク（10分）</h2>
+<div class="code-output">
+<p><strong>課題</strong>：<code>toss</code> を 10 / 100 / 1000 / 10000 と変えて、それぞれ<strong>5回ずつ</strong>実行し、 平均値の<strong>最大と最小</strong>を記録してください。</p>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>toss</th>
+<th>最小</th>
+<th>最大</th>
+<th>幅（最大−最小）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>100</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>1000</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>10000</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><span class="markp"><strong>問い：<code>toss</code> が10倍になると、「幅」はどうなりますか？</strong></span></p>
+</section>
+<section id="なぜプログラミングなのか" class="slide level2 smaller">
+<h2>なぜプログラミングなのか</h2>
+<p>同じことを手作業でやったら、何分かかるでしょうか。</p>
+<div class="code-output">
+<ul>
+<li><strong>繰り返し</strong>が一瞬で終わる</li>
+<li><strong>同じ手順を、いつでも再現できる</strong>（クリック操作は再現できない）</li>
+<li>間違いが見つかったとき、<strong>1行直して全部やり直せる</strong></li>
+</ul>
+</div>
+</section>
+<section id="aiに書かせてみる" class="slide level2">
+<h2>AIに書かせてみる</h2>
+<div class="code-output">
+<p><strong>やってみよう</strong>：手元のAIに、こう頼んでみてください。</p>
+<blockquote>
+<p>「Rで、サイコロを1000回振ったときの出た目の平均を計算するコードを書いて」</p>
+</blockquote>
+</div>
+<p><br></p>
+<ul>
+<li class="fragment">おそらく、上とほぼ同じコードが返ってきます</li>
+<li class="fragment"><strong>それでいいのです。</strong>このクラスは、コードを書けることを目標にしていません</li>
+<li class="fragment">大事なのは、返ってきたコードが<span class="markp"><strong>本当に正しいか確かめられること</strong></span></li>
+<li class="fragment">そのために、仕組みのほうを学びます</li>
+</ul>
+</section></section>
+<section>
+<section id="持ち寄り" class="title-slide slide level1 center">
+<h1>持ち寄り</h1>
+
+</section>
+<section id="気になる企業を1社" class="slide level2">
+<h2>気になる企業を、1社</h2>
+<div class="code-output">
+<p><strong>共有シートに、次の3つを書いてください（1人1行）。</strong></p>
+<ol type="1">
+<li>気になる企業（1社）</li>
+<li>その企業について<strong>知りたいこと</strong>（1つ）</li>
+<li>それは<strong>データで確かめられそうか</strong>（○ / △ / ×）</li>
+</ol>
+</div>
+<p><br></p>
+<ul>
+<li>ここに書いたものが、<strong>最終レポート（第13・14回）の種</strong>になります</li>
+<li>いま「×」でも構いません。第2回で、<strong>確かめられる形に書き直す</strong>練習をします</li>
+</ul>
+</section></section>
+<section>
+<section id="次回に向けて" class="title-slide slide level1 center">
+<h1>次回に向けて</h1>
+
+</section>
+<section id="裏切り今日の話はこれで終わりません" class="slide level2">
+<h2>裏切り：今日の話は、これで終わりません</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>今日わかったこと</p>
+<ul>
+<li>会計の数字は情報である</li>
+<li>決算発表で株価は動く</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p>でも──</p>
+<ul>
+<li>線は<span class="markp"><strong>発表の12か月前から</strong></span>分かれていた</li>
+<li>では、決算発表日そのものには 意味がないのか？</li>
+<li>そもそも「利益が予想より良い」の <strong>「予想」って誰の予想？</strong></li>
+</ul>
+</div></div>
+<div class="code-output">
+<p>問いは、答えるたびに増えます。<strong>それが研究の面白いところです。</strong></p>
+</div>
+</section>
+<section id="次回第2回の事前課題" class="slide level2 smaller">
+<h2>次回（第2回）の事前課題</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 66%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>内容</th>
+<th>目安</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A. 見る</strong></td>
+<td>教科書 第1章／解説動画（manabaに掲載）</td>
+<td>30分</td>
+</tr>
+<tr class="even">
+<td><strong>B. 予想する</strong></td>
+<td><span class="markp"><strong>予想シート</strong></span>：3つの主張のうち、反証可能なのはどれか</td>
+<td><strong>3分</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>C. 手を動かす</strong></td>
+<td>経済ニュースを1本選び、その主張を<strong>検証可能な問いに書き直す</strong></td>
+<td>20分</td>
+</tr>
+<tr class="even">
+<td><strong>D. 問いを書く</strong></td>
+<td>今日書いた「知りたいこと」をもとに、<strong>自分の問いを1文で書く</strong></td>
+<td>10分</td>
+</tr>
+</tbody>
+</table>
+<div class="code-output">
+<ul>
+<li><strong>B は必ず出してください。</strong>集計結果を、次回の冒頭で映します。</li>
+<li><strong>C は正解がありません。</strong>書き直してみた、という事実が大事です。</li>
+<li><strong>D は次回、全員が1分ずつ発表します。</strong></li>
+</ul>
+</div>
+</section>
+<section id="今日決めること" class="slide level2">
+<h2>今日決めること</h2>
+<ol type="1">
+<li class="fragment"><strong>ペア</strong>（ライブ分析の相棒）── 隣の人で構いません</li>
+<li class="fragment"><strong>報告担当の順番</strong>（第7回以降）</li>
+<li class="fragment"><strong>ディスカッサントの順番</strong> ── 全員に回ります</li>
+<li class="fragment">共有スプレッドシートへのアクセス確認</li>
+<li class="fragment">manaba の予想シートが開けるか確認</li>
+</ol>
+<div class="fragment">
+<div class="code-output">
+<p>質問はいつでも 📧 matsuura@fc.ritsumei.ac.jp</p>
+<p>次回、<strong>みんなの予想の集計</strong>から始めます。</p>
+</div>
+</div>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="img/rits_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Ritsumeikan University, Business Administration</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="Presemi_2026_01_共有用_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1400,
+
+        height: 800,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "コピーしました");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "コピーしました");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

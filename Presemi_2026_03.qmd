@@ -158,8 +158,10 @@ $$\frac{453 \text{社}}{500 \text{社}} = \mathbf{90.6\%}$$
 
 隣の人と、次の問いについて話し合ってください。
 
-::: {.code-output style="padding: 10px 16px; margin: 0.8em 0;"}
-### ディスカッション・テーマ
+::: {.code-output style="padding: 8px 16px; margin: 0.5em 0;"}
+::: {style="font-weight: 800; font-size: 1.1em; color: #15803d; margin-bottom: 6px;"}
+ディスカッション・テーマ
+:::
 1. なぜ「平均値」と「中央値」に **6.6倍もの乖離** が生まれるのでしょうか？
 2. もしあなたが就職活動で「この業界の**平均**年収は800万円です」という情報を信じたら、どんな落とし穴（リスク）があるでしょうか？
 :::
@@ -265,34 +267,50 @@ $$
 
 「真ん中はどこか（代表値）」がわかったら、次は**「どれくらい散らばっているか（散布度）」**を測ります。
 
-::: {.columns}
+::: {.columns style="align-items: stretch;"}
 ::: {.column width="33%"}
-### ① 範囲（Range）
-- $\text{最大値} - \text{最小値}$
-- 最も素朴な指標
-- **欠点**：外れ値が2つ（最大と最小）あるだけで極端に膨らむ
+::: {style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); font-size: 0.88em; height: 100%; box-sizing: border-box;"}
+#### ① 範囲（Range） {style="margin: 0 0 8px 0; color: #334155; border-bottom: 2px solid #cbd5e1; padding-bottom: 4px;"}
+
+::: {style="text-align: center; margin: 8px 0; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px; font-weight: 700; color: #1e293b; font-size: 0.95em;"}
+$\text{Range} = \text{最大値} - \text{最小値}$
+:::
+
+- 最も直感的で素朴な散布度
+- [**欠点**]{style="color: #dc2626;"}：外れ値がたった1つあるだけで極端に膨らんでしまう
+:::
 :::
 
 ::: {.column width="33%"}
-### ② 四分位範囲（IQR）
-- データを4等分する境界値：
-  - **Q1（第1四分位数）**：下から25%
-  - **Q2（第2四分位数）**：中央値（50%）
-  - **Q3（第3四分位数）**：下から75%
-- $\text{IQR} = Q_3 - Q_1$
-- **真ん中50%の幅**を表す（外れ値に強い！）
+::: {style="background: #fdf4ff; border: 1.5px solid #d8b4fe; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); font-size: 0.88em; height: 100%; box-sizing: border-box;"}
+#### ② 四分位範囲（IQR） {style="margin: 0 0 8px 0; color: #6b21a8; border-bottom: 2px solid #d8b4fe; padding-bottom: 4px;"}
+
+::: {style="text-align: center; margin: 8px 0; background: #ffffff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 5px; font-weight: 700; color: #7e22ce; font-size: 0.95em;"}
+$\text{IQR} = Q_3 - Q_1$
+:::
+
+- 境界値：**Q1** (25%), **Q2** (中央値), **Q3** (75%)
+- **真ん中50%の幅**を測定
+- [**利点**]{style="color: #16a34a;"}：外れ値に極めて強い！
+:::
 :::
 
 ::: {.column width="34%"}
-### ③ 分散・標準偏差（SD）
-- 平均からの離れの度合い：
-  $$s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$$
-- 統計学で最もよく使われる
-- **注意**：平均を使うため、外れ値の影響を強く受ける
+::: {style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); font-size: 0.88em; height: 100%; box-sizing: border-box;"}
+#### ③ 分散・標準偏差（SD） {style="margin: 0 0 8px 0; color: #1e3a8a; border-bottom: 2px solid #93c5fd; padding-bottom: 4px;"}
+
+::: {style="text-align: center; margin: 8px 0; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 4px; color: #0369a1; font-size: 0.88em;"}
+$s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$
+:::
+
+- 平均からの離れの度合い
+- 統計学で最も標準的に使われる
+- [**注意**]{style="color: #ea580c;"}：平均を使うため外れ値の影響大
+:::
 :::
 :::
 
-::: {.code-output style="margin-top: 0.4em;"}
+::: {.code-output style="margin-top: 0.5em; padding: 8px 16px; font-size: 0.88em;"}
 **五数要約（Five-number summary）**：  
 最小値（Min）、Q1、中央値（Median）、Q3、最大値（Max）の5つを見ることで、データの全体像が一目でわかります。Rでは `summary()` 関数一発で出力されます！
 :::
@@ -682,14 +700,9 @@ ggplot(df, aes(x = sales / 100, y = net_income / 100)) + # 単位：億円
 ::: {.column width="50%"}
 ### レバレッジ・ポイント（てこの原理）
 
-```{mermaid}
-%%| echo: false
-flowchart TD
-    A["右上にポツンと存在する<br>超巨大企業数社（外れ値）"] -->|てこの原理で| B["回帰直線全体を<br>グイッと引っ張り上げる！"]
-    B --> C["左下の490社には<br>実は全くフィットしていない？！"]
-```
+![](img/leverage_point.svg){style="max-height: 245px; width: 100%; margin: 0.2em auto; display: block;"}
 
-::: {.code-output style="margin-top: 0.3em;"}
+::: {.code-output style="margin-top: 0.4em; padding: 8px 14px; font-size: 0.88em;"}
 外れ値があると、**平均値だけでなく、回帰直線までもが激しく歪んでしまう**のです！
 :::
 :::

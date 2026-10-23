@@ -29,8 +29,15 @@
 .reveal .code-output ul,
 .reveal .code-output ol { margin: 0.2em 0; padding-left: 1.2em; }
 
-/* --- 見出し直後の余白を少し詰める --- */
-.reveal .slides section > h2 { margin-bottom: 0.4em; }
+/* --- 見出し直後の余白を少し詰める・長文見出しの1文字折返しを防ぐ --- */
+.reveal .slides section > h2 {
+  margin-bottom: 0.35em !important;
+  font-size: 1.45em !important;
+  line-height: 1.25 !important;
+}
+.reveal .slides section.smaller > h2 {
+  font-size: calc(1.38em / 0.7) !important;
+}
 
 /* --- 図版（手書きSVG・mermaid）がスライド高を超えないようにする --- */
 .reveal .slides section svg { display: block; margin: 0 auto; max-width: 100%; }

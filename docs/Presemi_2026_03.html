@@ -145,9 +145,6 @@
       margin-right: 0; 
     }
   </style>
-  <script src="Presemi_2026_03_files/libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="Presemi_2026_03_files/libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="Presemi_2026_03_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
@@ -441,7 +438,7 @@
 
   // Describe the webR settings that should be used
   globalThis.qwebrCustomizedWebROptions = {
-    "baseURL": "https://webr.r-wasm.org/v0.5.2/",
+    "baseURL": "https://webr.r-wasm.org/v0.6.0/",
     "serviceWorkerUrl": "",
     "homedir": "/home/web_user", 
     "channelType": "ChannelType.Automatic"
@@ -2207,13 +2204,15 @@ Soichi Matsuura
 <section id="ペアワーク3分なぜこんなことが起きるのか" class="slide level2 smaller">
 <h2>ペアワーク（3分）：なぜこんなことが起きるのか？</h2>
 <p>隣の人と、次の問いについて話し合ってください。</p>
-<section id="ディスカッションテーマ" class="code-output" style="padding: 10px 16px; margin: 0.8em 0;">
-<h3>ディスカッション・テーマ</h3>
+<div class="code-output" style="padding: 8px 16px; margin: 0.5em 0;">
+<div style="font-weight: 800; font-size: 1.1em; color: #15803d; margin-bottom: 6px;">
+<p>ディスカッション・テーマ</p>
+</div>
 <ol type="1">
 <li>なぜ「平均値」と「中央値」に <strong>6.6倍もの乖離</strong> が生まれるのでしょうか？</li>
 <li>もしあなたが就職活動で「この業界の<strong>平均</strong>年収は800万円です」という情報を信じたら、どんな落とし穴（リスク）があるでしょうか？</li>
 </ol>
-</section>
+</div>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>考えるヒント①</strong>：<br>
@@ -2327,35 +2326,38 @@ Soichi Matsuura
 <section id="散らばりばらつきを測る指標" class="slide level2 smaller">
 <h2>散らばり（ばらつき）を測る指標</h2>
 <p>「真ん中はどこか（代表値）」がわかったら、次は<strong>「どれくらい散らばっているか（散布度）」</strong>を測ります。</p>
-<div class="columns">
+<div class="columns" style="align-items: stretch;">
 <div class="column" style="width:33%;">
-<h3 id="範囲range">① 範囲（Range）</h3>
+<h4 style="margin: 0 0 8px 0; color: #334155; border-bottom: 2px solid #cbd5e1; padding-bottom: 4px;" id="範囲range">① 範囲（Range）</h4>
+<div style="text-align: center; margin: 8px 0; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px; font-weight: 700; color: #1e293b; font-size: 0.95em;">
+<p><span class="math inline">\text{Range} = \text{最大値} - \text{最小値}</span></p>
+</div>
 <ul>
-<li><span class="math inline">\text{最大値} - \text{最小値}</span></li>
-<li>最も素朴な指標</li>
-<li><strong>欠点</strong>：外れ値が2つ（最大と最小）あるだけで極端に膨らむ</li>
+<li>最も直感的で素朴な散布度</li>
+<li><span style="color: #dc2626;"><strong>欠点</strong></span>：外れ値がたった1つあるだけで極端に膨らんでしまう</li>
 </ul>
 </div><div class="column" style="width:33%;">
-<h3 id="四分位範囲iqr">② 四分位範囲（IQR）</h3>
+<h4 style="margin: 0 0 8px 0; color: #6b21a8; border-bottom: 2px solid #d8b4fe; padding-bottom: 4px;" id="四分位範囲iqr">② 四分位範囲（IQR）</h4>
+<div style="text-align: center; margin: 8px 0; background: #ffffff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 5px; font-weight: 700; color: #7e22ce; font-size: 0.95em;">
+<p><span class="math inline">\text{IQR} = Q_3 - Q_1</span></p>
+</div>
 <ul>
-<li>データを4等分する境界値：
-<ul>
-<li><strong>Q1（第1四分位数）</strong>：下から25%</li>
-<li><strong>Q2（第2四分位数）</strong>：中央値（50%）</li>
-<li><strong>Q3（第3四分位数）</strong>：下から75%</li>
-</ul></li>
-<li><span class="math inline">\text{IQR} = Q_3 - Q_1</span></li>
-<li><strong>真ん中50%の幅</strong>を表す（外れ値に強い！）</li>
+<li>境界値：<strong>Q1</strong> (25%), <strong>Q2</strong> (中央値), <strong>Q3</strong> (75%)</li>
+<li><strong>真ん中50%の幅</strong>を測定</li>
+<li><span style="color: #16a34a;"><strong>利点</strong></span>：外れ値に極めて強い！</li>
 </ul>
 </div><div class="column" style="width:34%;">
-<h3 id="分散標準偏差sd">③ 分散・標準偏差（SD）</h3>
+<h4 style="margin: 0 0 8px 0; color: #1e3a8a; border-bottom: 2px solid #93c5fd; padding-bottom: 4px;" id="分散標準偏差sd">③ 分散・標準偏差（SD）</h4>
+<div style="text-align: center; margin: 8px 0; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 4px; color: #0369a1; font-size: 0.88em;">
+<p><span class="math inline">s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}</span></p>
+</div>
 <ul>
-<li>平均からの離れの度合い： <span class="math display">s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}</span></li>
-<li>統計学で最もよく使われる</li>
-<li><strong>注意</strong>：平均を使うため、外れ値の影響を強く受ける</li>
+<li>平均からの離れの度合い</li>
+<li>統計学で最も標準的に使われる</li>
+<li><span style="color: #ea580c;"><strong>注意</strong></span>：平均を使うため外れ値の影響大</li>
 </ul>
 </div></div>
-<div class="code-output" style="margin-top: 0.4em;">
+<div class="code-output" style="margin-top: 0.5em; padding: 8px 16px; font-size: 0.88em;">
 <p><strong>五数要約（Five-number summary）</strong>：<br>
 最小値（Min）、Q1、中央値（Median）、Q3、最大値（Max）の5つを見ることで、データの全体像が一目でわかります。Rでは <code>summary()</code> 関数一発で出力されます！</p>
 </div>
@@ -2733,21 +2735,8 @@ Multiple R-squared:  0.6152</code></pre>
 </ul>
 </div><div class="column" style="width:50%;">
 <h3 id="レバレッジポイントてこの原理">レバレッジ・ポイント（てこの原理）</h3>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    A["右上にポツンと存在する&lt;br&gt;超巨大企業数社（外れ値）"] --&gt;|てこの原理で| B["回帰直線全体を&lt;br&gt;グイッと引っ張り上げる！"]
-    B --&gt; C["左下の490社には&lt;br&gt;実は全くフィットしていない？！"]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<div class="code-output" style="margin-top: 0.3em;">
+<p><img data-src="img/leverage_point.svg" style="max-height: 245px; width: 100%; margin: 0.2em auto; display: block;"></p>
+<div class="code-output" style="margin-top: 0.4em; padding: 8px 14px; font-size: 0.88em;">
 <p>外れ値があると、<strong>平均値だけでなく、回帰直線までもが激しく歪んでしまう</strong>のです！</p>
 </div>
 </div></div>
