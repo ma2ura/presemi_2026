@@ -56,7 +56,7 @@ showtext::showtext_auto()
 授業では基本関数の`read.csv()`を使いましたが、ここではより高機能な`tidyverse`の関数である`read_csv()`を使います。
 
 :::{.column-margin}
-`read_csv()`は、`read.csv()`よりも高速にデータを読み込むことができ、読み込んだ変数の型を自動で判定して画面に表示してくれるなど、便利な機能が備わっています。読み込まれたデータは、データフレームを改良した「tibble（ティブル）」という形式になります。
+`read_csv()`は、`read.csv()`よりも高速にデータを読み込むことができ、読み込んだ変数の型を自動で判定して画面に表示してくれるなど、便利な機能が備わっています。読み込まれたデータは、データフレームを改良した「`tibble`（ティブル）」という形式になります。
 :::
 
 読み込んだデータを格納するためのオブジェクト（ここでは`df`）を作成します。`<-`は右側の結果を左側の名前に代入する記号です。
@@ -376,13 +376,11 @@ g3 / g4 / g5
 3つの回帰結果を1つの表にまとめます。
 
 ```{r compare_three_models}
-gm <- modelsummary::gof_map
-gm$omit <- FALSE
 modelsummary(
   list(除去前 = result, TOP5除去 = result2, TOP10除去 = result3),
   stars = c("*" = 0.10, "**" = 0.05, "***" = 0.01),
   coef_rename = c("(Intercept)" = "切片", "sales" = "売上高"),
-  gof_map = gm
+  gof_omit = "AIC|BIC|Log.Lik|F|Adj|RMSE"
   )
 ```
 
