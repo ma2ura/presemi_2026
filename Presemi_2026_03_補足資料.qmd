@@ -1,0 +1,90 @@
+---
+title: "プレゼミ 第3回補足資料"
+author: "Soichi Matsuura"
+date: "2026-10-16"
+format:
+  html:
+    code-line-numbers: false
+    highlight-style: github
+    html-math-method: katex
+---
+
+## データフレームの基本
+
+データベースなどから取得した`csv`ファイルを`tidyverse`パッケージの`read_csv()`関数で読み込んで、`df`という名前のオブジェクトに代入します。
+
+
+```{r}
+# tidyverseパッケージを読み込む
+pacman::p_load(tidyverse)
+
+# 不要なメッセージを非表示にするために、show_col_types = FALSEを指定していますが、これは必須ではありません。
+df <- read_csv("data/03_sales_data.csv", show_col_types = FALSE)
+
+# オブジェクトの型を確認する
+class(df)
+```
+
+`class()`関数を使うと、オブジェクトの型を確認することができます。
+ここでは`df`の型を確認してみると、`"spec_tbl_df"`、`"tbl_df"`、`"tbl"`、`"data.frame"`の4つの型が表示されます。
+いろんな属性が書いてありますが、`data.frame`という型になっていることが分かります。
+
+### 変数へのアクセス
+
+`data.frame`型のオブジェクトは、変数（列）と観測値（行）からなる表形式のデータを格納するためのオブジェクトです。
+変数（列）にアクセスするには、`$`記号を使って、オブジェクト名の後ろに変数名を書きます。
+例えば、`df`というデータフレームから`sales`という変数（列）を取り出すには、`df$sales`と書きます。
+たくさんのデータが格納されているので、`df$sales`と書くと、`sales`という変数の中のすべての観測値が表示されてしまうため、`head()`関数を使って、最初の6つの観測値だけを表示することができます。
+```{r}
+head(df$sales)
+```
+
+売上高`sales`の平均値を計算してみましょう。
+平均値を計算するには、基本関数`mean()`を使います。
+
+```{r}
+mean(df$sales)
+```
+
+### 変数の加工
+
+当期純利益`net_income`を売上高`sales`で割って売上高当期純利益率を計算して`profit_margin`という変数に代入し、それを`df`に追加してみましょう。
+基本関数を使って計算と変数の追加を行うには、次のように書きます。
+```{r}
+df$profit_margin <- df$net_income / df$sales
+```
+
+`df$`を何回も書く必要があるし、なんか見づらいので、`tidyverse`パッケージの中の`dplyr`という超便利パッケージの`mutate()`関数を使って、次のように書くこともできます。
+
+```{r}
+df <- df |> # df に追加する
+  mutate(
+    profit_margin = net_income / sales # 新しい変数の定義
+  )
+glimpse(df)
+```
+データフレーム`df`をパイプ演算子で次の関数`mutate()`に渡すことで、`df`の中に含まれる変数を使っていることは自明なので、`df$`を省略して書くことができます。
+新しい変数`profit_margin`には、各観測値の当期純利益を売上高で割った値が格納されます。
+この`mutate()`関数はとてもよく使うので覚えておきましょう。新しい変数を追加するときは、
+
+<!-- mutate()を大きなフォントでセンタリングして表示 -->
+<div style="font-color: magenta;text-align: center; font-size: 4em;">
+mutate()
+</div>
+
+
+複数の変数を作成、追加することも簡単です。
+式と式の間をカンマで区切ることを忘れないようにしましょう。
+
+```{r}
+df <- df |> # df に追加する
+  mutate(
+    profit_margin = net_income / sales, # 利益率
+    turn_over = sales / total_assets,   # 回転率
+    roe = net_income / total_assets     # ROE
+  )
+glimpse(df)
+```
+
+ちゃんと新しい変数が3つ追加されていることが確認できました。
+

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Soichi Matsuura">
+
+<title>プレゼミ 第2回補足資料</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Presemi_2026_02_補足資料_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Presemi_2026_02_補足資料_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Presemi_2026_02_補足資料_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Presemi_2026_02_補足資料_files/libs/quarto-html/popper.min.js"></script>
+<script src="Presemi_2026_02_補足資料_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Presemi_2026_02_補足資料_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Presemi_2026_02_補足資料_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Presemi_2026_02_補足資料_files/libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Presemi_2026_02_補足資料_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Presemi_2026_02_補足資料_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Presemi_2026_02_補足資料_files/libs/bootstrap/bootstrap-95bf1a478f661e249fbf105fbab32cc6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">プレゼミ 第2回補足資料</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">作者</div>
+    <div class="quarto-title-meta-contents">
+             <p>Soichi Matsuura </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">公開</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2026年10月9日</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="rの基礎" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="rの基礎">Rの基礎</h2>
+<p>Rの基本操作については、教科書や参考書、ウェブサイトなどに詳しく書かれています。 ここでは、授業で扱った内容の補足として、Rの基本操作についてまとめます。</p>
+<section id="変数の作成と計算" class="level3">
+<h3 class="anchored" data-anchor-id="変数の作成と計算">変数の作成と計算</h3>
+<p>Rというかプログラミング言語では、変数を作るときに、<code>=</code>や<code>&lt;-</code>を使います。 例えば、好きな名前の変数を作って、そこに値を代入することができます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>変数の中身を確認するには、変数名を入力してEnterキーを押すか、<code>print()</code>関数を使います。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(x)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+<p>変数に代入した値を使って計算することもできます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">5</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(y)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25</code></pre>
+</div>
+</div>
+</section>
+<section id="パッケージ" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="パッケージ">パッケージ</h3>
+<p>Rには、基本関数と呼ばれる標準でインストールされている関数と、追加でインストールする必要がある関数があります。 追加する関数をまとめたものを<strong>パッケージ</strong>(package)と呼びます。 追加パッケージは、Rの機能を拡張するためのものです。 このプレゼミでも、追加パッケージを使ってデータの分析や可視化を行います。</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>プレゼミの資料では、関数には<code>関数名()</code>のように、モノフォントで表示し、後ろに括弧をつけて書きます。 <code>tidyverse</code>や<code>sales</code>のように、<code>()</code>がついていない場合は、関数ではなく、パッケージ名や変数名などを意味します。 また、関数に<code>()</code>を付けているのは、関数は引数を与えて呼び出す必要があるためです。 関数によって引数に必要なものが異なるので、関数の使い方は、ヘルプや参考書などで確認してください。</p>
+</div></div><p>パッケージをインストールするには、<code>install.packages()</code>関数を、呼び出すには、<code>library()</code>関数を使うのが一般的ですが、 ここでは、便利な<code>pacman</code>パッケージを使って、パッケージのインストールと呼び出しを同時に行います。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pacman"</span>)  <span class="co"># 最初の1回だけ実行する</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>これで、<code>pacman</code>パッケージを使って、必要なパッケージをインストールして呼び出すことができます。 これから非常に良く使うであろう<code>tidyverse</code>パッケージをインストールして呼び出すには、以下のコードを実行します。</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><code>library(pacman)</code>を実行して<code>pacman</code>パッケージを読み出すと、余り使わない関数がたくさん読み込まれてしまうので、ここでは<code>pacman::p_load()</code>と書いて、<code>pacman</code>パッケージの中の<code>p_load()</code>関数を使うことを明示しています。リソースの節約です。</p>
+</div></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="関数と引数とパイプ演算子" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="関数と引数とパイプ演算子">関数と引数とパイプ演算子</h3>
+<p>Rの関数は、引数を与えて呼び出す必要があります。 たとえば、<code>mean()</code>関数は、平均値を計算する関数ですが、引数に数値ベクトルを与える必要があります。 つぎのようなベクトルを作って、平均値を計算してみます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.2345</span>, <span class="fl">2.3456</span>, <span class="fl">3.4567</span>, <span class="fl">4.5678</span>, <span class="fl">5.6789</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"晴れ"</span>, <span class="st">"曇り"</span>, <span class="st">"雨"</span>, <span class="st">"曇り"</span>, <span class="st">"晴れ"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x) <span class="co"># 平均がかえってくる</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.4567</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y) <span class="co"># エラーになる</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in mean.default(y): argument is not numeric or logical: returning NA</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+</div>
+<p><code>mean(x)</code>は、<code>x</code>の平均値を計算して返しますが、<code>mean(y)</code>は、文字列ベクトルなので、平均値を計算できずにエラーになります。 引数が正しい型でないと、関数は正しく動作しません。</p>
+<p>次に、<code>mean()</code>関数の引数に、<code>round()</code>関数を使って、平均値を小数点以下2桁に丸めるようにしてみます。</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><code>round()</code>関数は、数値を指定した桁数に丸める関数です。 引数として、丸めたい数値と、丸めたい桁数を指定します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">3.14159</span>, <span class="dv">2</span>) <span class="co"># 3.14</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.14</code></pre>
+</div>
+</div>
+</div></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">mean</span>(x), <span class="dv">2</span>) <span class="co"># 平均を計算して、小数点以下2桁に丸める</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.46</code></pre>
+</div>
+</div>
+<p>平均を小数点第2位で丸めることができました。 しかし、このコードを見ると、平均値の計算が<code>round()</code>関数の中に入っていて、少し読みにくいです。 そこで、関数の結果を次の関数に渡すためのパイプ演算子<code>|&gt;</code>を使って、読みやすいコードを書くことができます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">|&gt;</span> <span class="fu">mean</span>() <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="co"># 平均を計算して、小数点以下2桁に丸める</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.46</code></pre>
+</div>
+</div>
+<p>このコードだと、オブジェクト<code>x</code>を関数<code>mean()</code>に渡して平均値を計算し、その結果を関数<code>round()</code>に渡して小数点以下2桁に丸める、という処理の流れがわかりやすくなっています。 今後は、このパイプ演算子を使って、関数の結果を次の関数に渡す書き方を多用していきます。 皆さんも慣れておいてください。</p>
+<div style="font-color: magenta;text-align: center; font-size: 4em;">
+<p>パイプ演算子 <code>|&gt;</code></p>
+</div>
+</section>
+<section id="作業ディレクトリ" class="level3">
+<h3 class="anchored" data-anchor-id="作業ディレクトリ">作業ディレクトリ</h3>
+<p>Rでは、作業ディレクトリ(working directory)という概念があります。 作業ディレクトリとは、Rがファイルを読み込むときや保存するときの基準となるフォルダのことです。 プレゼミで使うファイルを保存する<code>prezemi</code>フォルダを作成し、そこを作業ディレクトリに設定することで、ファイルの読み込みや保存が簡単になります。</p>
+<p>まず、好きな場所に<code>presemi</code>という名前のフォルダを作成します。 プレゼミで使うPositoronを立ち上げ、「ファイル」-&gt;「フォルダを開く」で、先ほど作成した<code>presemi</code>フォルダを開きます。 これで、<code>presemi</code>フォルダが作業ディレクトリに設定されました。 ファイルが読み込めない、という場合は、作業ディレクトリが正しく設定されていない可能性があります。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()  <span class="co"># 作業ディレクトリの確認</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>で、いまRがどのフォルダを作業ディレクトリとして認識しているか確認しておきましょう。</p>
+</section>
+<section id="データの読み込み" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="データの読み込み">データの読み込み</h3>
+<p>プレゼミでよく使うデータは、ほぼ<code>csv</code>形式のファイルです。 <code>csv</code>形式のファイルは、カンマで区切られたテキストファイルで非常にシンプルな構造かつ軽量です。 Excelなどで作成することができますが、たいていの場合はどこかのデータベースからダウンロードして使うことになります。</p>
+<p><code>csv</code>ファイルを読み込むには、基本パッケージの<code>read.csv()</code>関数を使う方法と、<code>tidyverse</code>パッケージの<code>read_csv()</code>関数を使う方法があります。 ここでは、<code>tidyverse</code>パッケージの<code>read_csv()</code>関数を使って、データを読み込みます。</p>
+<div style="font-color: magenta;text-align: center; font-size: 4em;">
+<p><code>read_csv()</code></p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"data/03_sales_data.csv"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 500 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (3): firm_id, firm_name, industry
+dbl (4): year, sales, total_assets, net_income
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 500 × 7
+   firm_id firm_name             industry    year  sales total_assets net_income
+   &lt;chr&gt;   &lt;chr&gt;                 &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
+ 1 F0001   グローバル自動車A     輸送用機器  2024 3.8 e7     48690369    2553005
+ 2 F0002   総合商社B             卸売業      2024 2.10e7     25487709    -358580
+ 3 F0003   総合エレクトロニクスC 電気機器    2024 1.3 e7     13266331     813561
+ 4 F0004   通信キャリアD         情報・通信業……  2024 1.10e7     17466500     -78243
+ 5 F0005   鉄鋼ホールディングスE 鉄鋼        2024 9.5 e6     11829374     128362
+ 6 F0006   企業_006              空運業      2024 3.28e4        29966       1782
+ 7 F0007   企業_007              パルプ・紙  2024 3.79e5       300337      -1488
+ 8 F0008   企業_008              建設業      2024 1.27e5       106213       7836
+ 9 F0009   企業_009              海運業      2024 2.39e4        21997       1509
+10 F0010   企業_010              ガラス・土石製品……  2024 9.36e4        79062       2878
+# ℹ 490 more rows</code></pre>
+</div>
+</div>
+<p>これで読み込めましたが、このデータを使っていろいろ加工・分析するために、読み込んだデータを格納するためのオブジェクトを作成して、そこに読み込んだデータを格納します。 ここでは、<code>df</code>という名前のオブジェクトを作成して、そこに読み込んだデータを格納します。</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Rなどプログラミング言語では、データのタイプ(型ともいう)が非常に重要です。 例えば、数値型、文字型、論理型、日付型などがあります。 複数の要素をまとめて格納するためのデータ型として、ベクトル(vector)、リスト(list)などがあり、MS Excelの表のようないろんなタイプのデータを扱うためのデータ型として、<strong>データフレーム</strong>(data frame)があります。<code>df</code>は「data frame」の略で、Rでデータを扱う際によく使われるオブジェクトです。</p>
+</div></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/03_sales_data.csv"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 500 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (3): firm_id, firm_name, industry
+dbl (4): year, sales, total_assets, net_income
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(df)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 500 × 7
+   firm_id firm_name             industry    year  sales total_assets net_income
+   &lt;chr&gt;   &lt;chr&gt;                 &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
+ 1 F0001   グローバル自動車A     輸送用機器  2024 3.8 e7     48690369    2553005
+ 2 F0002   総合商社B             卸売業      2024 2.10e7     25487709    -358580
+ 3 F0003   総合エレクトロニクスC 電気機器    2024 1.3 e7     13266331     813561
+ 4 F0004   通信キャリアD         情報・通信業……  2024 1.10e7     17466500     -78243
+ 5 F0005   鉄鋼ホールディングスE 鉄鋼        2024 9.5 e6     11829374     128362
+ 6 F0006   企業_006              空運業      2024 3.28e4        29966       1782
+ 7 F0007   企業_007              パルプ・紙  2024 3.79e5       300337      -1488
+ 8 F0008   企業_008              建設業      2024 1.27e5       106213       7836
+ 9 F0009   企業_009              海運業      2024 2.39e4        21997       1509
+10 F0010   企業_010              ガラス・土石製品……  2024 9.36e4        79062       2878
+# ℹ 490 more rows</code></pre>
+</div>
+</div>
+<p>出力された結果をみると、1行目に<code>A tibble: 500 x 7</code>と表示されており、500行7列のデータであることがわかります。 2行目には7列の変数の名前が、3行目には7列の変数の型が表示されており、4行目以降はデータの中身が表示されています。</p>
+<p>これでデータ分析の準備が整いました。</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "コピーしました");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "コピーしました");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
