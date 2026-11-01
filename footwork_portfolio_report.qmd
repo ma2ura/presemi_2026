@@ -1,0 +1,375 @@
+---
+title: "日経ストックリーグ調査レポート：企業の「フットワークの軽さ（アジリティ）」定量化と業種中立ポートフォリオ構築"
+subtitle: "EDINET API v2を用いた有価証券報告書データの自動収集・財務＆テキスト解析パイプライン"
+author: "日経ストックリーグ プロジェクトチーム"
+date: today
+lang: ja
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    toc-title: "目次"
+    number-sections: true
+    code-fold: show
+    code-tools: true
+    embed-resources: true
+    df-print: paged
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+library(knitr)
+
+if (.Platform$OS.type == "windows") {
+    grDevices::windowsFonts(jp = grDevices::windowsFont("Meiryo"))
+    theme_set(theme_minimal(base_family = "jp", base_size = 13))
+} else {
+    theme_set(theme_minimal(base_family = "Hiragino Sans", base_size = 13))
+}
+```
+
+## エグゼクティブ・サマリー（結論と全体像）
+
+本レポートは、日経ストックリーグにおける投資テーマ**「異常事態に即座に動ける『フットワークの軽い企業』への投資」**を実現するため、金融庁の**EDINET API（Version 2）**から有価証券報告書データを自動収集し、業種横断でトップ20社を選出するRプログラムの設計仕様と分析ロジックをまとめたものである。
+
+::: {.callout-important}
+### 本プログラムが解決する3つの重要課題
+1. **抽象概念の定量化**：「フットワークの軽さ」という定性的な言葉を、有価証券報告書から取得可能な**「①資金的即応力」「②資産の身軽さ」「③現場の回転速度」「④変革・危機対応語彙密度」の4指標**に分解・数値化する。
+2. **EDINET API v2の2段階自動処理**：「日次提出一覧API」と「個別書類CSV取得API（`type=5`）」を組み合わせ、日本基準・IFRS双方の会計タグ（要素ID）およびテキストブロックから必要データを自動抽出する。
+3. **業種バイアスの排除（セクター・ニュートラル化）**：全社を単純比較するとIT・サービス業ばかりが上位を独占する構造的欠陥を防ぐため、**業種内偏差値（Zスコア）**を算出し、あらゆる業種から満遍なくトップ企業20社を選出する。
+:::
+
+---
+
+## 投資仮説と「フットワークの軽さ」の4次元定量化モデル
+
+有価証券報告書は年1回提出される過去の実績データであるため、「異常事態が起きた瞬間の動き」そのものをリアルタイムに観測することはできない。そこで本分析では、異常事態に対して**「いつでも即座に動ける構造的余力（事前アジリティ）」**と**「経営陣の変革・機動性への意識（非財務アジリティ）」**の2側面から計4つの指標を定義する。
+
+### 4つの測定指標と算出式
+
+| 次元 | 指標名（コード上の変数名） | 算出式 | 経済的・経営的な意味（なぜフットワークを表すか） | 重み |
+| :--- | :--- | :--- | :--- | :---: |
+| **① 資金的即応力** | **手元流動性比率**<br>(`cash_ratio`) | $$\frac{\text{現金及び預金}}{\text{売上高} \div 12}$$ | 危機発生時やM&A・新規投資の好機に、銀行審査を待たず**即日動かせる資金が月商の何ヶ月分あるか**を示す。 | **30%** |
+| **② 資産の身軽さ** | **非有形固定資産比率**<br>(`asset_lightness`) | $$1 - \frac{\text{有形固定資産}}{\text{総資産}}$$ | 巨大な工場や土地などの固定設備に縛られず、環境変化に応じて**事業撤退・拠点変更・ピボットを即座に行える身軽さ**を示す。 | **30%** |
+| **③ 現場の回転速度** | **総資産回転率**<br>(`sales_turnover`) | $$\frac{\text{売上高}}{\text{総資産}}$$ | 投下した資産をどれだけ速く売上に変換しているか。回転が速い企業ほど、需要急変時の**在庫調整やサプライチェーン組替えが迅速**である。 | **25%** |
+| **④ 変革・機動意識** | **アジリティ語彙密度**<br>(`text_agility`) | $$\frac{\text{機動性キーワード出現数}}{\text{リスク・MD\&A総文字数}} \times 10,000$$ | 単なる「保守的なキャッシュため込み企業」を除外するため、経営陣が**「迅速・機動・再編・アジャイル・DX」**等をどれだけ重視しているかを測る。 | **15%** |
+
+---
+
+## EDINET API v2 データ収集パイプラインの解説
+
+EDINET API（Version 2）は、1回のリクエストで全上場企業の財務データを返してくれる仕組みではない。以下の**3ステップのパイプライン**をRで構築している。
+
+```{mermaid}
+flowchart LR
+    A["STEP 1: 書類一覧API<br>(documents.json)"] -->|"日付ごとに走査し<br>有報の docID を特定"| B["STEP 2: 書類取得API<br>(documents/{docID}?type=5)"]
+    B -->|"ZIPをDL・解凍し<br>UTF-16LEのCSVを読込"| C["STEP 3: 指標算出＆標準化<br>(業種別Zスコア)"]
+    C -->|"各業種上限2社×全体上位"| D["最終出力: トップ20社<br>ポートフォリオ"]
+```
+
+### STEP 1：提出書類一覧の取得（`get_edinet_doc_list` 関数）
+
+* **処理内容**：指定した日付（`target_date`）に提出された全開示書類の目録（JSON形式）を取得し、その中から以下の条件をすべて満たすものだけをフィルタリングする。
+  * `ordinanceCode == "010"` かつ `formCode == "030000"`：**有価証券報告書**のみに限定（四半期報告書や大量保有報告書を除外）。
+  * `!is.na(secCode)`：**上場企業**のみに限定（非上場ファンド等を除外）。
+  * `csvFlag == "1"`：金融庁による**CSV変換データが存在する書類**のみに限定。
+* **安全対策**：金融庁サーバーへの過度な負荷（DoS攻撃判定）を防ぐため、1リクエストごとに `Sys.sleep(1)`（1秒間の待機）を挟んでいる。
+
+### STEP 2：個別企業の有報CSV取得と指標抽出（`extract_agility_metrics` 関数）
+
+* **なぜ `type = 5`（CSV形式）を使うのか**：従来のXBRL形式（`type = 1`）は複雑なXMLツリー構造の解析が必要でエラーが起きやすい。2024年4月のAPI v2から導入された `type = 5` を指定すると、財務数値とテキストが整理されたタブ区切りCSV（文字コード：`UTF-16LE`）をZIP形式で直接取得できる。
+* **会計基準（日本基準・IFRS）の揺れ吸収**：日本企業は会計基準によって科目タグ（`要素ID`）が異なるため、両方のタグを網羅して抽出している。
+  * **現金及び預金**：`jppfs_cor:CashAndDeposits`（日本基準） / `jpigp_cor:CashAndCashEquivalentsIFRS`（IFRS）
+  * **売上高**：`jppfs_cor:NetSales`（日本基準） / `jpigp_cor:RevenueIFRS`（IFRS）
+  * **総資産**：`jppfs_cor:Assets`（日本基準） / `jpigp_cor:AssetsIFRS`（IFRS）
+  * **有形固定資産**：`jppfs_cor:PropertyPlantAndEquipment`（日本基準） / `jpigp_cor:PropertyPlantAndEquipmentIFRS`（IFRS）
+* **ディスク容量の保護**：1社ごとにZIPファイルと解凍フォルダが生成されるため、数値抽出が完了した瞬間に `unlink()` 関数で一時ファイルを自動削除し、PCのストレージ圧迫を防いでいる。
+
+### STEP 3：業種バイアスの排除と「トップ20社」選出ロジック
+
+#### なぜ「業種別Zスコア（標準化）」が不可欠なのか？
+たとえば「非有形固定資産比率（資産の身軽さ）」を全社そのまま比較すると、工場を持たない**情報・通信業（平均 0.85）**が上位を独占し、工場や店舗が不可欠な**製造業・小売業・インフラ業（平均 0.40〜0.60）**は1社も選ばれない。
+
+そこで、**業種（セクター）ごとに平均を $0$、標準偏差を $1$ に揃える標準化（Zスコア化）**を行う。
+
+$$
+Z_{i, k} = \frac{X_{i, k} - \mu_k}{\sigma_k}
+$$
+
+* $X_{i, k}$：業種 $k$ に属する企業 $i$ の指標値
+* $\mu_k$：業種 $k$ 内の全企業の平均値
+* $\sigma_k$：業種 $k$ 内の全企業の標準偏差
+
+これにより、**「製造業の中で群を抜いて身軽でキャッシュリッチな企業」**と**「IT業界の中で群を抜いて身軽な企業」**を同じ土俵（同業他社をどれだけ引き離しているか）で公平に評価できる。
+
+#### 満遍なく選ぶための2段階フィルタ（キャップ制）
+1. まず各業種内で総合スコア上位2社まで（`slice_max(..., n = 2)`）を「業種代表候補」として選抜する（特定業種への集中を最大2社までに制限）。
+2. 選抜された全業種の代表候補の中から、総合スコアが高い順にトップ20社（`slice_max(..., n = 20)`）を最終ポートフォリオとして確定する。
+
+---
+
+## EDINET API 実行用Rコード（本番用スクリプト）
+
+::: {.callout-note}
+以下のコードチャンクは、実際にEDINET APIキー（`Subscription-Key`）を設定して本番実行するためのコードである（レポート作成時はAPI通信を行わないよう `eval: false` に設定している）。
+:::
+
+```{r}
+#| label: edinet-production-code
+#| eval: false
+
+library(tidyverse)
+library(httr2)
+library(jsonlite)
+
+# 1. APIキーの設定（金融庁EDINETサイトで発行したキーを入力）
+EDINET_API_KEY <- "ここにあなたのSubscription-Keyを入力"
+dir.create("edinet_data", showWarnings = FALSE)
+
+# 2. STEP 1: 指定日の有価証券報告書一覧を取得する関数
+get_edinet_doc_list <- function(target_date, api_key) {
+    url <- "https://api.edinet-fsa.go.jp/api/v2/documents.json"
+
+    resp <- request(url) |>
+        req_url_query(
+            date = as.character(target_date),
+            type = 2,
+            `Subscription-Key` = api_key
+        ) |>
+        req_perform()
+
+    Sys.sleep(1)
+    res_json <- resp |>
+        resp_body_string() |>
+        fromJSON()
+
+    if (is.null(res_json$results) || length(res_json$results) == 0) {
+        return(tibble())
+    }
+
+    as_tibble(res_json$results) |>
+        filter(
+            ordinanceCode == "010",
+            formCode == "030000",
+            !is.na(secCode),
+            csvFlag == "1"
+        ) |>
+        select(docID, edinetCode, secCode, filerName, periodStart, periodEnd, submitDateTime)
+}
+
+# 3. STEP 2: 個別企業のCSVを取得し4つのフットワーク指標を算出する関数
+extract_agility_metrics <- function(doc_id, sec_code, filer_name, api_key) {
+    url <- paste0("https://api.edinet-fsa.go.jp/api/v2/documents/", doc_id)
+    zip_path <- file.path("edinet_data", paste0(doc_id, ".zip"))
+    extract_dir <- file.path("edinet_data", doc_id)
+
+    tryCatch(
+        {
+            request(url) |>
+                req_url_query(type = 5, `Subscription-Key` = api_key) |>
+                req_perform(path = zip_path)
+
+            Sys.sleep(1)
+            unzip(zip_path, exdir = extract_dir)
+            csv_files <- list.files(extract_dir,
+                pattern = "^jpcrp030000.*\\.csv$",
+                recursive = TRUE, full.names = TRUE
+            )
+
+            if (length(csv_files) == 0) {
+                return(NULL)
+            }
+
+            raw_df <- read_delim(
+                csv_files[1],
+                delim = "\t",
+                locale = locale(encoding = "UTF-16LE"),
+                col_types = cols(.default = "c"),
+                show_col_types = FALSE
+            )
+
+            get_val <- function(element_ids) {
+                val <- raw_df |>
+                    filter(要素ID %in% element_ids, コンテキストID %in% c("CurrentYearInstant", "CurrentYearDuration")) |>
+                    pull(値) |>
+                    as.numeric() |>
+                    na.omit()
+                if (length(val) == 0) {
+                    return(NA_real_)
+                } else {
+                    return(val[1])
+                }
+            }
+
+            cash <- get_val(c("jppfs_cor:CashAndDeposits", "jpigp_cor:CashAndCashEquivalentsIFRS"))
+            sales <- get_val(c("jppfs_cor:NetSales", "jpigp_cor:RevenueIFRS"))
+            assets <- get_val(c("jppfs_cor:Assets", "jpigp_cor:AssetsIFRS"))
+            ppe <- get_val(c("jppfs_cor:PropertyPlantAndEquipment", "jpigp_cor:PropertyPlantAndEquipmentIFRS"))
+
+            text_blocks <- raw_df |>
+                filter(str_detect(要素ID, "BusinessRisksTextBlock|OverviewOfBusinessResultsTextBlock|ManagementAnalysis")) |>
+                pull(値) |>
+                paste(collapse = " ")
+
+            agility_words <- str_count(text_blocks, "迅速|機動|即座|再編|ピボット|アジャイル|柔軟|構造改革|DX")
+            text_len <- nchar(text_blocks)
+
+            unlink(zip_path)
+            unlink(extract_dir, recursive = TRUE)
+
+            tibble(
+                secCode = str_sub(sec_code, 1, 4),
+                filerName = filer_name,
+                cash_ratio = (cash / (sales / 12)),
+                asset_lightness = 1 - (ppe / assets),
+                sales_turnover = sales / assets,
+                text_agility = if_else(text_len > 0, (agility_words / text_len) * 10000, 0)
+            )
+        },
+        error = function(e) {
+            message(paste("Error in", doc_id, ":", e$message))
+            return(NULL)
+        }
+    )
+}
+```
+
+---
+
+## シミュレーション実行デモ（業種別Zスコア化とトップ20社選出の動作検証）
+
+ここでは、EDINETから取得された後のデータ構造（12業種・計240社分の模擬データ）を用いて、**STEP 3のスコアリング・業種バイアス補正・ポートフォリオ選出アルゴリズムがどのように機能するか**を実際にRで実行し、可視化する。
+
+### 業種ごとの構造的差異を含む検証データの生成
+
+```{r}
+#| label: simulation-data
+set.seed(2026)
+
+sectors <- tibble(
+    sector_name = c(
+        "情報通信・サービス", "電機・精密", "機械・輸送用機器", "医薬品・化学",
+        "食品・日用品", "商社・卸売", "小売・外食", "建設・不動産",
+        "素材・鉄鋼", "金融・保険", "運輸・物流", "エネルギー・インフラ"
+    ),
+    # 業種ごとの平均的な特徴（例：ITは身軽でキャッシュ多め、インフラ・素材は固定資産が重い）
+    base_cash = c(4.5, 3.2, 2.5, 3.8, 2.2, 1.8, 1.9, 2.4, 1.7, 3.5, 1.6, 1.5),
+    base_light = c(0.88, 0.72, 0.65, 0.75, 0.62, 0.82, 0.55, 0.68, 0.45, 0.90, 0.42, 0.35),
+    base_turn = c(0.95, 0.85, 0.90, 0.70, 1.10, 1.80, 1.50, 0.75, 0.80, 0.30, 0.85, 0.60)
+)
+
+# 各業種20社（計240社）のデータを生成
+agility_sim <- sectors |>
+    uncount(20, .id = "firm_num") |>
+    mutate(
+        secCode = as.character(1000 + row_number()),
+        filerName = paste0(sector_name, "_企業", sprintf("%02d", firm_num)),
+        cash_ratio = pmax(0.2, rnorm(n(), mean = base_cash, sd = 1.0)),
+        asset_lightness = pmin(0.98, pmax(0.10, rnorm(n(), mean = base_light, sd = 0.08))),
+        sales_turnover = pmax(0.1, rnorm(n(), mean = base_turn, sd = 0.25)),
+        text_agility = pmax(0, rnorm(n(), mean = 12, sd = 4))
+    ) |>
+    select(secCode, filerName, sector_name, cash_ratio, asset_lightness, sales_turnover, text_agility)
+```
+
+### 「単純ランキング（失敗例）」と「業種内Zスコア方式（本コード）」の比較
+
+もし業種別の標準化を行わずに、単純な数値の高さだけでトップ20社を選んだ場合と、本コードの**業種内Zスコア＋各業種上限2社ルール**で選んだ場合の業種内訳を比較する。
+
+```{r}
+#| label: compare-methods
+#| fig-width: 10
+#| fig-height: 4.5
+
+# 【失敗例】全社一括で標準化して上位20社を選んだ場合（業種補正なし）
+naive_top20 <- agility_sim |>
+    mutate(
+        naive_score = 0.30 * as.numeric(scale(cash_ratio)) +
+            0.30 * as.numeric(scale(asset_lightness)) +
+            0.25 * as.numeric(scale(sales_turnover)) +
+            0.15 * as.numeric(scale(text_agility))
+    ) |>
+    slice_max(order_by = naive_score, n = 20, with_ties = FALSE) |>
+    count(sector_name, name = "選出社数") |>
+    mutate(方式 = "① 単純ランキング（業種補正なし）")
+
+# 【本コード】業種ごとにZスコア化し、各業種最大2社まででトップ20社を選んだ場合
+portfolio_top20 <- agility_sim |>
+    group_by(sector_name) |>
+    mutate(
+        z_cash = as.numeric(scale(cash_ratio)),
+        z_light = as.numeric(scale(asset_lightness)),
+        z_turn = as.numeric(scale(sales_turnover)),
+        z_text = as.numeric(scale(text_agility)),
+        footwork_score = 0.30 * z_cash + 0.30 * z_light + 0.25 * z_turn + 0.15 * z_text
+    ) |>
+    slice_max(order_by = footwork_score, n = 2, with_ties = FALSE) |>
+    ungroup() |>
+    slice_max(order_by = footwork_score, n = 20, with_ties = FALSE) |>
+    arrange(desc(footwork_score))
+
+sector_neutral_count <- portfolio_top20 |>
+    count(sector_name, name = "選出社数") |>
+    mutate(方式 = "② 業種別Zスコア＋上限2社方式（本設計）")
+
+# 比較グラフの描画
+bind_rows(naive_top20, sector_neutral_count) |>
+    ggplot(aes(x = reorder(sector_name, 選出社数), y = 選出社数, fill = 方式)) +
+    geom_col(show.legend = FALSE) +
+    coord_flip() +
+    facet_wrap(~方式) +
+    scale_y_continuous(breaks = 0:10) +
+    scale_fill_manual(values = c("#d9534f", "#2b5c8f")) +
+    labs(
+        title = "トップ20社ポートフォリオにおける業種別選出社数の比較",
+        subtitle = "単純ランキングでは特定業種（IT・商社等）に偏るが、本設計では全業種から満遍なく選出される",
+        x = "業種区分",
+        y = "トップ20社に選出された企業数"
+    )
+```
+
+### 選出された「フットワークの軽さ トップ20社」ポートフォリオ一覧
+
+本アルゴリズムによって選出された最終20社のスコアおよび各指標の内訳は以下の通りである。
+
+```{r}
+#| label: portfolio-table
+portfolio_top20 |>
+    mutate(
+        順位 = row_number(),
+        across(c(cash_ratio, asset_lightness, sales_turnover, text_agility, footwork_score), ~ round(.x, 2))
+    ) |>
+    select(
+        順位,
+        証券コード = secCode,
+        企業名 = filerName,
+        業種 = sector_name,
+        総合スコア = footwork_score,
+        `手元流動性(月)` = cash_ratio,
+        `身軽さ比率` = asset_lightness,
+        `総資産回転率` = sales_turnover,
+        `機動的語彙密度` = text_agility
+    ) |>
+    kable(caption = "業種中立型「フットワークの軽さ」トップ20社ポートフォリオ")
+```
+
+---
+
+## 今後の検証ロードマップ（ストックリーグ審査突破に向けて）
+
+本Rコードによって「フットワークの軽い20社」の抽出は完了するが、日経ストックリーグで高い評価を得るためには、さらに以下の**実証分析（バックテスト）**を追加する必要がある。
+
+1. **過去の「異常事態」における有効性の実証（回帰分析）**
+   * 2020年のコロナ禍（需要消滅ショック）や2022年の資源高・円安ショック時において、**「危機発生前の `footwork_score` が高かった企業ほど、危機後の業績回復（$\Delta\text{ROE}$）や株価リターン（$R$）が有意に高かったか」**を重回帰分析（`lm(Return ~ footwork_score + size + leverage)`）で検証する。
+2. **投資ユニバースの流動性フィルタリング**
+   * 機関投資家が実際に売買可能な銘柄にするため、EDINET取得前に**TOPIX 500**または**時価総額500億円以上**の企業に対象を絞り込む。
+3. **定性調査（ケーススタディ）との融合**
+   * 定量スコアで選ばれた20社のうち代表的な3〜4社について、実際に過去の危機時にどのような迅速な意思決定（サプライチェーンの即時切り替え、不採算事業の早期売却など）を行ったのかを有価証券報告書の記述から具体的に引用し、ストーリーに説得力を持たせる。
+
