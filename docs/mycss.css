@@ -33,10 +33,52 @@ h1::after {
     background: linear-gradient(90deg, #4a90e2, #67b246);
 }
 
-/* リストのスタイリング */
+/* 3列グリッドコンテナ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.grid-header,
+.grid-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.grid-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.col-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    text-align: center;
+    padding: 0.5rem;
+    background: #f0f4f8;
+    border-radius: 8px;
+}
+
+.grid-row {
+    margin-bottom: 0.75rem;
+}
+
+.grid-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 既存のul/liスタイル（互換性維持） */
 ul {
     list-style: none;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 1rem;
     background: white;
@@ -50,42 +92,55 @@ li {
 
 /* リンクのスタイリング */
 a {
-    display: block;
-    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem;
     color: #333;
     text-decoration: none;
     background: #ffffff;
     border-radius: 8px;
-    transition: all 0.3s ease;
-    border: 1px solid #eee;
+    transition: all 0.25s ease;
+    border: 1px solid #e2e8f0;
+    height: 100%;
+    line-height: 1.4;
 }
 
 a:hover {
     background: #4a90e2;
     color: white;
-    transform: translateX(10px);
-    box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.25);
+    border-color: #4a90e2;
+}
+
+/* 2列目・3列目は中央寄せで見やすく */
+.col-sub a,
+.col-code a {
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
 }
 
 /* 未定・準備中のリンクのスタイル（class="disabled" を付けた要素のみ適用） */
 a.disabled,
 a[aria-disabled="true"] {
-    color: #999;
-    background: #f8f8f8;
+    color: #aaa;
+    background: #f8f9fa;
+    border: 1px dashed #ddd;
     cursor: not-allowed;
     pointer-events: none;
 }
 
 a.disabled:hover,
 a[aria-disabled="true"]:hover {
-    background: #f8f8f8;
-    color: #999;
+    background: #f8f9fa;
+    color: #aaa;
     transform: none;
     box-shadow: none;
 }
 
 /* レスポンシブデザイン */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     body {
         padding: 1rem;
     }
@@ -94,8 +149,20 @@ a[aria-disabled="true"]:hover {
         font-size: 1.5rem;
     }
 
-    ul {
-        padding: 0.5rem;
+    .container {
+        padding: 1rem;
+    }
+
+    .grid-header {
+        display: none;
+    }
+
+    .grid-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #eee;
     }
 
     a {
