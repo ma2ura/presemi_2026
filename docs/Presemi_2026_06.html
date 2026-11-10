@@ -403,10 +403,13 @@ Soichi Matsuura
 <h2>今日使うデータ</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/merged_forecast_both_financial.csv"</span>,</span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">col_types =</span> <span class="fu">cols</span>(日経会社コード <span class="ot">=</span> <span class="fu">col_character</span>())) <span class="sc">|&gt;</span>   <span class="co"># 先頭の0を残す</span></span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(親会社利益 <span class="ot">=</span> <span class="st">"親会社株主に帰属する当期純利益（連結）／当期利益（単独）［累計］"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(決算年 <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(決算期, <span class="dv">1</span>, <span class="dv">4</span>)),   <span class="co"># "2025/03" → 2025</span></span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>           決算月 <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(決算期, <span class="dv">6</span>, <span class="dv">7</span>)))   <span class="co"># "2025/03" → 3</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_types =</span> <span class="fu">cols</span>(日経会社コード <span class="ot">=</span> <span class="fu">col_character</span>())</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="co"># 先頭の0を残す</span></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(親会社利益 <span class="ot">=</span> <span class="st">"親会社株主に帰属する当期純利益（連結）／当期利益（単独）［累計］"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>        決算年 <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(決算期, <span class="dv">1</span>, <span class="dv">4</span>)), <span class="co"># "2025/03" → 2025</span></span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>        決算月 <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(決算期, <span class="dv">6</span>, <span class="dv">7</span>))</span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>    ) <span class="co"># "2025/03" → 3</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <table class="caption-top">
 <colgroup>
@@ -457,12 +460,12 @@ Soichi Matsuura
 <h2>期首総資産と前期の利益をつける</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(日経会社コード, 決算期) <span class="sc">|&gt;</span>   <span class="co"># 会社ごとに、決算期の順に並べる</span></span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(日経会社コード) <span class="sc">|&gt;</span>           <span class="co"># 会社ごとに計算する</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(日経会社コード, 決算期) <span class="sc">|&gt;</span> <span class="co"># 会社ごとに、決算期の順に並べる</span></span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(日経会社コード) <span class="sc">|&gt;</span> <span class="co"># 会社ごとに計算する</span></span>
 <span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>        連続     <span class="ot">=</span> (決算年 <span class="sc">-</span> <span class="fu">lag</span>(決算年) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">&amp;</span> (決算月 <span class="sc">==</span> <span class="fu">lag</span>(決算月)),  <span class="co"># 前の行が「ちょうど1年前」か</span></span>
-<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>        期首資産 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(資産合計), <span class="cn">NA_real_</span>),                <span class="co"># 前期末の総資産</span></span>
-<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>        前期利益 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(親会社利益), <span class="cn">NA_real_</span>)               <span class="co"># 前期の当期純利益</span></span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>        連続 <span class="ot">=</span> (決算年 <span class="sc">-</span> <span class="fu">lag</span>(決算年) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">&amp;</span> (決算月 <span class="sc">==</span> <span class="fu">lag</span>(決算月)), <span class="co"># 前の行が「ちょうど1年前」か</span></span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>        期首資産 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(資産合計), <span class="cn">NA_real_</span>), <span class="co"># 前期末の総資産</span></span>
+<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>        前期利益 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(親会社利益), <span class="cn">NA_real_</span>) <span class="co"># 前期の当期純利益</span></span>
 <span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
 <span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -495,14 +498,16 @@ Soichi Matsuura
 <h2>3つの比率を作る</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(決算月数 <span class="sc">==</span> <span class="dv">12</span>, 期首資産 <span class="sc">&gt;</span> <span class="dv">0</span>,           <span class="co"># 12か月決算で、期首総資産が正の行</span></span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">between</span>(決算年, <span class="dv">2016</span>, <span class="dv">2025</span>)) <span class="sc">|&gt;</span>        <span class="co"># データがそろっている10年分</span></span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>        利益率     <span class="ot">=</span> 親会社利益 <span class="sc">/</span> 期首資産,               <span class="co"># ① 赤字回避：利益 ÷ 期首総資産</span></span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>        利益増減率 <span class="ot">=</span> (親会社利益 <span class="sc">-</span> 前期利益) <span class="sc">/</span> 期首資産,  <span class="co"># ② 減益回避：利益の変化 ÷ 期首総資産</span></span>
-<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a>        予想誤差率 <span class="ot">=</span> (純利益 <span class="sc">-</span> 予想純利益) <span class="sc">/</span> 期首資産     <span class="co"># ③ 予想未達回避：（実績 − 予想）÷ 期首総資産</span></span>
-<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(d)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(</span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>        決算月数 <span class="sc">==</span> <span class="dv">12</span>, 期首資産 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="co"># 12か月決算で、期首総資産が正の行</span></span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">between</span>(決算年, <span class="dv">2016</span>, <span class="dv">2025</span>)</span>
+<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> <span class="co"># データがそろっている10年分</span></span>
+<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a>        利益率 <span class="ot">=</span> 親会社利益 <span class="sc">/</span> 期首資産, <span class="co"># ① 赤字回避：利益 ÷ 期首総資産</span></span>
+<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>        利益増減率 <span class="ot">=</span> (親会社利益 <span class="sc">-</span> 前期利益) <span class="sc">/</span> 期首資産, <span class="co"># ② 減益回避：利益の変化 ÷ 期首総資産</span></span>
+<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a>        予想誤差率 <span class="ot">=</span> (純利益 <span class="sc">-</span> 予想純利益) <span class="sc">/</span> 期首資産 <span class="co"># ③ 予想未達回避：（実績 − 予想）÷ 期首総資産</span></span>
+<span id="cb3-10"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(d)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 33550</code></pre>
 </div>
@@ -529,7 +534,7 @@ Soichi Matsuura
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>        行数   <span class="ot">=</span> <span class="fu">n</span>(),</span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>        行数 <span class="ot">=</span> <span class="fu">n</span>(),</span>
 <span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>        会社数 <span class="ot">=</span> <span class="fu">n_distinct</span>(日経会社コード),</span>
 <span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>        最初の年 <span class="ot">=</span> <span class="fu">min</span>(決算年),</span>
 <span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>        最後の年 <span class="ot">=</span> <span class="fu">max</span>(決算年),</span>
@@ -624,20 +629,26 @@ Soichi Matsuura
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 階級幅 bw のヒストグラム。ゼロの直前（-bw 以上 0 未満）と直後（0 以上 bw 未満）に色をつける</span></span>
 <span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>hist_bd <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">bw =</span> <span class="fl">0.005</span>, <span class="at">lim =</span> <span class="fl">0.1</span>, <span class="at">xlab =</span> <span class="st">""</span>) {</span>
-<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x[<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> <span class="fu">abs</span>(x) <span class="sc">&lt;</span> lim]                       <span class="co"># 表示範囲（±lim）だけ使う</span></span>
-<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">bin =</span> <span class="fu">floor</span>(x <span class="sc">/</span> bw)) <span class="sc">|&gt;</span>                          <span class="co"># 何番目の階級に入るか</span></span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x[<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> <span class="fu">abs</span>(x) <span class="sc">&lt;</span> lim] <span class="co"># 表示範囲（±lim）だけ使う</span></span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">bin =</span> <span class="fu">floor</span>(x <span class="sc">/</span> bw)) <span class="sc">|&gt;</span> <span class="co"># 何番目の階級に入るか</span></span>
 <span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(bin) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">mid =</span> (bin <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">*</span> bw,                      <span class="co"># 階級の真ん中の値</span></span>
-<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>               区分 <span class="ot">=</span> <span class="fu">case_when</span>(bin <span class="sc">==</span> <span class="dv">0</span>  <span class="sc">~</span> <span class="st">"ゼロの直後"</span>,</span>
-<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a>                                bin <span class="sc">==</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"ゼロの直前"</span>,</span>
-<span id="cb7-9"><a href="" aria-hidden="true" tabindex="-1"></a>                                <span class="cn">TRUE</span>      <span class="sc">~</span> <span class="st">"その他"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-10"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mid, <span class="at">y =</span> n, <span class="at">fill =</span> 区分)) <span class="sc">+</span></span>
-<span id="cb7-11"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_col</span>(<span class="at">width =</span> bw <span class="sc">*</span> <span class="fl">0.95</span>) <span class="sc">+</span></span>
-<span id="cb7-12"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb7-13"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"ゼロの直後"</span> <span class="ot">=</span> <span class="st">"#e3439e"</span>, <span class="st">"ゼロの直前"</span> <span class="ot">=</span> <span class="st">"#879dde"</span>,</span>
-<span id="cb7-14"><a href="" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"その他"</span> <span class="ot">=</span> <span class="st">"grey75"</span>)) <span class="sc">+</span></span>
-<span id="cb7-15"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">labs</span>(<span class="at">x =</span> xlab, <span class="at">y =</span> <span class="st">"企業・年度数"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>)</span>
-<span id="cb7-16"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(</span>
+<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">mid =</span> (bin <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">*</span> bw, <span class="co"># 階級の真ん中の値</span></span>
+<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a>            区分 <span class="ot">=</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-9"><a href="" aria-hidden="true" tabindex="-1"></a>                bin <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"ゼロの直後"</span>,</span>
+<span id="cb7-10"><a href="" aria-hidden="true" tabindex="-1"></a>                bin <span class="sc">==</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"ゼロの直前"</span>,</span>
+<span id="cb7-11"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"その他"</span></span>
+<span id="cb7-12"><a href="" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb7-13"><a href="" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">|&gt;</span></span>
+<span id="cb7-14"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mid, <span class="at">y =</span> n, <span class="at">fill =</span> 区分)) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_col</span>(<span class="at">width =</span> bw <span class="sc">*</span> <span class="fl">0.95</span>) <span class="sc">+</span></span>
+<span id="cb7-16"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb7-17"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb7-18"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ゼロの直後"</span> <span class="ot">=</span> <span class="st">"#e3439e"</span>, <span class="st">"ゼロの直前"</span> <span class="ot">=</span> <span class="st">"#879dde"</span>,</span>
+<span id="cb7-19"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="st">"その他"</span> <span class="ot">=</span> <span class="st">"grey75"</span></span>
+<span id="cb7-20"><a href="" aria-hidden="true" tabindex="-1"></a>        )) <span class="sc">+</span></span>
+<span id="cb7-21"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">labs</span>(<span class="at">x =</span> xlab, <span class="at">y =</span> <span class="st">"企業・年度数"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>)</span>
+<span id="cb7-22"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><strong>階級幅</strong> <code>bw = 0.005</code>：期首総資産の 0.5% ごとに区切る</li>
@@ -695,19 +706,23 @@ SD_i=\sqrt{N p_i(1-p_i)+\tfrac14 N(p_{i-1}+p_{i+1})(1-p_{i-1}-p_{i+1})}
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># ゼロの直前（bin = -1）と直後（bin = 0）の標準化差分</span></span>
 <span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>bd_test <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">bw =</span> <span class="fl">0.005</span>, <span class="at">lim =</span> <span class="fl">0.1</span>) {</span>
 <span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x[<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> <span class="fu">abs</span>(x) <span class="sc">&lt;</span> lim]</span>
-<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="fu">factor</span>(<span class="fu">floor</span>(x <span class="sc">/</span> bw), <span class="at">levels =</span> <span class="fu">floor</span>(<span class="sc">-</span>lim <span class="sc">/</span> bw)<span class="sc">:</span>(<span class="fu">floor</span>(lim <span class="sc">/</span> bw) <span class="sc">-</span> <span class="dv">1</span>)))  <span class="co"># 階級ごとの度数</span></span>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="fu">factor</span>(<span class="fu">floor</span>(x <span class="sc">/</span> bw), <span class="at">levels =</span> <span class="fu">floor</span>(<span class="sc">-</span>lim <span class="sc">/</span> bw)<span class="sc">:</span>(<span class="fu">floor</span>(lim <span class="sc">/</span> bw) <span class="sc">-</span> <span class="dv">1</span>))) <span class="co"># 階級ごとの度数</span></span>
 <span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a>    N <span class="ot">&lt;-</span> <span class="fu">sum</span>(n)</span>
 <span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> n <span class="sc">/</span> N</span>
-<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a>    sdiff <span class="ot">&lt;-</span> <span class="cf">function</span>(b) {                     <span class="co"># 階級 b の標準化差分</span></span>
-<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a>        i <span class="ot">&lt;-</span> <span class="fu">as.character</span>(b); l <span class="ot">&lt;-</span> <span class="fu">as.character</span>(b <span class="sc">-</span> <span class="dv">1</span>); r <span class="ot">&lt;-</span> <span class="fu">as.character</span>(b <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a>        sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(N <span class="sc">*</span> p[i] <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p[i]) <span class="sc">+</span> <span class="fl">0.25</span> <span class="sc">*</span> N <span class="sc">*</span> (p[l] <span class="sc">+</span> p[r]) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p[l] <span class="sc">-</span> p[r]))</span>
-<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unname</span>((n[i] <span class="sc">-</span> (n[l] <span class="sc">+</span> n[r]) <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">/</span> sd)</span>
-<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(階級       <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"ゼロの直前"</span>, <span class="st">"ゼロの直後"</span>),</span>
-<span id="cb8-13"><a href="" aria-hidden="true" tabindex="-1"></a>           度数       <span class="ot">=</span> <span class="fu">as.integer</span>(n[<span class="fu">c</span>(<span class="st">"-1"</span>, <span class="st">"0"</span>)]),</span>
-<span id="cb8-14"><a href="" aria-hidden="true" tabindex="-1"></a>           期待度数   <span class="ot">=</span> <span class="fu">c</span>((n[<span class="st">"-2"</span>] <span class="sc">+</span> n[<span class="st">"0"</span>]) <span class="sc">/</span> <span class="dv">2</span>, (n[<span class="st">"-1"</span>] <span class="sc">+</span> n[<span class="st">"1"</span>]) <span class="sc">/</span> <span class="dv">2</span>),</span>
-<span id="cb8-15"><a href="" aria-hidden="true" tabindex="-1"></a>           標準化差分 <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">sdiff</span>(<span class="sc">-</span><span class="dv">1</span>), <span class="fu">sdiff</span>(<span class="dv">0</span>)))</span>
-<span id="cb8-16"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a>    sdiff <span class="ot">&lt;-</span> <span class="cf">function</span>(b) { <span class="co"># 階級 b の標準化差分</span></span>
+<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a>        i <span class="ot">&lt;-</span> <span class="fu">as.character</span>(b)</span>
+<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a>        l <span class="ot">&lt;-</span> <span class="fu">as.character</span>(b <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a>        r <span class="ot">&lt;-</span> <span class="fu">as.character</span>(b <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a>        sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(N <span class="sc">*</span> p[i] <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p[i]) <span class="sc">+</span> <span class="fl">0.25</span> <span class="sc">*</span> N <span class="sc">*</span> (p[l] <span class="sc">+</span> p[r]) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p[l] <span class="sc">-</span> p[r]))</span>
+<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unname</span>((n[i] <span class="sc">-</span> (n[l] <span class="sc">+</span> n[r]) <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">/</span> sd)</span>
+<span id="cb8-13"><a href="" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-14"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb8-15"><a href="" aria-hidden="true" tabindex="-1"></a>        階級 <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"ゼロの直前"</span>, <span class="st">"ゼロの直後"</span>),</span>
+<span id="cb8-16"><a href="" aria-hidden="true" tabindex="-1"></a>        度数 <span class="ot">=</span> <span class="fu">as.integer</span>(n[<span class="fu">c</span>(<span class="st">"-1"</span>, <span class="st">"0"</span>)]),</span>
+<span id="cb8-17"><a href="" aria-hidden="true" tabindex="-1"></a>        期待度数 <span class="ot">=</span> <span class="fu">c</span>((n[<span class="st">"-2"</span>] <span class="sc">+</span> n[<span class="st">"0"</span>]) <span class="sc">/</span> <span class="dv">2</span>, (n[<span class="st">"-1"</span>] <span class="sc">+</span> n[<span class="st">"1"</span>]) <span class="sc">/</span> <span class="dv">2</span>),</span>
+<span id="cb8-18"><a href="" aria-hidden="true" tabindex="-1"></a>        標準化差分 <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">sdiff</span>(<span class="sc">-</span><span class="dv">1</span>), <span class="fu">sdiff</span>(<span class="dv">0</span>))</span>
+<span id="cb8-19"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-20"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="code-output">
 <p>2つの関数 <code>hist_bd()</code> と <code>bd_test()</code> を作っておけば、あとは<span class="markp"><strong>変数を入れ替えるだけ</strong></span>で3つの分析ができます。</p>
@@ -961,7 +976,7 @@ SD_i=\sqrt{N p_i(1-p_i)+\tfrac14 N(p_{i-1}+p_{i+1})(1-p_{i-1}-p_{i+1})}
 <span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a>d_y <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(決算年 <span class="sc">==</span> y)</span>
 <span id="cb18-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(d_y) <span class="co"># 検算：何行あるか</span></span>
 <span id="cb18-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bd_test</span>(d_y<span class="sc">$</span>利益率)     <span class="co"># ① 赤字回避</span></span>
+<span id="cb18-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bd_test</span>(d_y<span class="sc">$</span>利益率) <span class="co"># ① 赤字回避</span></span>
 <span id="cb18-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bd_test</span>(d_y<span class="sc">$</span>利益増減率) <span class="co"># ② 減益回避</span></span>
 <span id="cb18-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bd_test</span>(d_y<span class="sc">$</span>予想誤差率) <span class="co"># ③ 予想未達回避</span></span>
 <span id="cb18-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1556,42 +1571,80 @@ SD_i=\sqrt{N p_i(1-p_i)+\tfrac14 N(p_{i-1}+p_{i+1})(1-p_{i-1}-p_{i+1})}
       });
     </script>
     
+
     <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
+    
 
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
 
+    
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
+    
 
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
 
+    
+
       })();
+
     </script>
+
+    
 
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
