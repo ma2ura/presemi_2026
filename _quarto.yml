@@ -4,7 +4,6 @@ project:
   render:
     - "Presemi_2026_*.qmd"
     - "!Presemi_2026_*_backup.qmd"
-
 lang: ja
 
 

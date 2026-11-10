@@ -30,10 +30,10 @@ suppressMessages(library(tidyverse))
 suppressMessages(library(modelsummary))
 # スライドの図で日本語が □ にならないようにする（教員側の描画設定）
 if (.Platform$OS.type == "windows") {
-  grDevices::windowsFonts(jp = grDevices::windowsFont("Meiryo"))
-  theme_set(theme_minimal(base_family = "jp", base_size = 15))
+    grDevices::windowsFonts(jp = grDevices::windowsFont("Meiryo"))
+    theme_set(theme_minimal(base_family = "jp", base_size = 15))
 } else {
-  theme_set(theme_minimal(base_family = "Hiragino Sans", base_size = 15))
+    theme_set(theme_minimal(base_family = "Hiragino Sans", base_size = 15))
 }
 options(pillar.print_max = 6, pillar.print_min = 6, width = 110)
 fmt_n <- function(x) format(x, big.mark = ",")
@@ -63,7 +63,8 @@ fmt_n <- function(x) format(x, big.mark = ",")
 ::: {.notes}
 プレゼミ第5回です。今日はテキスト第5章の内容を、1本の問いに沿って進めます。
 道具は5つ出てきます。データの結合、相関分析、単回帰、重回帰、ロジットモデル。
-多く見えますが、全部「利益が増えた会社の株価は上がるのか」という1つの問いに答えるための道具です。
+多く見えますが、全部「利益が増えた会社の株価は上がるのか」という1つの問いに答えるための道具です。 
+
 時間配分：00–05 振り返り、05–10 予想、10–25 結合、25–37 相関、37–50 回帰、50–62 ロジット、62–80 ライブ分析（AIへの頼み方を含む）、80–87 持ち寄り、87–95 裏切りとまとめ。合計95分。
 今日は Positron で、テキスト付属データを読み込んで手元でも動かしてもらいます。スライドの出力は教員のPCで実行した結果です。
 :::
@@ -160,8 +161,8 @@ ROEと株価リターンの**相関係数**は、どれくらいだと思いま�
 
 ```{r}
 library(tidyverse)
-fin   <- read_csv("data/ch04_financial_data.csv")  # 財務データ（年次）
-stock <- read_csv("data/ch05_stock_data.csv")      # 株価データ（月次）
+fin <- read_csv("data/ch04_financial_data.csv") # 財務データ（年次）
+stock <- read_csv("data/ch05_stock_data.csv") # 株価データ（月次）
 ```
 
 ::: {.columns}
@@ -203,10 +204,10 @@ stock <- read_csv("data/ch05_stock_data.csv")      # 株価データ（月次）
 
 ```{r}
 bad <- fin |>
-  left_join(stock, by = c("firm_ID", "year"))   # 企業番号と年度でつなぐ
+    left_join(stock, by = c("firm_ID", "year")) # 企業番号と年度でつなぐ
 
-nrow(fin)   # 結合前
-nrow(bad)   # 結合後
+nrow(fin) # 結合前
+nrow(bad) # 結合後
 ```
 
 ::: {.fragment}
@@ -270,10 +271,10 @@ $$
 
 ```{r}
 stock_m <- stock |>
-  arrange(firm_ID, month_ID) |>          # 会社ごとに、月の順に並べる
-  group_by(firm_ID) |>                   # 会社ごとに計算する
-  mutate(ret = (stock_price * adjustment_coefficient + DPS) / lag(stock_price) - 1) |>
-  ungroup()
+    arrange(firm_ID, month_ID) |> # 会社ごとに、月の順に並べる
+    group_by(firm_ID) |> # 会社ごとに計算する
+    mutate(ret = (stock_price * adjustment_coefficient + DPS) / lag(stock_price) - 1) |>
+    ungroup()
 ```
 
 ::: {.columns}
@@ -298,15 +299,17 @@ stock_m <- stock |>
 
 ```{r}
 stock_y <- stock_m |>
-  filter(!is.na(ret)) |>
-  group_by(firm_ID, year) |>
-  summarise(
-    n_month = n(),                                              # 何か月分あるか
-    R       = prod(1 + ret) - 1,                                # 年次リターン
-    MV      = last(stock_price) * last(shares_outstanding) / 1e6, # 年末の時価総額（百万円）
-    .groups = "drop"
-  )
-stock_y |> count(firm_ID, year) |> filter(n > 1)   # 検算：1社1年1行になったか
+    filter(!is.na(ret)) |>
+    group_by(firm_ID, year) |>
+    summarise(
+        n_month = n(), # 何か月分あるか
+        R       = prod(1 + ret) - 1, # 年次リターン
+        MV      = last(stock_price) * last(shares_outstanding) / 1e6, # 年末の時価総額（百万円）
+        .groups = "drop"
+    )
+stock_y |>
+    count(firm_ID, year) |>
+    filter(n > 1) # 検算：1社1年1行になったか
 ```
 
 ::: {.code-output}
@@ -324,10 +327,13 @@ count(firm_ID, year) |> filter(n > 1) は、キーが重複している行だけ
 
 ```{r}
 df <- fin |>
-  left_join(stock_y, by = c("firm_ID", "year"),
-            relationship = "one-to-one")          # 1対1でなければエラーにする
+    left_join(stock_y,
+        by = c("firm_ID", "year"),
+        relationship = "one-to-one"
+    ) # 1対1でなければエラーにする
 
-nrow(fin); nrow(df)                                # 検算：行数は変わっていないか
+nrow(fin)
+nrow(df) # 検算：行数は変わっていないか
 ```
 
 ::: {.columns}
@@ -355,20 +361,20 @@ inner_join と使い分けられるとよいが、今日は left_join だけで�
 
 ```{r}
 df <- df |>
-  arrange(firm_ID, year) |>
-  group_by(firm_ID) |>
-  mutate(lag_MV = lag(MV), lag_X = lag(X), lag_BE = lag(OA + FA - OL - FO)) |>  # 前年の値
-  ungroup() |>
-  mutate(
-    BE   = OA + FA - OL - FO,        # 自己資本 ＝ 資産 − 負債
-    ROE  = X / BE,                   # 自己資本利益率
-    EP   = X / lag_MV,               # 利益の水準（期首の時価総額で割る）
-    dEP  = (X - lag_X) / lag_MV,     # 利益の変化（期首の時価総額で割る）
-    size = log(lag_MV),              # 会社の規模（期首の時価総額の対数）
-    up   = if_else(R > 0, 1, 0),     # 株価が上がった ＝ 1
-    inc  = if_else(X > lag_X, 1, 0)  # 増益 ＝ 1
-  ) |>
-  filter(n_month == 12, !is.na(dEP))  # 12か月そろい、前年がある行だけ
+    arrange(firm_ID, year) |>
+    group_by(firm_ID) |>
+    mutate(lag_MV = lag(MV), lag_X = lag(X), lag_BE = lag(OA + FA - OL - FO)) |> # 前年の値
+    ungroup() |>
+    mutate(
+        BE   = OA + FA - OL - FO, # 自己資本 ＝ 資産 − 負債
+        ROE  = X / BE, # 自己資本利益率
+        EP   = X / lag_MV, # 利益の水準（期首の時価総額で割る）
+        dEP  = (X - lag_X) / lag_MV, # 利益の変化（期首の時価総額で割る）
+        size = log(lag_MV), # 会社の規模（期首の時価総額の対数）
+        up   = if_else(R > 0, 1, 0), # 株価が上がった ＝ 1
+        inc  = if_else(X > lag_X, 1, 0) # 増益 ＝ 1
+    ) |>
+    filter(n_month == 12, !is.na(dEP)) # 12か月そろい、前年がある行だけ
 nrow(df)
 ```
 
@@ -382,14 +388,15 @@ EP は Earnings / Price の略。dEP は「利益の変化 ÷ 期首時価総額
 
 ```{r}
 df |>
-  summarise(
-    行数 = n(), 
-    会社数 = n_distinct(firm_ID),
-    最初の年 = min(year), 
-    最後の年 = max(year),
-    リターン平均 = mean(R), 
-    リターン中央値 = median(R), 
-    上昇した割合 = mean(up))
+    summarise(
+        行数 = n(),
+        会社数 = n_distinct(firm_ID),
+        最初の年 = min(year),
+        最後の年 = max(year),
+        リターン平均 = mean(R),
+        リターン中央値 = median(R),
+        上昇した割合 = mean(up)
+    )
 ```
 
 ::: {.code-output}
@@ -424,11 +431,11 @@ cor(df$R, df$ROE)
 #| fig-height: 3.4
 #| fig-width: 11
 df |>
-  ggplot(aes(x = ROE, y = R)) +
-  geom_point(alpha = 0.15, colour = "#8556c7") +
-  geom_smooth(method = "lm", se = FALSE, colour = "#e3439e", linewidth = 1) +
-  coord_cartesian(xlim = c(-0.3, 0.4), ylim = c(-0.7, 2)) +
-  labs(x = "ROE（当期純利益 ÷ 自己資本）", y = "年次株価リターン")
+    ggplot(aes(x = ROE, y = R)) +
+    geom_point(alpha = 0.15, colour = "#8556c7") +
+    geom_smooth(method = "lm", se = FALSE, colour = "#e3439e", linewidth = 1) +
+    coord_cartesian(xlim = c(-0.3, 0.4), ylim = c(-0.7, 2)) +
+    labs(x = "ROE（当期純利益 ÷ 自己資本）", y = "年次株価リターン")
 ```
 :::
 
@@ -470,7 +477,10 @@ df |>
 ## 利益の「変化」で見ると {.smaller}
 
 ```{r}
-df |> select(R, ROE, EP, dEP) |> cor() |> round(3)
+df |>
+    select(R, ROE, EP, dEP) |>
+    cor() |>
+    round(3)
 ```
 
 ::: {.code-output}
@@ -510,16 +520,16 @@ ROE で同じことをすると p値は `r round(cor.test(df$R, df$ROE)$p.value,
 #| fig-height: 2.9
 #| fig-width: 12
 anscombe_long <- tibble(
-  組 = rep(c("組1", "組2", "組3", "組4"), each = 11),
-  x  = c(anscombe$x1, anscombe$x2, anscombe$x3, anscombe$x4),
-  y  = c(anscombe$y1, anscombe$y2, anscombe$y3, anscombe$y4)
+    組 = rep(c("組1", "組2", "組3", "組4"), each = 11),
+    x = c(anscombe$x1, anscombe$x2, anscombe$x3, anscombe$x4),
+    y = c(anscombe$y1, anscombe$y2, anscombe$y3, anscombe$y4)
 )
 anscombe_long |>
-  ggplot(aes(x = x, y = y)) +
-  geom_point(size = 2.4, colour = "#8556c7") +
-  geom_smooth(method = "lm", se = FALSE, colour = "#e3439e", linewidth = 0.8) +
-  facet_wrap(~組, nrow = 1) +
-  labs(x = "x", y = "y")
+    ggplot(aes(x = x, y = y)) +
+    geom_point(size = 2.4, colour = "#8556c7") +
+    geom_smooth(method = "lm", se = FALSE, colour = "#e3439e", linewidth = 0.8) +
+    facet_wrap(~組, nrow = 1) +
+    labs(x = "x", y = "y")
 ```
 
 ::: {.code-output}
@@ -591,8 +601,8 @@ Ball, R. and P. Brown (1968) "An Empirical Evaluation of Accounting Income Numbe
 
 ```{r}
 model1 <- lm(R ~ dEP, data = df)
-summary(model1)$coefficients   # 係数・標準誤差・t値・p値
-summary(model1)$r.squared      # 決定係数（R の2乗）
+summary(model1)$coefficients # 係数・標準誤差・t値・p値
+summary(model1)$r.squared # 決定係数（R の2乗）
 ```
 
 ::: {.notes}
@@ -605,7 +615,7 @@ summary(model1)$r.squared      # 決定係数（R の2乗）
 ```{r}
 #| purl: false
 #| echo: false
-b1  <- coef(model1)[2]
+b1 <- coef(model1)[2]
 r2a <- summary(model1)$r.squared
 ```
 
@@ -639,7 +649,7 @@ $$
 
 ```{r}
 model2 <- lm(R ~ EP, data = df)
-model3 <- lm(R ~ EP + dEP, data = df)          # + でつなぐだけ
+model3 <- lm(R ~ EP + dEP, data = df) # + でつなぐだけ
 model4 <- lm(R ~ EP + dEP + size, data = df)
 ```
 
@@ -661,7 +671,8 @@ summary() を4回見比べるのは大変なので、次のスライドで1つ�
 #| eval: false
 library(modelsummary)
 modelsummary(list("(1)" = model1, "(2)" = model2, "(3)" = model3, "(4)" = model4),
-             stars = TRUE, gof_map = c("nobs", "r.squared"))
+    stars = TRUE, gof_map = c("nobs", "r.squared")
+)
 ```
 
 ::: {style="font-size: 0.72em;"}
@@ -669,7 +680,8 @@ modelsummary(list("(1)" = model1, "(2)" = model2, "(3)" = model3, "(4)" = model4
 #| purl: false
 #| echo: false
 modelsummary(list("(1)" = model1, "(2)" = model2, "(3)" = model3, "(4)" = model4),
-             stars = TRUE, gof_map = c("nobs", "r.squared"), fmt = 3)
+    stars = TRUE, gof_map = c("nobs", "r.squared"), fmt = 3
+)
 ```
 :::
 
@@ -761,15 +773,18 @@ EP と dEP は相関しています（`r round(cor(df$EP, df$dEP), 2)`）。
 
 ```{r}
 df |>
-  group_by(inc) |>
-  summarise(件数 = n(), 上がった割合 = mean(up))
+    group_by(inc) |>
+    summarise(件数 = n(), 上がった割合 = mean(up))
 ```
 
 ```{r}
 #| purl: false
 #| echo: false
-tab <- df |> group_by(inc) |> summarise(p = mean(up))
-p0 <- tab$p[tab$inc == 0]; p1 <- tab$p[tab$inc == 1]
+tab <- df |>
+    group_by(inc) |>
+    summarise(p = mean(up))
+p0 <- tab$p[tab$inc == 0]
+p1 <- tab$p[tab$inc == 1]
 ```
 
 ::: {.code-output}
@@ -790,7 +805,7 @@ summary(logit1)$coefficients
 ```
 
 ```{r}
-predict(logit1, newdata = tibble(inc = c(0, 1)), type = "response")  # 確率に直す
+predict(logit1, newdata = tibble(inc = c(0, 1)), type = "response") # 確率に直す
 ```
 
 ::: {.code-output}
@@ -816,18 +831,22 @@ $$
 #| fig-height: 3.2
 #| fig-width: 11
 logit2 <- glm(up ~ dEP + EP + size, family = binomial, data = df)
-lpm    <- lm(up ~ dEP + EP + size, data = df)
-grid <- tibble(dEP = seq(-0.6, 0.6, length.out = 200),
-               EP = median(df$EP), size = median(df$size))
-grid <- grid |> mutate(ロジット = predict(logit2, grid, type = "response"),
-                       回帰直線 = predict(lpm, grid))
+lpm <- lm(up ~ dEP + EP + size, data = df)
+grid <- tibble(
+    dEP = seq(-0.6, 0.6, length.out = 200),
+    EP = median(df$EP), size = median(df$size)
+)
+grid <- grid |> mutate(
+    ロジット = predict(logit2, grid, type = "response"),
+    回帰直線 = predict(lpm, grid)
+)
 grid |>
-  pivot_longer(c(ロジット, 回帰直線), names_to = "モデル", values_to = "p") |>
-  ggplot(aes(x = dEP, y = p, colour = モデル, linetype = モデル)) +
-  geom_hline(yintercept = c(0, 1), colour = "#879dde") +
-  geom_line(linewidth = 1.3) +
-  scale_colour_manual(values = c(ロジット = "#e3439e", 回帰直線 = "#8556c7")) +
-  labs(x = "利益の変化（dEP）", y = "株価が上がる確率", colour = NULL, linetype = NULL)
+    pivot_longer(c(ロジット, 回帰直線), names_to = "モデル", values_to = "p") |>
+    ggplot(aes(x = dEP, y = p, colour = モデル, linetype = モデル)) +
+    geom_hline(yintercept = c(0, 1), colour = "#879dde") +
+    geom_line(linewidth = 1.3) +
+    scale_colour_manual(values = c(ロジット = "#e3439e", 回帰直線 = "#8556c7")) +
+    labs(x = "利益の変化（dEP）", y = "株価が上がる確率", colour = NULL, linetype = NULL)
 ```
 
 ::: {.code-output}
@@ -906,17 +925,17 @@ industry_ID が何の業種かは、テキストのデータでは伏せられ�
 
 ```{r}
 #| eval: false
-k <- 1                                    # ← 自分のペア番号に変える
+k <- 1 # ← 自分のペア番号に変える
 
 df_k <- df |> filter(industry_ID == k)
-nrow(df_k)                                # 検算：何行あるか
+nrow(df_k) # 検算：何行あるか
 
-df_k |>                                   # 表で比べる
-  group_by(inc) |>
-  summarise(件数 = n(), 上がった割合 = mean(up))
+df_k |> # 表で比べる
+    group_by(inc) |>
+    summarise(件数 = n(), 上がった割合 = mean(up))
 
 logit_k <- glm(up ~ inc, family = binomial, data = df_k)
-summary(logit_k)$coefficients             # inc の係数（Estimate）と p値（Pr(>|z|)）
+summary(logit_k)$coefficients # inc の係数（Estimate）と p値（Pr(>|z|)）
 ```
 
 ::: {.code-output}
@@ -988,24 +1007,27 @@ AIが返したコードも、行数の検算は自分でやる。生成AIポリ�
 #| fig-height: 3.6
 #| fig-width: 11
 ind <- df |>
-  group_by(industry_ID) |>
-  group_modify(~ {
-    m <- glm(up ~ inc, family = binomial, data = .x)
-    tibble(n = nrow(.x),
-           差 = mean(.x$up[.x$inc == 1]) - mean(.x$up[.x$inc == 0]),
-           p = coef(summary(m))["inc", 4])
-  }) |>
-  ungroup() |>
-  mutate(判定 = if_else(p < 0.05, "p < 0.05", "p ≥ 0.05"))
-n_pos <- sum(ind$差 > 0); n_sig <- sum(ind$p < 0.05)
+    group_by(industry_ID) |>
+    group_modify(~ {
+        m <- glm(up ~ inc, family = binomial, data = .x)
+        tibble(
+            n = nrow(.x),
+            差 = mean(.x$up[.x$inc == 1]) - mean(.x$up[.x$inc == 0]),
+            p = coef(summary(m))["inc", 4]
+        )
+    }) |>
+    ungroup() |>
+    mutate(判定 = if_else(p < 0.05, "p < 0.05", "p ≥ 0.05"))
+n_pos <- sum(ind$差 > 0)
+n_sig <- sum(ind$p < 0.05)
 ind |>
-  ggplot(aes(x = factor(industry_ID), y = 差 * 100, fill = 判定)) +
-  geom_col() +
-  geom_text(aes(label = paste0(n, "行")), vjust = -0.4, size = 4.5, family = if (.Platform$OS.type == "windows") "jp" else "Hiragino Sans") +
-  geom_hline(yintercept = 0, colour = "#282A36") +
-  scale_fill_manual(values = c("p < 0.05" = "#8556c7", "p ≥ 0.05" = "#e7e2e2")) +
-  scale_y_continuous(expand = expansion(mult = c(0.02, 0.15))) +
-  labs(x = "業種（industry_ID）", y = "上がった割合の差（%ポイント）", fill = NULL)
+    ggplot(aes(x = factor(industry_ID), y = 差 * 100, fill = 判定)) +
+    geom_col() +
+    geom_text(aes(label = paste0(n, "行")), vjust = -0.4, size = 4.5, family = if (.Platform$OS.type == "windows") "jp" else "Hiragino Sans") +
+    geom_hline(yintercept = 0, colour = "#282A36") +
+    scale_fill_manual(values = c("p < 0.05" = "#8556c7", "p ≥ 0.05" = "#e7e2e2")) +
+    scale_y_continuous(expand = expansion(mult = c(0.02, 0.15))) +
+    labs(x = "業種（industry_ID）", y = "上がった割合の差（%ポイント）", fill = NULL)
 ```
 
 ::: {.code-output}
@@ -1026,7 +1048,7 @@ p値はサンプルサイズに強く依存する。「有意でない」は「�
 **簿価時価比率（BM）** ＝ 自己資本 ÷ 時価総額。割安な株ほど大きい値になります。
 
 ```{r}
-df <- df |> mutate(BM = BE / MV)                     # 年末の時価総額で割る
+df <- df |> mutate(BM = BE / MV) # 年末の時価総額で割る
 model5 <- lm(R ~ EP + dEP + size + BM, data = df)
 ```
 
@@ -1079,7 +1101,7 @@ R² が急に上がったのは、R と BM が機械的に結びついていた�
 ## 期首の値で作り直すと {.smaller}
 
 ```{r}
-df <- df |> mutate(BM_beg = lag_BE / lag_MV)          # 期首の自己資本 ÷ 期首の時価総額
+df <- df |> mutate(BM_beg = lag_BE / lag_MV) # 期首の自己資本 ÷ 期首の時価総額
 model6 <- lm(R ~ EP + dEP + size + BM_beg, data = df)
 ```
 
@@ -1088,7 +1110,8 @@ model6 <- lm(R ~ EP + dEP + size + BM_beg, data = df)
 #| purl: false
 #| echo: false
 modelsummary(list("(4) BMなし" = model4, "(5) 期末のBM" = model5, "(6) 期首のBM" = model6),
-             stars = TRUE, gof_map = c("nobs", "r.squared"), fmt = 3)
+    stars = TRUE, gof_map = c("nobs", "r.squared"), fmt = 3
+)
 ```
 :::
 
