@@ -160,9 +160,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>df$</code>を何回も書く必要があるし、なんか見づらいので、<code>tidyverse</code>パッケージの中の<code>dplyr</code>という超便利パッケージの<code>mutate()</code>関数を使って、次のように書くこともできます。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="co"># df に追加する</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">profit_margin =</span> net_income <span class="sc">/</span> sales <span class="co"># 新しい変数の定義</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">profit_margin =</span> net_income <span class="sc">/</span> sales <span class="co"># 新しい変数の定義</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 500
@@ -185,11 +185,11 @@ $ profit_margin &lt;dbl&gt; 0.067184342, -0.017075238, 0.062581615, -0.007113000
 <p>複数の変数を作成、追加することも簡単です。 式と式の間をカンマで区切ることを忘れないようにしましょう。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="co"># df に追加する</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">profit_margin =</span> net_income <span class="sc">/</span> sales, <span class="co"># 利益率</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">turn_over =</span> sales <span class="sc">/</span> total_assets,   <span class="co"># 回転率</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">roe =</span> net_income <span class="sc">/</span> total_assets     <span class="co"># ROE</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">profit_margin =</span> net_income <span class="sc">/</span> sales, <span class="co"># 利益率</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">turn_over =</span> sales <span class="sc">/</span> total_assets, <span class="co"># 回転率</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">roe =</span> net_income <span class="sc">/</span> total_assets <span class="co"># ROE</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 500
@@ -207,6 +207,89 @@ $ roe           &lt;dbl&gt; 0.052433470, -0.014068742, 0.061325245, -0.004479604
 </div>
 </div>
 <p>ちゃんと新しい変数が3つ追加されていることが確認できました。</p>
+</section>
+</section>
+<section id="統計学を使って予想する" class="level2">
+<h2 class="anchored" data-anchor-id="統計学を使って予想する">統計学を使って予想する</h2>
+<p>たとえば、パン屋さんで1斤400グラムとして販売している食パンを買って、家に持って帰ってから重さを量ったところ、397.5グラムだったとしましょう。この数字をみて、「お店では400グラムの食パンと書いてあったのに、実際は400グラムより少ない！詐欺だ！」となるでしょうか？</p>
+<p>お店の人は400グラムの食パンを作ろうとしていますが、できあがった食パンの重さが「400.000000000・・・グラム」になることはなく、誤差が伴うはずです。 そこで、毎日食パンを1つ買って、自宅で重さを量って記録する、ということを10日続けたところ、以下のようなデータになりました。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>bread <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">401.5</span>, <span class="fl">398.5</span>, <span class="fl">395.8</span>, <span class="fl">403.2</span>, <span class="fl">397.9</span>, <span class="fl">399.1</span>, <span class="fl">396.6</span>, <span class="fl">400.5</span>, <span class="fl">393.8</span>, <span class="fl">402.1</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bread)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 401.5 398.5 395.8 403.2 397.9 399.1 396.6 400.5 393.8 402.1</code></pre>
+</div>
+</div>
+<p>この10個の食パンの平均重量は、</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>bread <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>() <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 398.9</code></pre>
+</div>
+</div>
+<p>食パン10個の平均重量が398.9であったので、客はやはり「お店は400グラムの食パンと言っておきながら、実はもっと小さな食パンを売っている！」と主張します。 <strong>この主張はどの程度「もっともらしい」でしょうか？</strong></p>
+<p>いま、以下のような状況である。</p>
+<ul>
+<li>お店では食パンを1斤400グラムとして販売している。</li>
+<li>しかし食パンが焼き上がるまでにいろんな要因で重量に誤差が生じる</li>
+<li>客が買った10個のパンの平均重量は398.9グラムであった</li>
+</ul>
+<p>この事実から、お店が実際は400グラムではなく、もっと小さい食パンを製造して400グラムで販売している、とどの程度のもっともらしさで主張できるのかを考えてみます。</p>
+<section id="母集団" class="level3">
+<h3 class="anchored" data-anchor-id="母集団">母集団</h3>
+<p>統計学で<strong>母集団</strong>(population)は、非常に大きなサイズのデータですべてを調べることはできないものです。今の例では、パン屋さんが今まで製造してきたすべての食パンの重さのデータが母集団になります。</p>
+<p>母集団をすべて調べることは現実的ではないとき、母集団の平均値や分散である<strong>母平均</strong>や<strong>母分散</strong>は誰の知ることのできない未知のパラメータとなります。 しかし、今はこの<strong>母平均</strong>が400グラムより小さいかどうかを知りたいのです。</p>
+</section>
+<section id="標本" class="level3">
+<h3 class="anchored" data-anchor-id="標本">標本</h3>
+<p>母集団を調べることができないので、そこから一部のデータを抽出します。この母集団から取ってきた小さなデータを<strong>標本</strong>(sample)といいます。この標本の平均や分散である<strong>標本平均</strong>や<strong>標本分散</strong>は計算することができます。 この標本平均や標本分散から、母平均や母分散を知るための方法を提供してくれるのが、統計学です。</p>
+</section>
+<section id="実際にやってみる" class="level3">
+<h3 class="anchored" data-anchor-id="実際にやってみる">実際にやってみる。</h3>
+<p>例えば、パン屋さんが今まで作ってきた食パンが100万個あり、その重さのデータが母集団であるとします。ここでは母平均400グラム、母分散が1の正規分布になっているとします。つまり次のような分布になっているとします。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>weight_p <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000000</span>, <span class="at">mean =</span> <span class="dv">400</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(weight_p, <span class="at">breaks =</span> <span class="dv">100</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Presemi_2026_03_補足資料_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>パン屋さんは重さ400グラムの食パンを作ろうとしていますが、完成品の重さには誤差があるので、このような分布になっていますが、母平均は400グラムです。</p>
+<p>ここから、10個のパンをランダムに取り出して、その平均重量を量ります。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>weight_sample1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(weight_p, <span class="dv">10</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(weight_sample1)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 399.6325</code></pre>
+</div>
+</div>
+<p>すると、399.63となり、標本平均は400グラムより小さな値（あるいは大きな値）になりました。 しかし、これは偶然集まった10個のパンの重さの平均で、別の10個のパンを抽出すれば別の平均重量が計算されるはずです。</p>
+<p>では、母集団である100万個のパンから、10個のパンを取り出して、平均重量を量る、という取り組みを1000回繰り返して、1000個の平均重量を計算してみましょう。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">numeric</span>(trial)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>trial) {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">sample</span>(weight_p, <span class="dv">10</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    result[i] <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(x), <span class="dv">2</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>この1000回の繰り返しによって計算された1000個の平均値がどのような分布になっているのかを見てみましょう。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(result, <span class="at">breaks =</span> <span class="dv">100</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Presemi_2026_03_補足資料_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 
