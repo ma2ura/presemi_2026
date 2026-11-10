@@ -151,10 +151,13 @@ f1 <- function(x) sprintf("%.1f", x) # 小数第1位まで（-5 → -5.0）
 
 ```{r}
 df <- read_csv("data/merged_forecast_both_financial.csv",
-               col_types = cols(日経会社コード = col_character())) |>   # 先頭の0を残す
+    col_types = cols(日経会社コード = col_character())
+) |> # 先頭の0を残す
     rename(親会社利益 = "親会社株主に帰属する当期純利益（連結）／当期利益（単独）［累計］") |>
-    mutate(決算年 = as.integer(str_sub(決算期, 1, 4)),   # "2025/03" → 2025
-           決算月 = as.integer(str_sub(決算期, 6, 7)))   # "2025/03" → 3
+    mutate(
+        決算年 = as.integer(str_sub(決算期, 1, 4)), # "2025/03" → 2025
+        決算月 = as.integer(str_sub(決算期, 6, 7))
+    ) # "2025/03" → 3
 ```
 
 | 列 | 意味 |
@@ -175,12 +178,12 @@ df <- read_csv("data/merged_forecast_both_financial.csv",
 
 ```{r}
 df <- df |>
-    arrange(日経会社コード, 決算期) |>   # 会社ごとに、決算期の順に並べる
-    group_by(日経会社コード) |>           # 会社ごとに計算する
+    arrange(日経会社コード, 決算期) |> # 会社ごとに、決算期の順に並べる
+    group_by(日経会社コード) |> # 会社ごとに計算する
     mutate(
-        連続     = (決算年 - lag(決算年) == 1) & (決算月 == lag(決算月)),  # 前の行が「ちょうど1年前」か
-        期首資産 = if_else(連続, lag(資産合計), NA_real_),                # 前期末の総資産
-        前期利益 = if_else(連続, lag(親会社利益), NA_real_)               # 前期の当期純利益
+        連続 = (決算年 - lag(決算年) == 1) & (決算月 == lag(決算月)), # 前の行が「ちょうど1年前」か
+        期首資産 = if_else(連続, lag(資産合計), NA_real_), # 前期末の総資産
+        前期利益 = if_else(連続, lag(親会社利益), NA_real_) # 前期の当期純利益
     ) |>
     ungroup()
 ```
@@ -207,12 +210,14 @@ df <- df |>
 
 ```{r}
 d <- df |>
-    filter(決算月数 == 12, 期首資産 > 0,           # 12か月決算で、期首総資産が正の行
-           between(決算年, 2016, 2025)) |>        # データがそろっている10年分
+    filter(
+        決算月数 == 12, 期首資産 > 0, # 12か月決算で、期首総資産が正の行
+        between(決算年, 2016, 2025)
+    ) |> # データがそろっている10年分
     mutate(
-        利益率     = 親会社利益 / 期首資産,               # ① 赤字回避：利益 ÷ 期首総資産
-        利益増減率 = (親会社利益 - 前期利益) / 期首資産,  # ② 減益回避：利益の変化 ÷ 期首総資産
-        予想誤差率 = (純利益 - 予想純利益) / 期首資産     # ③ 予想未達回避：（実績 − 予想）÷ 期首総資産
+        利益率 = 親会社利益 / 期首資産, # ① 赤字回避：利益 ÷ 期首総資産
+        利益増減率 = (親会社利益 - 前期利益) / 期首資産, # ② 減益回避：利益の変化 ÷ 期首総資産
+        予想誤差率 = (純利益 - 予想純利益) / 期首資産 # ③ 予想未達回避：（実績 − 予想）÷ 期首総資産
     )
 nrow(d)
 ```
@@ -233,7 +238,7 @@ nrow(d)
 ```{r}
 d |>
     summarise(
-        行数   = n(),
+        行数 = n(),
         会社数 = n_distinct(日経会社コード),
         最初の年 = min(決算年),
         最後の年 = max(決算年),
@@ -294,18 +299,24 @@ Burgstahler, D. and I. Dichev (1997) Earnings management to avoid earnings decre
 ```{r}
 # 階級幅 bw のヒストグラム。ゼロの直前（-bw 以上 0 未満）と直後（0 以上 bw 未満）に色をつける
 hist_bd <- function(x, bw = 0.005, lim = 0.1, xlab = "") {
-    x <- x[!is.na(x) & abs(x) < lim]                       # 表示範囲（±lim）だけ使う
-    tibble(bin = floor(x / bw)) |>                          # 何番目の階級に入るか
+    x <- x[!is.na(x) & abs(x) < lim] # 表示範囲（±lim）だけ使う
+    tibble(bin = floor(x / bw)) |> # 何番目の階級に入るか
         count(bin) |>
-        mutate(mid = (bin + 0.5) * bw,                      # 階級の真ん中の値
-               区分 = case_when(bin == 0  ~ "ゼロの直後",
-                                bin == -1 ~ "ゼロの直前",
-                                TRUE      ~ "その他")) |>
+        mutate(
+            mid = (bin + 0.5) * bw, # 階級の真ん中の値
+            区分 = case_when(
+                bin == 0 ~ "ゼロの直後",
+                bin == -1 ~ "ゼロの直前",
+                TRUE ~ "その他"
+            )
+        ) |>
         ggplot(aes(x = mid, y = n, fill = 区分)) +
         geom_col(width = bw * 0.95) +
         geom_vline(xintercept = 0, linetype = "dashed") +
-        scale_fill_manual(values = c("ゼロの直後" = "#e3439e", "ゼロの直前" = "#879dde",
-                                     "その他" = "grey75")) +
+        scale_fill_manual(values = c(
+            "ゼロの直後" = "#e3439e", "ゼロの直前" = "#879dde",
+            "その他" = "grey75"
+        )) +
         labs(x = xlab, y = "企業・年度数", fill = NULL)
 }
 ```
@@ -351,18 +362,22 @@ $$
 # ゼロの直前（bin = -1）と直後（bin = 0）の標準化差分
 bd_test <- function(x, bw = 0.005, lim = 0.1) {
     x <- x[!is.na(x) & abs(x) < lim]
-    n <- table(factor(floor(x / bw), levels = floor(-lim / bw):(floor(lim / bw) - 1)))  # 階級ごとの度数
+    n <- table(factor(floor(x / bw), levels = floor(-lim / bw):(floor(lim / bw) - 1))) # 階級ごとの度数
     N <- sum(n)
     p <- n / N
-    sdiff <- function(b) {                     # 階級 b の標準化差分
-        i <- as.character(b); l <- as.character(b - 1); r <- as.character(b + 1)
+    sdiff <- function(b) { # 階級 b の標準化差分
+        i <- as.character(b)
+        l <- as.character(b - 1)
+        r <- as.character(b + 1)
         sd <- sqrt(N * p[i] * (1 - p[i]) + 0.25 * N * (p[l] + p[r]) * (1 - p[l] - p[r]))
         unname((n[i] - (n[l] + n[r]) / 2) / sd)
     }
-    tibble(階級       = c("ゼロの直前", "ゼロの直後"),
-           度数       = as.integer(n[c("-1", "0")]),
-           期待度数   = c((n["-2"] + n["0"]) / 2, (n["-1"] + n["1"]) / 2),
-           標準化差分 = c(sdiff(-1), sdiff(0)))
+    tibble(
+        階級 = c("ゼロの直前", "ゼロの直後"),
+        度数 = as.integer(n[c("-1", "0")]),
+        期待度数 = c((n["-2"] + n["0"]) / 2, (n["-1"] + n["1"]) / 2),
+        標準化差分 = c(sdiff(-1), sdiff(0))
+    )
 }
 ```
 
@@ -481,8 +496,8 @@ res3
 #| purl: false
 #| echo: false
 res_all <- bind_rows(
-    "① 赤字回避"     = res1,
-    "② 減益回避"     = res2,
+    "① 赤字回避" = res1,
+    "② 減益回避" = res2,
     "③ 予想未達回避" = res3,
     .id = "分析"
 )
@@ -553,7 +568,7 @@ y <- 2015 + k
 d_y <- d |> filter(決算年 == y)
 nrow(d_y) # 検算：何行あるか
 
-bd_test(d_y$利益率)     # ① 赤字回避
+bd_test(d_y$利益率) # ① 赤字回避
 bd_test(d_y$利益増減率) # ② 減益回避
 bd_test(d_y$予想誤差率) # ③ 予想未達回避
 
@@ -596,8 +611,8 @@ hist_bd(d_y$予想誤差率, xlab = "予想誤差率") # ← いちばんゆが�
 yr <- d |>
     group_by(決算年) |>
     group_modify(~ bind_rows(
-        "① 赤字回避"     = bd_test(.x$利益率),
-        "② 減益回避"     = bd_test(.x$利益増減率),
+        "① 赤字回避" = bd_test(.x$利益率),
+        "② 減益回避" = bd_test(.x$利益増減率),
         "③ 予想未達回避" = bd_test(.x$予想誤差率),
         .id = "分析"
     )) |>
@@ -618,7 +633,7 @@ yr |>
     geom_hline(yintercept = 0, colour = "#282A36") +
     geom_line(linewidth = 1) +
     geom_point(size = 2.5) +
-    facet_wrap(~ 分析) +
+    facet_wrap(~分析) +
     scale_colour_manual(values = c("ゼロの直前" = "#879dde", "ゼロの直後" = "#e3439e")) +
     scale_x_continuous(breaks = seq(2016, 2025, 3)) +
     labs(x = "決算年", y = "標準化差分", colour = NULL)
@@ -644,18 +659,30 @@ yr |>
 ```{r}
 #| purl: false
 #| echo: false
-sens <- expand_grid(bw = c(0.0025, 0.005, 0.01),
-                    変数 = c("① 赤字回避", "② 減益回避", "③ 予想未達回避")) |>
+sens <- expand_grid(
+    bw = c(0.0025, 0.005, 0.01),
+    変数 = c("① 赤字回避", "② 減益回避", "③ 予想未達回避")
+) |>
     mutate(res = map2(bw, 変数, \(b, v) {
-        x <- switch(v, "① 赤字回避" = d$利益率, "② 減益回避" = d$利益増減率, "③ 予想未達回避" = d$予想誤差率)
+        x <- switch(v,
+            "① 赤字回避" = d$利益率,
+            "② 減益回避" = d$利益増減率,
+            "③ 予想未達回避" = d$予想誤差率
+        )
         bd_test(x, bw = b)
     })) |>
     unnest(res) |>
     select(bw, 変数, 階級, 標準化差分) |>
     pivot_wider(names_from = c(変数, 階級), values_from = 標準化差分, names_sep = "：")
-s2 <- sens |> filter(bw == 0.01) |> pull(`② 減益回避：ゼロの直前`)
-s3a <- sens |> filter(bw == 0.0025) |> pull(`③ 予想未達回避：ゼロの直後`)
-s3b <- sens |> filter(bw == 0.01) |> pull(`③ 予想未達回避：ゼロの直後`)
+s2 <- sens |>
+    filter(bw == 0.01) |>
+    pull(`② 減益回避：ゼロの直前`)
+s3a <- sens |>
+    filter(bw == 0.0025) |>
+    pull(`③ 予想未達回避：ゼロの直後`)
+s3b <- sens |>
+    filter(bw == 0.01) |>
+    pull(`③ 予想未達回避：ゼロの直後`)
 ```
 
 ```{r}
