@@ -151,13 +151,13 @@ f1 <- function(x) sprintf("%.1f", x) # 小数第1位まで（-5 → -5.0）
 
 ```{r}
 df <- read_csv("data/merged_forecast_both_financial.csv",
-    col_types = cols(日経会社コード = col_character())
+  col_types = cols(日経会社コード = col_character())
 ) |> # 先頭の0を残す
-    rename(親会社利益 = "親会社株主に帰属する当期純利益（連結）／当期利益（単独）［累計］") |>
-    mutate(
-        決算年 = as.integer(str_sub(決算期, 1, 4)), # "2025/03" → 2025
-        決算月 = as.integer(str_sub(決算期, 6, 7))
-    ) # "2025/03" → 3
+  rename(親会社利益 = "親会社株主に帰属する当期純利益（連結）／当期利益（単独）［累計］") |>
+  mutate(
+    決算年 = as.integer(str_sub(決算期, 1, 4)), # "2025/03" → 2025
+    決算月 = as.integer(str_sub(決算期, 6, 7))
+  ) # "2025/03" → 3
 ```
 
 | 列 | 意味 |
