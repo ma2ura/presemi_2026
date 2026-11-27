@@ -636,24 +636,24 @@ Soichi Matsuura
 <h2>データと関数を準備する（前回の復習＋拡張）</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/merged_forecast_both_financial.csv"</span>,</span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_types =</span> <span class="fu">cols</span>(日経会社コード <span class="ot">=</span> <span class="fu">col_character</span>())</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">cols</span>(日経会社コード <span class="ot">=</span> <span class="fu">col_character</span>())</span>
 <span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(親会社利益 <span class="ot">=</span> <span class="st">"親会社株主に帰属する当期純利益（連結）／当期利益（単独）［累計］"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>        決算年 <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(決算期, <span class="dv">1</span>, <span class="dv">4</span>)),</span>
-<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>        決算月 <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(決算期, <span class="dv">6</span>, <span class="dv">7</span>))</span>
-<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(日経会社コード, 決算期) <span class="sc">|&gt;</span></span>
-<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(日経会社コード) <span class="sc">|&gt;</span></span>
-<span id="cb1-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb1-12"><a href="" aria-hidden="true" tabindex="-1"></a>        連続 <span class="ot">=</span> (決算年 <span class="sc">-</span> <span class="fu">lag</span>(決算年) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">&amp;</span> (決算月 <span class="sc">==</span> <span class="fu">lag</span>(決算月)),</span>
-<span id="cb1-13"><a href="" aria-hidden="true" tabindex="-1"></a>        期首資産 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(資産合計), <span class="cn">NA_real_</span>),</span>
-<span id="cb1-14"><a href="" aria-hidden="true" tabindex="-1"></a>        前期利益 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(親会社利益), <span class="cn">NA_real_</span>),</span>
-<span id="cb1-15"><a href="" aria-hidden="true" tabindex="-1"></a>        前期売上 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(売上高), <span class="cn">NA_real_</span>),</span>
-<span id="cb1-16"><a href="" aria-hidden="true" tabindex="-1"></a>        前期営業利益 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(営業利益), <span class="cn">NA_real_</span>),</span>
-<span id="cb1-17"><a href="" aria-hidden="true" tabindex="-1"></a>        前期経常利益 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(経常利益), <span class="cn">NA_real_</span>)</span>
-<span id="cb1-18"><a href="" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb1-19"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(親会社利益 <span class="ot">=</span> <span class="st">"親会社株主に帰属する当期純利益（連結）／当期利益（単独）［累計］"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>    決算年 <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(決算期, <span class="dv">1</span>, <span class="dv">4</span>)),</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>    決算月 <span class="ot">=</span> <span class="fu">as.integer</span>(<span class="fu">str_sub</span>(決算期, <span class="dv">6</span>, <span class="dv">7</span>))</span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(日経会社コード, 決算期) <span class="sc">|&gt;</span></span>
+<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(日経会社コード) <span class="sc">|&gt;</span></span>
+<span id="cb1-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-12"><a href="" aria-hidden="true" tabindex="-1"></a>    連続 <span class="ot">=</span> (決算年 <span class="sc">-</span> <span class="fu">lag</span>(決算年) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">&amp;</span> (決算月 <span class="sc">==</span> <span class="fu">lag</span>(決算月)),</span>
+<span id="cb1-13"><a href="" aria-hidden="true" tabindex="-1"></a>    期首資産 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(資産合計), <span class="cn">NA_real_</span>),</span>
+<span id="cb1-14"><a href="" aria-hidden="true" tabindex="-1"></a>    前期利益 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(親会社利益), <span class="cn">NA_real_</span>),</span>
+<span id="cb1-15"><a href="" aria-hidden="true" tabindex="-1"></a>    前期売上 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(売上高), <span class="cn">NA_real_</span>),</span>
+<span id="cb1-16"><a href="" aria-hidden="true" tabindex="-1"></a>    前期営業利益 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(営業利益), <span class="cn">NA_real_</span>),</span>
+<span id="cb1-17"><a href="" aria-hidden="true" tabindex="-1"></a>    前期経常利益 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(経常利益), <span class="cn">NA_real_</span>)</span>
+<span id="cb1-18"><a href="" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb1-19"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="code-output">
 <p>第6回の変数に加えて、<strong>売上高・営業利益・経常利益</strong>の前期実績と予想誤差も計算できるようにします。</p>
@@ -664,20 +664,20 @@ Soichi Matsuura
 <p>日本の決算短信では、経営者が <strong>売上高・営業利益・経常利益・純利益</strong> の4つすべてについて期初予想を公表します。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(決算月数 <span class="sc">==</span> <span class="dv">12</span>, 期首資産 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">between</span>(決算年, <span class="dv">2016</span>, <span class="dv">2025</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 基本の3変数（第6回）</span></span>
-<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>        利益率 <span class="ot">=</span> 親会社利益 <span class="sc">/</span> 期首資産,</span>
-<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>        利益増減率 <span class="ot">=</span> (親会社利益 <span class="sc">-</span> 前期利益) <span class="sc">/</span> 期首資産,</span>
-<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>        予想誤差率 <span class="ot">=</span> (純利益 <span class="sc">-</span> 予想純利益) <span class="sc">/</span> 期首資産,</span>
-<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 追加設定①：段階別の予想誤差率（（実績 − 期初予想）÷ 期首資産）</span></span>
-<span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a>        売上予想誤差率 <span class="ot">=</span> (売上高 <span class="sc">-</span> 予想売上高) <span class="sc">/</span> 期首資産,</span>
-<span id="cb2-10"><a href="" aria-hidden="true" tabindex="-1"></a>        営業予想誤差率 <span class="ot">=</span> (営業利益 <span class="sc">-</span> 予想営業利益) <span class="sc">/</span> 期首資産,</span>
-<span id="cb2-11"><a href="" aria-hidden="true" tabindex="-1"></a>        経常予想誤差率 <span class="ot">=</span> (経常利益 <span class="sc">-</span> 予想経常利益) <span class="sc">/</span> 期首資産,</span>
-<span id="cb2-12"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 追加設定①b：段階別の利益率（実績 ÷ 期首資産）</span></span>
-<span id="cb2-13"><a href="" aria-hidden="true" tabindex="-1"></a>        営業利益率 <span class="ot">=</span> 営業利益 <span class="sc">/</span> 期首資産,</span>
-<span id="cb2-14"><a href="" aria-hidden="true" tabindex="-1"></a>        経常利益率 <span class="ot">=</span> 経常利益 <span class="sc">/</span> 期首資産</span>
-<span id="cb2-15"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(決算月数 <span class="sc">==</span> <span class="dv">12</span>, 期首資産 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">between</span>(決算年, <span class="dv">2016</span>, <span class="dv">2025</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 基本の3変数（第6回）</span></span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>    利益率 <span class="ot">=</span> 親会社利益 <span class="sc">/</span> 期首資産,</span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>    利益増減率 <span class="ot">=</span> (親会社利益 <span class="sc">-</span> 前期利益) <span class="sc">/</span> 期首資産,</span>
+<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>    予想誤差率 <span class="ot">=</span> (純利益 <span class="sc">-</span> 予想純利益) <span class="sc">/</span> 期首資産,</span>
+<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 追加設定①：段階別の予想誤差率（（実績 − 期初予想）÷ 期首資産）</span></span>
+<span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a>    売上予想誤差率 <span class="ot">=</span> (売上高 <span class="sc">-</span> 予想売上高) <span class="sc">/</span> 期首資産,</span>
+<span id="cb2-10"><a href="" aria-hidden="true" tabindex="-1"></a>    営業予想誤差率 <span class="ot">=</span> (営業利益 <span class="sc">-</span> 予想営業利益) <span class="sc">/</span> 期首資産,</span>
+<span id="cb2-11"><a href="" aria-hidden="true" tabindex="-1"></a>    経常予想誤差率 <span class="ot">=</span> (経常利益 <span class="sc">-</span> 予想経常利益) <span class="sc">/</span> 期首資産,</span>
+<span id="cb2-12"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 追加設定①b：段階別の利益率（実績 ÷ 期首資産）</span></span>
+<span id="cb2-13"><a href="" aria-hidden="true" tabindex="-1"></a>    営業利益率 <span class="ot">=</span> 営業利益 <span class="sc">/</span> 期首資産,</span>
+<span id="cb2-14"><a href="" aria-hidden="true" tabindex="-1"></a>    経常利益率 <span class="ot">=</span> 経常利益 <span class="sc">/</span> 期首資産</span>
+<span id="cb2-15"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="code-output">
 <p>もし経営者が「予想達成」を目指して会計上の調整を行うなら、<span class="markp"><strong>損益計算書のどの段階</strong></span>で段差がいちばん大きくなるでしょうか。</p>
@@ -700,11 +700,11 @@ Soichi Matsuura
 <h2>検証①：4つの段階の「予想誤差率」を比べる</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>res_step <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"1_売上高"</span>   <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>売上予想誤差率),</span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2_営業利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>営業予想誤差率),</span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3_経常利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>経常予想誤差率),</span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"4_当期純利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>予想誤差率),</span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">.id =</span> <span class="st">"段階"</span></span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"1_売上高"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>売上予想誤差率),</span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"2_営業利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>営業予想誤差率),</span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"3_経常利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>経常予想誤差率),</span>
+<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"4_当期純利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>予想誤差率),</span>
+<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"段階"</span></span>
 <span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
@@ -786,14 +786,14 @@ Soichi Matsuura
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 中央値（31.8%）以下を「低負担率群」、中央値超を「高負担率群」に分割</span></span>
 <span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>d_tax <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(法人税等負担率)) <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>        税負担区分 <span class="ot">=</span> <span class="fu">if_else</span>(</span>
-<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>            法人税等負担率 <span class="sc">&lt;=</span> tax_med,</span>
-<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="st">"低負担率群（中央値以下）"</span>,</span>
-<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="st">"高負担率群（中央値超）"</span></span>
-<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">|&gt;</span> <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"低負担率群（中央値以下）"</span>, <span class="st">"高負担率群（中央値超）"</span>))</span>
-<span id="cb6-10"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(法人税等負担率)) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>    税負担区分 <span class="ot">=</span> <span class="fu">if_else</span>(</span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>      法人税等負担率 <span class="sc">&lt;=</span> tax_med,</span>
+<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="st">"低負担率群（中央値以下）"</span>,</span>
+<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="st">"高負担率群（中央値超）"</span></span>
+<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"低負担率群（中央値以下）"</span>, <span class="st">"高負担率群（中央値超）"</span>))</span>
+<span id="cb6-10"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -812,14 +812,14 @@ Soichi Matsuura
 <h2>検証②：低負担率群 vs 高負担率群の標準化差分</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>tax_res <span class="ot">&lt;-</span> d_tax <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(税負担区分) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"① 赤字回避"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>利益率),</span>
-<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"② 減益回避"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>利益増減率),</span>
-<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"③ 予想未達回避"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>予想誤差率),</span>
-<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">.id =</span> <span class="st">"分析"</span></span>
-<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">|&gt;</span></span>
-<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(税負担区分) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"① 赤字回避"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>利益率),</span>
+<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"② 減益回避"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>利益増減率),</span>
+<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"③ 予想未達回避"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>予想誤差率),</span>
+<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">.id =</span> <span class="st">"分析"</span></span>
+<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 <img data-src="Presemi_2026_07_files/figure-revealjs/unnamed-chunk-13-1.png" width="1152" class="r-stretch"><div class="code-output">
@@ -879,30 +879,32 @@ Soichi Matsuura
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># --- テーマA：企業規模（期首資産の中央値）で分ける ---</span></span>
 <span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>med_size <span class="ot">&lt;-</span> <span class="fu">median</span>(d<span class="sc">$</span>期首資産, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(規模 <span class="ot">=</span> <span class="fu">if_else</span>(期首資産 <span class="sc">&lt;=</span> med_size, <span class="st">"1_小規模"</span>, <span class="st">"2_大規模"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(規模) <span class="sc">|&gt;</span></span>
-<span id="cb9-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>予想誤差率)) <span class="co"># 利益率・利益増減率でも試す</span></span>
+<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(規模 <span class="ot">=</span> <span class="fu">if_else</span>(期首資産 <span class="sc">&lt;=</span> med_size, <span class="st">"1_小規模"</span>, <span class="st">"2_大規模"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(規模) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>予想誤差率)) <span class="co"># 利益率・利益増減率でも試す</span></span>
 <span id="cb9-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># --- テーマB：段階利益（営業・経常・純利益）で赤字回避を比べる ---</span></span>
 <span id="cb9-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
-<span id="cb9-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"1_営業利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>営業利益率),</span>
-<span id="cb9-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2_経常利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>経常利益率),</span>
-<span id="cb9-12"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3_当期純利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>利益率), <span class="at">.id =</span> <span class="st">"利益指標"</span></span>
+<span id="cb9-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"1_営業利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>営業利益率),</span>
+<span id="cb9-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"2_経常利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>経常利益率),</span>
+<span id="cb9-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"3_当期純利益"</span> <span class="ot">=</span> <span class="fu">bd_test</span>(d<span class="sc">$</span>利益率), <span class="at">.id =</span> <span class="st">"利益指標"</span></span>
 <span id="cb9-13"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-14"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-15"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># --- テーマC：「前期」の法人税等負担率で分ける ---</span></span>
 <span id="cb9-16"><a href="" aria-hidden="true" tabindex="-1"></a>d_lag_tax <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb9-17"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(日経会社コード) <span class="sc">|&gt;</span></span>
-<span id="cb9-18"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(前期負担率 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(法人税等負担率), <span class="cn">NA_real_</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-19"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-20"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(決算月数 <span class="sc">==</span> <span class="dv">12</span>, 期首資産 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">between</span>(決算年, <span class="dv">2016</span>, <span class="dv">2025</span>), <span class="sc">!</span><span class="fu">is.na</span>(前期負担率)) <span class="sc">|&gt;</span></span>
-<span id="cb9-21"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb9-22"><a href="" aria-hidden="true" tabindex="-1"></a>        利益率 <span class="ot">=</span> 親会社利益 <span class="sc">/</span> 期首資産,</span>
-<span id="cb9-23"><a href="" aria-hidden="true" tabindex="-1"></a>        利益増減率 <span class="ot">=</span> (親会社利益 <span class="sc">-</span> 前期利益) <span class="sc">/</span> 期首資産,</span>
-<span id="cb9-24"><a href="" aria-hidden="true" tabindex="-1"></a>        予想誤差率 <span class="ot">=</span> (純利益 <span class="sc">-</span> 予想純利益) <span class="sc">/</span> 期首資産,</span>
-<span id="cb9-25"><a href="" aria-hidden="true" tabindex="-1"></a>        前期税区分 <span class="ot">=</span> <span class="fu">if_else</span>(前期負担率 <span class="sc">&lt;=</span> <span class="fu">median</span>(前期負担率), <span class="st">"1_前期低税率"</span>, <span class="st">"2_前期高税率"</span>)</span>
-<span id="cb9-26"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-27"><a href="" aria-hidden="true" tabindex="-1"></a>d_lag_tax <span class="sc">|&gt;</span> <span class="fu">group_by</span>(前期税区分) <span class="sc">|&gt;</span> <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>利益率))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(日経会社コード) <span class="sc">|&gt;</span></span>
+<span id="cb9-18"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(前期負担率 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(法人税等負担率), <span class="cn">NA_real_</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-19"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-20"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(決算月数 <span class="sc">==</span> <span class="dv">12</span>, 期首資産 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">between</span>(決算年, <span class="dv">2016</span>, <span class="dv">2025</span>), <span class="sc">!</span><span class="fu">is.na</span>(前期負担率)) <span class="sc">|&gt;</span></span>
+<span id="cb9-21"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-22"><a href="" aria-hidden="true" tabindex="-1"></a>    利益率 <span class="ot">=</span> 親会社利益 <span class="sc">/</span> 期首資産,</span>
+<span id="cb9-23"><a href="" aria-hidden="true" tabindex="-1"></a>    利益増減率 <span class="ot">=</span> (親会社利益 <span class="sc">-</span> 前期利益) <span class="sc">/</span> 期首資産,</span>
+<span id="cb9-24"><a href="" aria-hidden="true" tabindex="-1"></a>    予想誤差率 <span class="ot">=</span> (純利益 <span class="sc">-</span> 予想純利益) <span class="sc">/</span> 期首資産,</span>
+<span id="cb9-25"><a href="" aria-hidden="true" tabindex="-1"></a>    前期税区分 <span class="ot">=</span> <span class="fu">if_else</span>(前期負担率 <span class="sc">&lt;=</span> <span class="fu">median</span>(前期負担率), <span class="st">"1_前期低税率"</span>, <span class="st">"2_前期高税率"</span>)</span>
+<span id="cb9-26"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-27"><a href="" aria-hidden="true" tabindex="-1"></a>d_lag_tax <span class="sc">|&gt;</span></span>
+<span id="cb9-28"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(前期税区分) <span class="sc">|&gt;</span></span>
+<span id="cb9-29"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">bd_test</span>(.x<span class="sc">$</span>利益率))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="持ち寄り8分3つのテーマの発見を比べる" class="slide level2 smaller">
@@ -1019,8 +1021,8 @@ Soichi Matsuura
 <p>第3部で、<strong>当期の<code>法人税等負担率</code></strong>で2群に分けたとき、①赤字回避の「ゼロの直後（わずかな黒字）」の企業数はどうなっていたか見てみましょう。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a>tax_res <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(分析 <span class="sc">==</span> <span class="st">"① 赤字回避"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(税負担区分, 階級, 度数, 期待度数, 標準化差分)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(分析 <span class="sc">==</span> <span class="st">"① 赤字回避"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(税負担区分, 階級, 度数, 期待度数, 標準化差分)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 5
   税負担区分               階級        度数 期待度数 標準化差分
@@ -1055,13 +1057,13 @@ Soichi Matsuura
 <p>まず、赤字企業と黒字企業で <code>法人税等負担率</code> が欠損（<code>NA</code>）になっている割合を確かめます。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(黒字赤字 <span class="ot">=</span> <span class="fu">if_else</span>(利益率 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="st">"赤字企業（利益率 &lt; 0）"</span>, <span class="st">"黒字企業（利益率 &gt;= 0）"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(黒字赤字) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb12-5"><a href="" aria-hidden="true" tabindex="-1"></a>        全体の件数 <span class="ot">=</span> <span class="fu">n</span>(),</span>
-<span id="cb12-6"><a href="" aria-hidden="true" tabindex="-1"></a>        負担率ありの件数 <span class="ot">=</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(法人税等負担率)),</span>
-<span id="cb12-7"><a href="" aria-hidden="true" tabindex="-1"></a>        負担率がNAの割合 <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">is.na</span>(法人税等負担率)), <span class="dv">3</span>)</span>
-<span id="cb12-8"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(黒字赤字 <span class="ot">=</span> <span class="fu">if_else</span>(利益率 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="st">"赤字企業（利益率 &lt; 0）"</span>, <span class="st">"黒字企業（利益率 &gt;= 0）"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(黒字赤字) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb12-5"><a href="" aria-hidden="true" tabindex="-1"></a>    全体の件数 <span class="ot">=</span> <span class="fu">n</span>(),</span>
+<span id="cb12-6"><a href="" aria-hidden="true" tabindex="-1"></a>    負担率ありの件数 <span class="ot">=</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(法人税等負担率)),</span>
+<span id="cb12-7"><a href="" aria-hidden="true" tabindex="-1"></a>    負担率がNAの割合 <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">is.na</span>(法人税等負担率)), <span class="dv">3</span>)</span>
+<span id="cb12-8"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 4
   黒字赤字                全体の件数 負担率ありの件数 負担率がNAの割合
@@ -1131,20 +1133,20 @@ Soichi Matsuura
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 前期に赤字（負担率NA）または前期負担率が中央値以下の企業 ＝「期首時点で税コストが低い群」</span></span>
 <span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>d_exante <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(日経会社コード) <span class="sc">|&gt;</span></span>
-<span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(前期負担率 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(法人税等負担率), <span class="cn">NA_real_</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb14-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb14-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(決算月数 <span class="sc">==</span> <span class="dv">12</span>, 期首資産 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">between</span>(決算年, <span class="dv">2016</span>, <span class="dv">2025</span>), 連続) <span class="sc">|&gt;</span></span>
-<span id="cb14-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb14-8"><a href="" aria-hidden="true" tabindex="-1"></a>        利益率 <span class="ot">=</span> 親会社利益 <span class="sc">/</span> 期首資産,</span>
-<span id="cb14-9"><a href="" aria-hidden="true" tabindex="-1"></a>        利益増減率 <span class="ot">=</span> (親会社利益 <span class="sc">-</span> 前期利益) <span class="sc">/</span> 期首資産,</span>
-<span id="cb14-10"><a href="" aria-hidden="true" tabindex="-1"></a>        予想誤差率 <span class="ot">=</span> (純利益 <span class="sc">-</span> 予想純利益) <span class="sc">/</span> 期首資産,</span>
-<span id="cb14-11"><a href="" aria-hidden="true" tabindex="-1"></a>        期首税コスト区分 <span class="ot">=</span> <span class="fu">if_else</span>(</span>
-<span id="cb14-12"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="fu">is.na</span>(前期負担率) <span class="sc">|</span> 前期負担率 <span class="sc">&lt;=</span> <span class="fu">median</span>(前期負担率, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb14-13"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="st">"1_期首・低税コスト群（前期赤字または低税率）"</span>,</span>
-<span id="cb14-14"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="st">"2_期首・高税コスト群（前期高税率）"</span></span>
-<span id="cb14-15"><a href="" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb14-16"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(日経会社コード) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(前期負担率 <span class="ot">=</span> <span class="fu">if_else</span>(連続, <span class="fu">lag</span>(法人税等負担率), <span class="cn">NA_real_</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb14-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb14-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(決算月数 <span class="sc">==</span> <span class="dv">12</span>, 期首資産 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">between</span>(決算年, <span class="dv">2016</span>, <span class="dv">2025</span>), 連続) <span class="sc">|&gt;</span></span>
+<span id="cb14-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-8"><a href="" aria-hidden="true" tabindex="-1"></a>    利益率 <span class="ot">=</span> 親会社利益 <span class="sc">/</span> 期首資産,</span>
+<span id="cb14-9"><a href="" aria-hidden="true" tabindex="-1"></a>    利益増減率 <span class="ot">=</span> (親会社利益 <span class="sc">-</span> 前期利益) <span class="sc">/</span> 期首資産,</span>
+<span id="cb14-10"><a href="" aria-hidden="true" tabindex="-1"></a>    予想誤差率 <span class="ot">=</span> (純利益 <span class="sc">-</span> 予想純利益) <span class="sc">/</span> 期首資産,</span>
+<span id="cb14-11"><a href="" aria-hidden="true" tabindex="-1"></a>    期首税コスト区分 <span class="ot">=</span> <span class="fu">if_else</span>(</span>
+<span id="cb14-12"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(前期負担率) <span class="sc">|</span> 前期負担率 <span class="sc">&lt;=</span> <span class="fu">median</span>(前期負担率, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-13"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="st">"1_期首・低税コスト群（前期赤字または低税率）"</span>,</span>
+<span id="cb14-14"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="st">"2_期首・高税コスト群（前期高税率）"</span></span>
+<span id="cb14-15"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-16"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -1481,42 +1483,80 @@ Soichi Matsuura
       });
     </script>
     
+
     <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
+    
 
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
 
+    
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
+    
 
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
 
+    
+
       })();
+
     </script>
+
+    
 
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
